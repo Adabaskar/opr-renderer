@@ -1,0 +1,12 @@
+{
+  "name": "oprr-content-component-base",
+  "version": "1.0.0-SNAPSHOT",
+  "description": "Contains the common contract for oprr content components classes.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["oppm"],
+  "author": "Bogumil Bartczak",
+  "license": "MIT"
+}
