@@ -2,6 +2,7 @@ const ContextInfoContentComponent = require('./src/component/context-info-conten
 
 module.exports = {
     metadata : {
+        contentComponentId : 'OprrContextInfoContentComponent',
         viewIds : ['AsMainHeader'],
     },
     /**

@@ -25,9 +25,9 @@ class OprrContentComponent {
          * For Dom based views, this returns the root element of the 
          * corresponding view, which than can be appended to the DOM.
          * @param {string} viewId 
-         * @returns {HTMLElement} the root dom element of the identified view.        
+         * @returns {HTMLElement} the root dom element of the named view.        
          */
-        this.getDomBasedViewRootElement = function (viewId) {
+        this.getViewDomSubTree = function (viewId) {
             throw new Error('implement in derived class');
         }
 

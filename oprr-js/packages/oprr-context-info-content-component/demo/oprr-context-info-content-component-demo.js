@@ -14,15 +14,13 @@ const ContextInfoContentComponent = require('../index.js');
         contentComponentArea.style.left = '10%';
         contentComponentArea.style.right = '10%';
         
-        const contentComponent = ContextInfoContentComponent.makeInstance();    
-        console.log(ContextInfoContentComponent.metadata.viewIds[0]);
-        contentComponent.activateDomBasedView(ContextInfoContentComponent.metadata.viewIds[0], document);
+        const usedViewId = ContextInfoContentComponent.metadata.viewIds[0];
+        const contentComponent = ContextInfoContentComponent.makeInstance();            
+        contentComponent.activateDomBasedView(usedViewId, document);
+        const viewRoot = contentComponent.getViewDomSubTree(usedViewId);
         
+        contentComponentArea.appendChild(viewRoot);
 
-        //get views
-        //activate first view
-        //get root dom node of first view
-        //append it to contenComponentArea
 
         //build editor modal dom element
         //get editor of content component
