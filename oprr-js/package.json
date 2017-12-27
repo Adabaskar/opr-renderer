@@ -3,6 +3,7 @@
 		"lerna": "^2.5.1"
 	},
 	"dependencies": {
-		"oprr-content-component-base" : "1.0.0-SNAPSHOT"
+		"oprr-content-component-contract" : "1.0.0-SNAPSHOT",
+		"oprr-utilities" : "1.0.0-SNAPSHOT"
 	}
 }

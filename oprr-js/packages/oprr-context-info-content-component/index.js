@@ -1,4 +1,4 @@
-const ContextInfoContentComponent = require('./src/component/context-info-content-component.js');
+const ContextInfoContentComponentController = require('./src/component-controller/context-info-content-component-controller.js');
 
 module.exports = {
     metadata : {
@@ -6,7 +6,7 @@ module.exports = {
         viewIds : ['AsMainHeader'],
     },
     /**
-     * @returns {ContextInfoContentComponent} a new instance of this component.
+     * @returns {ContextInfoContentComponentController} a new instance of this component.
      */
-    makeInstance : function() {return new ContextInfoContentComponent();}
+    makeInstance : function() {return new ContextInfoContentComponentController();}
 }

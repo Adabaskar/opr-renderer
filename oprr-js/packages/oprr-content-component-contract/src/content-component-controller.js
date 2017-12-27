@@ -1,23 +1,26 @@
 /**
  * Contract Class for all OPR Renderer Content Components
  */
-class OprrContentComponent {
+class ContentComponentController {
     constructor() {        
 
         /**
-         * Activates the view, so that it is refreshed, and observed by the component.
-         * @param {string} viewId the id of the view to be activated 
+         * Component will instantiates and manage a view with the designated viewTypeId.
+         *             
+         * @param {string} viewTypeId the id of the view-type to be instantiated and managed, can be optional for components only supporting a single view type.
          * @param {Document} domDoc the root node of the DOM.
+         * @returns the viewId to address the created view instance via the component.
          */
-        this.activateDomBasedView = function (viewId, domDoc) {
+        this.addDomBasedView = function (domDoc, viewTypeId) {
             throw new Error('implement in derived class');
         }
 
         /**
-         * Opposite of activateView
-         * @param {string} viewId the id of the view to be deactivated.
+         * Opposite of activateDomBasedView. Requires the viewId that was returned by
+         * the activateDomBasedView-mdethod
+         * @param {string} viewId the id of the view to be deactivated, previously returned by the activeDomBasedView method.
          */
-        this.deactivateView = function (viewId) {
+        this.deactivateDomBasedView = function (viewId) {
             throw new Error('implement in derived class');
         }
 
@@ -27,12 +30,14 @@ class OprrContentComponent {
          * @param {string} viewId 
          * @returns {HTMLElement} the root dom element of the named view.        
          */
-        this.getViewDomSubTree = function (viewId) {
+        this.getViewsDomSubtree = function (viewId) {
             throw new Error('implement in derived class');
         }
 
         /**
-         * Activates the compact editor for this content component.
+         * Tells that the embedding application will use the compact 
+         * editor for this content component. Without it the editor 
+         * will not be instantiated and managed by the content component.
          * @param {Document} domDoc 
          */
         this.activateDomBasedCompactEditor = function(domDoc) {
@@ -44,10 +49,10 @@ class OprrContentComponent {
          * of the content component using a single dom sub tree.
          * @returns {HTMLElement} the root element of the editor view, to be appended to the DOM
          */
-        this.getDomBasedCompactEditorRootElement = function() {
+        this.getDomBasedCompactEditorsDomSubtree = function() {
             throw new Error('implement in derived class');
         }
 
     }
 }
-module.exports = OprrContentComponent;
+module.exports = ContentComponentController;

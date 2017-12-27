@@ -5,28 +5,35 @@ const ContextInfoContentComponent = require('../index.js');
     if (document === undefined || document === null)
         throw new Error('this demo requires a DOM');
 
-        const contentComponentArea = document.createElement('div');
-        document.body.appendChild(contentComponentArea);
+        const contentComponentViewArea = document.createElement('div');
+        document.body.appendChild(contentComponentViewArea);
 
-        contentComponentArea.style.position = 'absolute';
-        contentComponentArea.style.top = '0%';
-        contentComponentArea.style.bottom = '90%';
-        contentComponentArea.style.left = '10%';
-        contentComponentArea.style.right = '10%';
+        contentComponentViewArea.style.position = 'absolute';
+        contentComponentViewArea.style.top = '0%';
+        contentComponentViewArea.style.bottom = '90%';
+        contentComponentViewArea.style.left = '10%';
+        contentComponentViewArea.style.right = '10%';
+        contentComponentViewArea.style.border = 'black solid 1px';
         
-        const usedViewId = ContextInfoContentComponent.metadata.viewIds[0];
+        const viewTypeId = ContextInfoContentComponent.metadata.viewIds[0];
         const contentComponent = ContextInfoContentComponent.makeInstance();            
-        contentComponent.activateDomBasedView(usedViewId, document);
-        const viewRoot = contentComponent.getViewDomSubTree(usedViewId);
+        const viewId = contentComponent.addDomBasedView(document);
+        const viewRoot = contentComponent.getViewsDomSubtree(viewId);
         
-        contentComponentArea.appendChild(viewRoot);
+        contentComponentViewArea.appendChild(viewRoot);
+               
+//build editor modal dom element
+        const compactEditorArea = document.createElement('div');
+        document.body.appendChild(compactEditorArea);
 
+        compactEditorArea.style.position = 'absolute';
+        compactEditorArea.style.top = '15%';
+        compactEditorArea.style.bottom = '50%';
+        compactEditorArea.style.left = '10%';
+        compactEditorArea.style.right = '10%';
+        compactEditorArea.style.border = 'black solid 1px';
 
-        //build editor modal dom element
-        //get editor of content component
-        //append it to modal
-        //open modal on double click
-        //close modal on cancel
-        //retrieve editor state on ok/store and give the editor state to the controller        
-
+        contentComponent.activateDomBasedCompactEditor(document);
+        compactEditorArea.appendChild(contentComponent.getDomBasedCompactEditorsDomSubtree());
+      
 }())

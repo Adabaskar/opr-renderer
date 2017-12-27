@@ -1,0 +1,16 @@
+{
+  "name": "oprr-utilities",
+  "version": "1.0.0-SNAPSHOT",
+  "description": "Collection of functions and classes that can be used in every oprr package and provide reoccuringly needed functionality.",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape ./tests/**/*.test.js",
+    "tdd": "tape-watcher ./tests/**/*.test.js"
+  },
+  "keywords": [],
+  "author": "Bogumil Bartczak",
+  "license": "MIT",
+  "devDependencies": {
+    "tape": "^4.8.0"
+  }
+}
