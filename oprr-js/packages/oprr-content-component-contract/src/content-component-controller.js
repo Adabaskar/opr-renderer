@@ -20,7 +20,7 @@ class ContentComponentController {
          * the activateDomBasedView-mdethod
          * @param {string} viewId the id of the view to be deactivated, previously returned by the activeDomBasedView method.
          */
-        this.deactivateDomBasedView = function (viewId) {
+        this.removeDomBasedView = function (viewId) {
             throw new Error('implement in derived class');
         }
 

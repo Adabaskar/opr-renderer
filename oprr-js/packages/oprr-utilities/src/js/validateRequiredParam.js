@@ -4,7 +4,7 @@
  * @param {string} msg message output if argument was not given  
  */
 function validateRequiredArg(arg, msg) {
-    if(arg == undefined ||arg == null) {        
+    if(arg == undefined || arg == null) {        
         throw Error(msg);
     }
 };
