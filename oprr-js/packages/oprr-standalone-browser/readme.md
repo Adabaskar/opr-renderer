@@ -6,4 +6,4 @@ download.
 
 ## Usage
 
-After building with `npm run build` address `oprr-standalone.html` in a modern browser.
+After building with `npm run build` address `oprr-standalone-browser.html` in a modern browser.

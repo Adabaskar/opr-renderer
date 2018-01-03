@@ -1,6 +1,6 @@
 {
   "name": "oprr-task-associated-data-content-component",
-  "version": "1.0.0-SNAPSHOT",
+  "version": "0.1.0-SNAPSHOT",
   "description": "A content component for OPR-Renderer where tasks can be associated with different data like owners, timeline data and objectives.",
   "main": "index.js",
   "scripts": {
