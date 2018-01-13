@@ -16,7 +16,7 @@ class NonUniformGridLayout {
          * @param {string} lineName unique name for the line
          * @param {number} leftOffset the relative offset in percent
          */
-        this.addVerticalGridLineFromLeft = function (lineName, leftOffset) {
+        this.setVerticalGridLineFromLeft = function (lineName, leftOffset) {
             _verticalGridLines.set(lineName, _makeVerticalGridLineFromLeft(leftOffset));
         };
         function _makeVerticalGridLineFromLeft(leftOffset) {
@@ -25,12 +25,21 @@ class NonUniformGridLayout {
                 right: 100 - leftOffset
             }
         }
-
-        this.getVerticalGridLineLeft = function (lineName) {
+        /**
+         * 
+         * @param {string} lineName the name of the gridline
+         * @return {number} the offset from the left side of the parent container in percent
+         */
+        this.getVerticalGridLineLeftOffset = function (lineName) {
             return _verticalGridLines.get(lineName).left;
         }
 
-        this.getVerticalGridLineRight = function (lineName) {
+        /**
+       * 
+       * @param {string} lineName the name of the gridline
+       * @return {number} the offset from the right side of the parent container in percent
+       */
+        this.getVerticalGridLineRightOffset = function (lineName) {
             return _verticalGridLines.get(lineName).right;
         }
 
@@ -39,7 +48,7 @@ class NonUniformGridLayout {
          * @param {string} lineName unique name for the line
          * @param {number} topOffset the relative offset in percent
          */
-        this.addHorizontalGridLineFromTop = function (lineName, topOffset) {
+        this.setHorizontalGridLineFromTop = function (lineName, topOffset) {
             _horizontalGridLines.set(lineName, _makeHorizontalGridLineFromTop(topOffset));
         }
         function _makeHorizontalGridLineFromTop(topOffset) {
@@ -49,12 +58,22 @@ class NonUniformGridLayout {
             }
         }
 
-        this.getHorizontalGridLineTop = function (lineName) {
+        /**
+       * 
+       * @param {string} lineName the name of the gridline
+       * @return {number} the offset from the top side of the parent container in percent
+       */
+        this.getHorizontalGridLineTopOffset = function (lineName) {
             return _horizontalGridLines.get(lineName).top;
         }
 
 
-        this.getHorizontalGridLineBottom = function (lineName) {
+        /**
+       * 
+       * @param {string} lineName the name of the gridline
+       * @return {number} the offset from the bottom side of the parent container in percent
+       */
+        this.getHorizontalGridLineBottomOffset = function (lineName) {
             return _horizontalGridLines.get(lineName).bottom;
         }
 
@@ -80,6 +99,33 @@ class NonUniformGridLayout {
         this.getArea = function (areaName) {
             return clone(_areas.get(areaName));
         }
+
+        this.getVerticalGridLineList = function() {
+            const result = [];
+            _verticalGridLines.forEach((value, key) => result.push( _makeVerticalListItem(key, value)) );
+            return result;
+        }
+        function _makeVerticalListItem(verticalMapKey, verticalMapValue) {            
+            return {
+                name : verticalMapKey,
+                left : verticalMapValue.left,
+                right : verticalMapValue.right
+            }
+        }
+        
+        this.getHorizontalGridLineList = function() {
+            const result = [];
+            _horizontalGridLines.forEach((value, key) => result.push( _makeHorizontalListItem(key, value)) );
+            return result;
+        }
+        function _makeHorizontalListItem(horizontalMapKey, horizontalMapValue) {            
+            return {
+                name : horizontalMapKey,
+                top : horizontalMapValue.top,
+                bottom : horizontalMapValue.bottom
+            }
+        }
+
     }
 }
 module.exports = NonUniformGridLayout;

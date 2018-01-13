@@ -2,9 +2,14 @@ const validateRequiredArg = require('oprr-utilities').validateRequiredArg;
 const MainMenu = require('./main-menu.js');
 const SubviewScaffold = require('../gui/subview-scaffold.js');
 const OprProject = require('../opr-project/opr-project.js');
+
 const ContentComponentsRepository = require('../content-components/opr-content-component-repository.js');
 const ManageContentComponentSubview = require('../use-cases/manage-content-components/manage-content-components-subview.js');
 const ManageContentComponentUcService = require('../use-cases/manage-content-components/manage-content-components-uc-service.js');
+
+const EditCurrentOprViewLayoutUcService = require('../use-cases/edit-current-opr-view-layout/edit-current-opr-view-layout-uc-service.js');
+const EditCurrentOprViewLayoutSubview = require('../use-cases/edit-current-opr-view-layout/edit-current-opr-view-layout-subview.js');
+
 
 class OprrStandaloneBrowserApp {
     /**
@@ -21,6 +26,7 @@ class OprrStandaloneBrowserApp {
         const _contentComponentsRepository = new ContentComponentsRepository();
 
         let _manageContentComponentSubview = undefined;
+        let _editCurrentOprViewLayoutSubview = undefined;
 
         this.start = function () {
             _initUseCaseComponents();
@@ -32,6 +38,9 @@ class OprrStandaloneBrowserApp {
         function _initUseCaseComponents() {
             const manageContentComponentUcService = new ManageContentComponentUcService(_currentOprProject, _contentComponentsRepository);
             _manageContentComponentSubview = new ManageContentComponentSubview(_domDoc, manageContentComponentUcService);
+
+            const editCurrentOprViewLayoutUcService = new EditCurrentOprViewLayoutUcService(_currentOprProject);
+            _editCurrentOprViewLayoutSubview = new EditCurrentOprViewLayoutSubview(_domDoc, editCurrentOprViewLayoutUcService);
         }
 
         function _normalizeHtmlDocument() {
@@ -57,8 +66,9 @@ class OprrStandaloneBrowserApp {
             const mainMenu = new MainMenu(_domDoc);
             win.document.body.appendChild(mainMenu.getDomSubtree());
             mainMenu.setContentComponentMenuItemClickedListener(() => _openContentComponentManagement());
+            mainMenu.setEditCurrentOprViewLayoutMenuItemClickedListener( () => { _ApplicationSubview.setContent(_editCurrentOprViewLayoutSubview.getDomSubtree()); _ApplicationSubview.open(); });
         };
-        
+
     }
 }
 module.exports = OprrStandaloneBrowserApp;

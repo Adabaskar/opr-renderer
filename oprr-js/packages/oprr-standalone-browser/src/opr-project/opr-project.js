@@ -1,5 +1,6 @@
 const IdTakenError = require('../../src/common/id-taken-error.js');
 const validateRequiredArg = require('oprr-utilities').validateRequiredArg;
+const OprView = require('./opr-view.js');
 
 /**
  * Represents the current OPR Project
@@ -8,6 +9,8 @@ class OprProject {
     constructor() {
 
         const _contentComponents = new Map();
+
+        const _currentOprView = new OprView();
 
         /**
          * 
@@ -59,6 +62,9 @@ class OprProject {
             return typeCount;
         }
       
+        this.getCurrentOprView = function() {
+            return _currentOprView;
+        }
     }
 }
 module.exports = OprProject;

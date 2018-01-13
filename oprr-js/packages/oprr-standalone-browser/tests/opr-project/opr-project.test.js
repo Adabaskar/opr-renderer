@@ -1,7 +1,9 @@
 const test = require('tape');
 const OprProject = require('../../src/opr-project/opr-project.js');
 const IdTakenError = require('../../src/common/id-taken-error.js');
+const OprView = require('../../src/opr-project/opr-view.js');
 
+const testgroup = 'OprProject: '
 
 test('addContentComponent_unusedId_canBeRetrievedById', function (t) {
 
@@ -46,7 +48,7 @@ test('getContentComponentCount_notUsedId_returnsZero', function (t) {
     t.end();
 });
 
-test('{{file}}: getContentComponentCount_alreadyUsedId_returnsOne', function (t) {
+test(`${testgroup} getContentComponentCount_alreadyUsedId_returnsOne`, function (t) {
     const sut = new OprProject();
 
     const contentComponentStub = {};
@@ -54,6 +56,19 @@ test('{{file}}: getContentComponentCount_alreadyUsedId_returnsOne', function (t)
     const typeIdStub = 'typeIdStub';
     sut.addContentComponent(contentComponentStub, typeIdStub, idStub);
 
-    t.equals(sut.getContentComponentTypeCount(typeIdStub), 1);    
+    t.equals(sut.getContentComponentTypeCount(typeIdStub), 1);
     t.end();
 });
+
+test(`${testgroup} getCurrentOprView_Always_returnDefinedOprView`, function (t) {
+
+    const sut = new OprProject();
+
+    const observedCurrentOprView = sut.getCurrentOprView();
+
+    t.notEqual(observedCurrentOprView, undefined);   
+    t.true(observedCurrentOprView instanceof OprView, 'should be OprView Type');
+    t.end();
+});
+
+

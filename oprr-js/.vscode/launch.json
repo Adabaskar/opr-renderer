@@ -9,7 +9,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}\\packages\\oprr-standalone-browser\\tests\\use-cases\\manage-content-components\\manage-content-components-uc-service.test.js"
+            "program": "${workspaceFolder}\\packages\\oprr-standalone-browser\\tests\\use-cases\\edit-current-opr-view-layout\\edit-current-opr-view-layout-subview.test.js"
         }
     ]
 }

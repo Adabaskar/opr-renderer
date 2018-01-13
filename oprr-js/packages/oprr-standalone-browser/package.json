@@ -7,7 +7,7 @@
     "build": "webpack",
     "watch": "webpack --watch",
     "test": "tape -r ignore-styles ./tests/**/*.test.js | tap-summary",
-    "tdd": "tape-watch -p tap-summary -c -r ignore-styles ./tests/**/*.test.js"
+    "tdd": "tape-watch --clear -p tap-summary -r ignore-styles ./tests/**/*.test.js"
   },
   "keywords": [],
   "author": "Bogumil Bartczak",

@@ -43,7 +43,7 @@ class ManageContentComponentsSubview {
                         <select class='${_ADDABLE_CONTENT_COMPONENT_SELECTION_MARKER_CLASS}'>
                             ${addableContentComponentSelectOptions}
                         </select>
-                        <button class='${_ADD_SELECTED_CONTENT_COMPONENT_TO_PROJECT_BUTTON_MARKER_CLASS}'>add</button>
+                        <button class="${_ADD_SELECTED_CONTENT_COMPONENT_TO_PROJECT_BUTTON_MARKER_CLASS}" type="button">add</button>
                  
                 </form>`;
             _addableContentComponentsView.innerHTML = innerHtml;
