@@ -12,7 +12,7 @@ class MainMenu {
     constructor(domDoc) {
 
         const _MANAGE_CONTENT_COMPONENTS_MENU_ITEM_ID = 'ManageContentComponentsMenuItem';
-        const _MANAGE_OPR_VIEWS_MENU_ITEM_ID = 'ManageOprViewsMenuItem';
+        const _MANAGE_CONTENT_COMPONENT_VIEWS_MENU_ITEM_ID = 'ManageOprViewsMenuItem';
         const _EDIT_CURRENT_OPR_VIEW_LAYOUT_MENU_ITEM_ID = 'EditCurrentOprViewLayout';
 
         let _menuDiv = domDoc.createElement('div');
@@ -20,18 +20,18 @@ class MainMenu {
             const innerHtml =
                 `  <ul class="pure-menu-list">                     
                         <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-                            <a href="" id="menuLink1" class="pure-menu-link">Project</a>
+                            <a href="" id="menuLink1" class="pure-menu-link">OPR Project</a>
                             <ul class="pure-menu-children">                                
                                 <li class="pure-menu-item"><a href="#" class="pure-menu-link pure-menu-disabled">Load</a></li>
                                 <li class="pure-menu-item"><a href="#" class="pure-menu-link pure-menu-disabled">Save</a></li>
                                 <hr/>
                                 <li class="pure-menu-item" id='${_MANAGE_CONTENT_COMPONENTS_MENU_ITEM_ID}'><a class="pure-menu-link">Content Components</a></li>
-                                <li class="pure-menu-item" id='${_MANAGE_OPR_VIEWS_MENU_ITEM_ID}'><a class="pure-menu-link">OPR Views</a></li>
                             </ul>
                         </li>
                         <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
                             <a href="" id="menuLink1" class="pure-menu-link">Current OPR View</a>
-                            <ul class="pure-menu-children">                                
+                            <ul class="pure-menu-children">                             
+                            <li class="pure-menu-item" id='${_MANAGE_CONTENT_COMPONENT_VIEWS_MENU_ITEM_ID}'><a class="pure-menu-link pure-menu-disabled">Content Component Views</a></li>   
                             <li class="pure-menu-item" id='${_EDIT_CURRENT_OPR_VIEW_LAYOUT_MENU_ITEM_ID}'><a class="pure-menu-link">Edit Layout</a></li>
                             </ul>
                         </li>

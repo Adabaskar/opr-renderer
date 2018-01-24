@@ -41,12 +41,12 @@ test(`${testgroup} addHorizontalGridLineFromTop_validMeasure_retrievableViaGetHo
 
 });
 
-test(`${testgroup} addArea_ValidInput_getAreaGridLinkWillHaveUndefinedLinks`, function (t) {
+test(`${testgroup} setArea_ValidInput_getAreaHaveUndefinedGridLineLinks`, function (t) {
 
     const sut = new NonUnfiormGridLayout();
     const areaNameStub = 'areaNameStub';
 
-    sut.addArea(areaNameStub);
+    sut.setArea(areaNameStub);
 
     const areaLinks = sut.getArea(areaNameStub);
 

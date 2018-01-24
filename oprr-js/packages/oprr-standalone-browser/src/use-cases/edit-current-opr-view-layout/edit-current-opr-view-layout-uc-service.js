@@ -51,6 +51,22 @@ class EditCurrentOprViewLayoutUcService {
             return oprProject.getCurrentOprView().getLayout().getHorizontalGridLineList();
         }
 
+        this.getContentComponentViewList = function() {
+            return [];
+        }
+
+        this.getContentComponentViewsLayoutGridLineNames = function(viewName) {
+            return {
+                left: undefined,
+                right: undefined,
+                top : undefined,
+                bottom : undefined
+            };
+        }
+
+        this.setContentComponentViewsLayoutGridLineNames = function(viewName, lineNames) {
+
+        }
     }
 }
 module.exports = EditCurrentOprViewLayoutUcService;

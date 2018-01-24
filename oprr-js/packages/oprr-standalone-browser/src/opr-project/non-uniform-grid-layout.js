@@ -80,7 +80,7 @@ class NonUniformGridLayout {
         /**
          * @param {string} areaName unquie name of the area
          */
-        this.addArea = function (areaName) {
+        this.setArea = function (areaName) {
             _areas.set(areaName, _makeUndefinedAreaLinks);
         }
         function _makeUndefinedAreaLinks() {
