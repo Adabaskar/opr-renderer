@@ -4,12 +4,11 @@ const clone = require('oprr-utilities').clone;
  * Class managing set of areas defined by non uniformly distributable horizontal and vertical grid lines.
  * The grid lines are placed using css absolute positioning with relative measures in percent.
  */
-class NonUniformGridLayout {
+class NonUniformGrid {
     constructor() {
 
         const _verticalGridLines = new Map();
-        const _horizontalGridLines = new Map();
-        const _areas = new Map();
+        const _horizontalGridLines = new Map();      
 
         /**
          * 
@@ -76,30 +75,7 @@ class NonUniformGridLayout {
         this.getHorizontalGridLineBottomOffset = function (lineName) {
             return _horizontalGridLines.get(lineName).bottom;
         }
-
-        /**
-         * @param {string} areaName unquie name of the area
-         */
-        this.setArea = function (areaName) {
-            _areas.set(areaName, _makeUndefinedAreaLinks);
-        }
-        function _makeUndefinedAreaLinks() {
-            return {
-                left: undefined,
-                top: undefined,
-                right: undefined,
-                bottom: undefined
-            };
-        }
-
-        /**
-         * 
-         * @param {string} areaName unquie name of the area previously added
-         */
-        this.getArea = function (areaName) {
-            return clone(_areas.get(areaName));
-        }
-
+   
         this.getVerticalGridLineList = function() {
             const result = [];
             _verticalGridLines.forEach((value, key) => result.push( _makeVerticalListItem(key, value)) );
@@ -128,4 +104,4 @@ class NonUniformGridLayout {
 
     }
 }
-module.exports = NonUniformGridLayout;
+module.exports = NonUniformGrid;

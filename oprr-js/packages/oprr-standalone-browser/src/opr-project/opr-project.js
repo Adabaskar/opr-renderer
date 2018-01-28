@@ -14,29 +14,40 @@ class OprProject {
 
         /**
          * 
-         * @param {*} contentComponentInstance the instance of the contentComponent to be added to the project.
-         * @param {*} contentComponentTypeId the content component id like provided by its respective meta data.
+         * @param {Object} contentComponentInstance the instance of the contentComponent to be added to the project.
+         * @param {string} contentComponentTypeId the content component id like provided by its respective meta data.
          * @param {string} name unique name under which the Content Component will be identified by the system and the user, can be specified by the user.
          */
-        this.addContentComponent = function(contentComponentInstance, contentComponentTypeId, name) {
+        this.addContentComponent = function (contentComponentInstance, contentComponentTypeId, name) {
             validateRequiredArg(contentComponentInstance, 'content component instance required');
             validateRequiredArg(contentComponentTypeId, 'content component type id required');
             validateRequiredArg(name, 'name required');
 
-            if(_contentComponents.has(name))
+            if (_contentComponents.has(name))
                 throw new IdTakenError(`${name} already in use`);
             _contentComponents.set(name, _makeContentComponentInstanceEnvelope(contentComponentInstance, contentComponentTypeId));
 
             //  _logAllAddedComponentsToConsole();
         }
         function _logAllAddedComponentsToConsole() {
-            _contentComponents.forEach((value, name) => {console.log(`Project has ContenComponentInstance of type ${value.typeId} named ${name}`);});
+            _contentComponents.forEach((value, name) => { console.log(`Project has ContenComponentInstance of type ${value.typeId} named ${name}`); });
         }
 
+        /**
+         * @typedef {Object} ContentComponentInstanceEnvelope
+         * @property {string} typeId
+         * @property {string} instance
+         */
+
+        /**
+         * 
+         * @param {string} contentComponentInstance 
+         * @param {string} contentComponentTypeId 
+         */
         function _makeContentComponentInstanceEnvelope(contentComponentInstance, contentComponentTypeId) {
             return {
-                typeId : contentComponentTypeId,
-                instance : contentComponentInstance
+                typeId: contentComponentTypeId,
+                instance: contentComponentInstance
             };
         }
 
@@ -45,8 +56,8 @@ class OprProject {
          * @param {string} name the instance name, provided when the component instance was added (not the conten component type id).
          * @returns the instance of the content component
          */
-        this.getContentComponent = function(name) {
-            if(_contentComponents.has(name))
+        this.getContentComponent = function (name) {
+            if (_contentComponents.has(name))
                 return _contentComponents.get(name).instance;
         }
 
@@ -54,15 +65,36 @@ class OprProject {
          * 
          * @param {*} contentComponentTypeId the content component id like provided by its respective meta data.
          */
-        this.getContentComponentTypeCount = function(contentComponentTypeId) {
+        this.getContentComponentTypeCount = function (contentComponentTypeId) {
             let typeCount = 0;
 
-            _contentComponents.forEach( (value) => {if(contentComponentTypeId === value.typeId) typeCount++; });
+            _contentComponents.forEach((value) => { if (contentComponentTypeId === value.typeId) typeCount++; });
 
             return typeCount;
         }
-      
-        this.getCurrentOprView = function() {
+
+        /**
+         * @typedef {Object} AddedContentComponentsList
+         * @property {string} contentComponentName
+         * @property {string} contentComponentTypeId
+         */
+
+        /**
+         * @returns {AddedContentComponentsList}[]
+         */
+        this.getAddedContentComponentsList = function () {
+            let result = [];
+            _contentComponents.forEach(
+                (envelope, contentComponentName) =>
+                    result.push({
+                        contentComponentName: contentComponentName,
+                        contentComponentTypeId: envelope.typeId
+                    })
+            );
+            return result;
+        }
+
+        this.getCurrentOprView = function () {
             return _currentOprView;
         }
     }

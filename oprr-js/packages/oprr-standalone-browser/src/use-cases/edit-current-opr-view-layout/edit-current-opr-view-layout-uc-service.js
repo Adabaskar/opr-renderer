@@ -1,6 +1,6 @@
 const validateRequiredArg = require('oprr-utilities').validateRequiredArg;
 const OprProject = require('../../opr-project/opr-project.js');
-const NonUniformGridLayout = require('../../opr-project/non-uniform-grid-layout.js');
+const NonUniformGrid = require('../../opr-project/non-uniform-grid.js');
 const OprView = require('../../opr-project/opr-view.js');
 
 /**
@@ -13,7 +13,8 @@ class EditCurrentOprViewLayoutUcService {
      * @param {OprProject} oprProject 
      */
     constructor(oprProject) {
-        validateRequiredArg(oprProject, 'oprProject required');
+        validateRequiredArg(oprProject, 'oprProject required');        
+        const _oprProject = oprProject;
 
         /**
          * 
@@ -21,51 +22,73 @@ class EditCurrentOprViewLayoutUcService {
          * @param {number} offset offset from left (or right) 
          * @param {boolean} relativeToLeft true if position is relative to left, otherwise false
          */
-        this.setVerticalGridLine = function(lineName, offset, relativeToLeft) {
+        this.setVerticalGridLine = function (lineName, offset, relativeToLeft) {
             validateRequiredArg(lineName, 'lineName required');
             validateRequiredArg(offset, 'position required');
             validateRequiredArg(relativeToLeft, 'relativeToLeft required');
 
-            if(!relativeToLeft)
+            if (!relativeToLeft)
                 throw Error('Not Implemented Yet!');
 
-            oprProject.getCurrentOprView().getLayout().setVerticalGridLineFromLeft(lineName, offset);            
+            oprProject.getCurrentOprView().getLayoutGrid().setVerticalGridLineFromLeft(lineName, offset);
         }
 
-        this.setHorizontalGridLine = function(lineName, offset, relativeToTop) {
+        this.setHorizontalGridLine = function (lineName, offset, relativeToTop) {
             validateRequiredArg(lineName, 'lineName required');
             validateRequiredArg(offset, 'position required');
             validateRequiredArg(relativeToTop, 'relativeToLeft required');
 
-            if(! relativeToTop)
+            if (!relativeToTop)
                 throw Error('Not Implemented Yet!');
-
-            oprProject.getCurrentOprView().getLayout().setHorizontalGridLineFromTop(lineName, offset);            
+            
+            oprProject.getCurrentOprView().getLayoutGrid().setHorizontalGridLineFromTop(lineName, offset);
         }
 
-        this.getVerticalGridLineList = function() {
-            return oprProject.getCurrentOprView().getLayout().getVerticalGridLineList();
+        this.getVerticalGridLineList = function () {
+            return oprProject.getCurrentOprView().getLayoutGrid().getVerticalGridLineList();
         }
 
-        this.getHorizontalGridLineList = function() {
-            return oprProject.getCurrentOprView().getLayout().getHorizontalGridLineList();
+        this.getHorizontalGridLineList = function () {
+            return oprProject.getCurrentOprView().getLayoutGrid().getHorizontalGridLineList();
         }
 
-        this.getContentComponentViewList = function() {
-            return [];
+        this.getContentViewsList = function () {
+            return oprProject.getCurrentOprView().getContentViewsList();
+        }
+        /**
+        * @typedef {Object} GridLineNames
+        * @property {string} left
+        * @property {string} right
+        * @property {string} top
+        * @property {string} bottom
+        */
+        /**
+         * @param {string} viewName
+         * @returns {GridLineNames}
+         */
+        this.getContentViewBoundary = function (viewName) {
+            return oprProject.getCurrentOprView().getContentViewBoundaryNames(viewName);
         }
 
-        this.getContentComponentViewsLayoutGridLineNames = function(viewName) {
-            return {
-                left: undefined,
-                right: undefined,
-                top : undefined,
-                bottom : undefined
-            };
+        /**
+         * @typedef {Object} ViewNameWithGridLineNames
+         * @property {string} viewName
+         * @property {GridLineNames} lineNames
+         */
+        /**
+         * @returns {ViewNameWithGridLineNames[]}
+         */
+        this.getContentViewsWithBoundariesList = function () {
+            return oprProject.getCurrentOprView().getContentViewsWithBoundaryList();
         }
 
-        this.setContentComponentViewsLayoutGridLineNames = function(viewName, lineNames) {
-
+        /**
+         * 
+         * @param {string} viewName 
+         * @param {GridLineNames} lineNames 
+         */
+        this.setContentViewBoundaries = function (viewName, lineNames) {
+            oprProject.getCurrentOprView().setContentViewBoundary(viewName, lineNames);
         }
     }
 }

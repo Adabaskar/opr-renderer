@@ -2,7 +2,7 @@ const test = require('tape');
 const sinon = require('sinon');
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
-const NonUnfiormGridLayout = require('../../src/opr-project/non-uniform-grid-layout.js');
+const NonUnfiormGridLayout = require('../../src/opr-project/non-uniform-grid.js');
 
 const testgroup = 'NonUniformGridLayout:';
 
@@ -39,23 +39,6 @@ test(`${testgroup} addHorizontalGridLineFromTop_validMeasure_retrievableViaGetHo
     t.equals(observedHorizontalLineBottom, 100 - topOffset);
     t.end();
 
-});
-
-test(`${testgroup} setArea_ValidInput_getAreaHaveUndefinedGridLineLinks`, function (t) {
-
-    const sut = new NonUnfiormGridLayout();
-    const areaNameStub = 'areaNameStub';
-
-    sut.setArea(areaNameStub);
-
-    const areaLinks = sut.getArea(areaNameStub);
-
-    t.equals(areaLinks.left, undefined);
-    t.equals(areaLinks.top, undefined);
-    t.equals(areaLinks.bottom, undefined);
-    t.equals(areaLinks.right, undefined);
-
-    t.end();
 });
 
 test(`${testgroup} setVerticalGridLineFromLeft_ValidData_lineIsInList`, function (t) {

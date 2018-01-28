@@ -12,7 +12,7 @@ class MainMenu {
     constructor(domDoc) {
 
         const _MANAGE_CONTENT_COMPONENTS_MENU_ITEM_ID = 'ManageContentComponentsMenuItem';
-        const _MANAGE_CONTENT_COMPONENT_VIEWS_MENU_ITEM_ID = 'ManageOprViewsMenuItem';
+        const _MANAGE_CONTENT_COMPONENT_VIEWS_Of_CURRENT_OPR_VIEW_MENU_ITEM_ID = 'ManageOprViewsMenuItem';
         const _EDIT_CURRENT_OPR_VIEW_LAYOUT_MENU_ITEM_ID = 'EditCurrentOprViewLayout';
 
         let _menuDiv = domDoc.createElement('div');
@@ -31,7 +31,7 @@ class MainMenu {
                         <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
                             <a href="" id="menuLink1" class="pure-menu-link">Current OPR View</a>
                             <ul class="pure-menu-children">                             
-                            <li class="pure-menu-item" id='${_MANAGE_CONTENT_COMPONENT_VIEWS_MENU_ITEM_ID}'><a class="pure-menu-link pure-menu-disabled">Content Component Views</a></li>   
+                            <li class="pure-menu-item" id='${_MANAGE_CONTENT_COMPONENT_VIEWS_Of_CURRENT_OPR_VIEW_MENU_ITEM_ID}'><a class="pure-menu-link">Content Component Views</a></li>   
                             <li class="pure-menu-item" id='${_EDIT_CURRENT_OPR_VIEW_LAYOUT_MENU_ITEM_ID}'><a class="pure-menu-link">Edit Layout</a></li>
                             </ul>
                         </li>
@@ -57,6 +57,10 @@ class MainMenu {
 
         this.setEditCurrentOprViewLayoutMenuItemClickedListener = function(callback) {
             _menuDiv.querySelector(`#${_EDIT_CURRENT_OPR_VIEW_LAYOUT_MENU_ITEM_ID}`).addEventListener('click', callback);
+        }
+
+        this.setManageContentViewsOfCurrentOprViewMenuItemtClickedListener = function(callback) {
+            _menuDiv.querySelector(`#${_MANAGE_CONTENT_COMPONENT_VIEWS_Of_CURRENT_OPR_VIEW_MENU_ITEM_ID}`).addEventListener('click', callback);
         }
 
     }

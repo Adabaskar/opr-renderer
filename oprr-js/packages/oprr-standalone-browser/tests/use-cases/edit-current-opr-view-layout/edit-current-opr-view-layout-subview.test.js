@@ -82,7 +82,7 @@ test(`${testgroup} setVerticalGridLineClicked_ValidUserInput_editorShowsAddedLin
     typeVerticalGridLineDataIntoInputFields(sut, lineNameStub, positionStub);
     clickOnVerticalGridLineSetButton(sut, domDocStub);
 
-    const verticalLinesList = sut.getDomSubtree().querySelector(`.${sut.AVAILABLE_VERTICAL_LINES_LIST_MARKER_CLASS}`);
+    const verticalLinesList = sut.getDomSubtree().querySelector(`.${sut.AVAILABLE_VERTICAL_LINES_LIST_CONTAINER_MARKER_CLASS}`);
     const expectedElement = verticalLinesList.querySelector(`[data-linename=${lineNameStub}]`);
     t.true(expectedElement.innerHTML.includes(lineNameStub));
     t.true(expectedElement.innerHTML.includes(positionStub));
@@ -103,7 +103,7 @@ test(`${testgroup} setHorizontalGridLineClicked_ValidUserInput_editorShowsAddedL
     typeHorizontalGridLineDataIntoInputFields(sut, lineNameStub, positionStub);
     clickOnHorizontalGridLineSetButton(sut, domDocStub);
 
-    const horizontalLinesList = sut.getDomSubtree().querySelector(`.${sut.AVAILABLE_HORIZONTAL_LINES_LIST_MARKER_CLASS}`);
+    const horizontalLinesList = sut.getDomSubtree().querySelector(`.${sut.AVAILABLE_HORIZONTAL_LINES_LIST_CONTAINER_MARKER_CLASS}`);
     const expectedElement = horizontalLinesList.querySelector(`[data-linename=${lineNameStub}]`);
     t.true(expectedElement.innerHTML.includes(lineNameStub));
     t.true(expectedElement.innerHTML.includes(positionStub));
@@ -118,7 +118,7 @@ test(`${testgroup} getDomSubtree_UcServiceReturnsListOfAddedContentComponentView
     const ucServiceStub = new EditCurrentOprViewLayoutUcService(oprProjectStub);
     const viewnameStub = 'viewnameStub';
     const contentComponentViewsListStub = [{ viewname: viewnameStub }];
-    const getContentComponentViewsStubMethod = sinon.stub(ucServiceStub, 'getContentComponentViewList');
+    const getContentComponentViewsStubMethod = sinon.stub(ucServiceStub, 'getContentViewsList');
     getContentComponentViewsStubMethod.returns(contentComponentViewsListStub);
 
     const sut = new EditCurrentOprViewLayoutSubview(domDocStub, ucServiceStub);
@@ -136,10 +136,10 @@ test(`${testgroup} changeSelectedContentComponentView_Always_queriesUcServiceFor
     const oprProjectStub = new OprProject();
     const ucServiceStub = new EditCurrentOprViewLayoutUcService(oprProjectStub);
     const contentComponentViewsListStub = [{ viewname: 'viewNameStub0' }, { viewname: 'viewNameStub1' }];
-    const getContentComponentViewsStubMethod = sinon.stub(ucServiceStub, 'getContentComponentViewList');
+    const getContentComponentViewsStubMethod = sinon.stub(ucServiceStub, 'getContentViewsList');
     getContentComponentViewsStubMethod.returns(contentComponentViewsListStub);
     const sut = new EditCurrentOprViewLayoutSubview(domDocStub, ucServiceStub);
-    const getContentComponentViewsLayoutGridLineNamesSpy = sinon.spy(ucServiceStub, 'getContentComponentViewsLayoutGridLineNames');
+    const getContentViewsBoundarySpy = sinon.spy(ucServiceStub, 'getContentViewBoundary');
 
     const changeEventStub = domDocStub.createEvent('HTMLEvents');
     changeEventStub.initEvent('change');
@@ -147,7 +147,7 @@ test(`${testgroup} changeSelectedContentComponentView_Always_queriesUcServiceFor
     selectNode.selectedIndex = 1;
     selectNode.dispatchEvent(changeEventStub);
 
-    t.true(getContentComponentViewsLayoutGridLineNamesSpy.calledWith(contentComponentViewsListStub[1].viewname));
+    t.true(getContentViewsBoundarySpy.calledWith(contentComponentViewsListStub[1].viewname));
     t.end();
 });
 
@@ -158,7 +158,7 @@ test(`${testgroup} changeSelectedContentComponentView_LinkedGridLinesAreAvailabl
     const ucServiceStub = new EditCurrentOprViewLayoutUcService(oprProjectStub);
     //stub content component views assoziated with the current opr view
     const contentComponentViewsListStub = [{ viewname: 'viewNameStub0' }, { viewname: 'viewNameStub1' }];
-    const getContentComponentViewsStubMethod = sinon.stub(ucServiceStub, 'getContentComponentViewList');
+    const getContentComponentViewsStubMethod = sinon.stub(ucServiceStub, 'getContentViewsList');
     getContentComponentViewsStubMethod.returns(contentComponentViewsListStub);
     // stub vertical and grid line list returned from ucService
     const verticalGridLineStub0 = 'verticalGridLineStub0';
@@ -178,8 +178,8 @@ test(`${testgroup} changeSelectedContentComponentView_LinkedGridLinesAreAvailabl
         top: horizontalGridLineStub0,
         bottom: horizontalGridLineStub1
     };
-    const getContentComponentViewsLayoutGridLineNamesStub = sinon.stub(ucServiceStub, 'getContentComponentViewsLayoutGridLineNames');
-    getContentComponentViewsLayoutGridLineNamesStub.returns(selectedViewsGridLineNamesStub);
+    const getContentViewsBoundaryStub = sinon.stub(ucServiceStub, 'getContentViewBoundary');
+    getContentViewsBoundaryStub.returns(selectedViewsGridLineNamesStub);
     const sut = new EditCurrentOprViewLayoutSubview(domDocStub, ucServiceStub);
 
     const changeEventStub = domDocStub.createEvent('HTMLEvents');
@@ -214,7 +214,7 @@ test(`${testgroup} changeSelectedContentComponentView_LinkedGridLinesAreUndefine
     const ucServiceStub = new EditCurrentOprViewLayoutUcService(oprProjectStub);
     //stub content component views assoziated with the current opr view
     const contentComponentViewsListStub = [{ viewname: 'viewNameStub0' }, { viewname: 'viewNameStub1' }];
-    const getContentComponentViewsStubMethod = sinon.stub(ucServiceStub, 'getContentComponentViewList');
+    const getContentComponentViewsStubMethod = sinon.stub(ucServiceStub, 'getContentViewsList');
     getContentComponentViewsStubMethod.returns(contentComponentViewsListStub);
     // stub vertical and grid line list returned from ucService
     const verticalGridLineStub0 = 'verticalGridLineStub0';
@@ -234,8 +234,8 @@ test(`${testgroup} changeSelectedContentComponentView_LinkedGridLinesAreUndefine
         top: undefined,
         bottom: undefined
     };
-    const getContentComponentViewsLayoutGridLineNamesStub = sinon.stub(ucServiceStub, 'getContentComponentViewsLayoutGridLineNames');
-    getContentComponentViewsLayoutGridLineNamesStub.returns(selectedViewsGridLineNamesStub);
+    const getContentViewBoundaryStub = sinon.stub(ucServiceStub, 'getContentViewBoundary');
+    getContentViewBoundaryStub.returns(selectedViewsGridLineNamesStub);
     const sut = new EditCurrentOprViewLayoutSubview(domDocStub, ucServiceStub);
 
     const changeEventStub = domDocStub.createEvent('HTMLEvents');
@@ -268,10 +268,10 @@ test(`${testgroup} setContentViewGridLinesClicked_AllGridLinesSelected_callsUCSe
     const domDocStub = new JSDOM('').window.document;
     const oprProjectStub = new OprProject();
     const ucServiceStub = new EditCurrentOprViewLayoutUcService(oprProjectStub);
-    const setContentComponentViewsLayoutGridLineNamesSpy = sinon.spy(ucServiceStub, 'setContentComponentViewsLayoutGridLineNames');  
+    const setContentComponentViewsLayoutGridLineNamesSpy = sinon.spy(ucServiceStub, 'setContentViewBoundaries');  
     const viewNameStub = 'viewNameStub';
     const contentComponentViewsListStub = [{ viewname: viewNameStub }];
-    const getContentComponentViewsStubMethod = sinon.stub(ucServiceStub, 'getContentComponentViewList');
+    const getContentComponentViewsStubMethod = sinon.stub(ucServiceStub, 'getContentViewsList');
     getContentComponentViewsStubMethod.returns(contentComponentViewsListStub);   
     const leftGridLineNameStub = 'leftGridLineNameStub';
     const rightGridLineNameStub = 'rightGridLineNameStub';
@@ -308,3 +308,50 @@ test(`${testgroup} setContentViewGridLinesClicked_AllGridLinesSelected_callsUCSe
 });
 
 //next test: when current Opr View grid lines are set, list displays this setting
+test(`${testgroup} setContentViewGridLinesClicked_AllGridLinesSet_ShowsInContentComponentViewsWithGridLinesList`, function(t) {
+
+    const domDocStub = new JSDOM('').window.document;
+    const oprProjectStub = new OprProject();
+    const ucServiceStub = new EditCurrentOprViewLayoutUcService(oprProjectStub);    
+    const viewNameStub = 'viewNameStub';
+    // const contentComponentViewsListStub = [{ viewname: viewNameStub }];
+    // const getContentComponentViewsStubMethod = sinon.stub(ucServiceStub, 'getContentComponentViewList');
+    // getContentComponentViewsStubMethod.returns(contentComponentViewsListStub);       
+    const leftGridLineNameStub = 'leftGridLineNameStub';
+    const rightGridLineNameStub = 'rightGridLineNameStub';
+    const topGridLineNameStub = 'topGridLineNameStub';
+    const bottomGridLineNameStub = 'bottomGridLineNameStub'; 
+    const contentViewsWithGridLinesListStub = [{viewName: viewNameStub, lineNames : {left: leftGridLineNameStub, right: rightGridLineNameStub, top: topGridLineNameStub, bottom:bottomGridLineNameStub  }}];
+    const getContentViewsWithGridLineNamesListStub = sinon.stub(ucServiceStub, 'getContentViewsWithBoundariesList');
+    getContentViewsWithGridLineNamesListStub.returns(contentViewsWithGridLinesListStub);
+
+    // const availableVerticalGridLinesListStub = [{ name: leftGridLineNameStub }, { name: rightGridLineNameStub }];
+    // const getVerticalGridLineListStub = sinon.stub(ucServiceStub, 'getVerticalGridLineList');
+    // getVerticalGridLineListStub.returns(availableVerticalGridLinesListStub);
+    // const availableHorizontalGridLinesListStub = [{ name: topGridLineNameStub }, { name: bottomGridLineNameStub }];
+    // const getHorizontalGridLineList = sinon.stub(ucServiceStub, 'getHorizontalGridLineList');
+    // getHorizontalGridLineList.returns(availableHorizontalGridLinesListStub);
+    const sut = new EditCurrentOprViewLayoutSubview(domDocStub, ucServiceStub);//here because first call to getDomSubtree triggers rendering and changes to uc service are not observed afterwards
+    // sut.getDomSubtree().querySelector(`.${sut.CONTENT_COMPONENT_VIEW_SELECTION_MARKER_CLASS}`).selectedIndex = 0;
+    // sut.getDomSubtree().querySelector(`.${sut.CONTENT_COMPONENT_VIEW_LEFT_LINE_SELECTION_MARKER_CLASS}`).selectedIndex = 1;
+    // sut.getDomSubtree().querySelector(`.${sut.CONTENT_COMPONENT_VIEW_RIGHT_LINE_SELECTION_MARKER_CLASS}`).selectedIndex = 2;
+    // sut.getDomSubtree().querySelector(`.${sut.CONTENT_COMPONENT_VIEW_TOP_LINE_SELECTION_MARKER_CLASS}`).selectedIndex = 1;
+    // sut.getDomSubtree().querySelector(`.${sut.CONTENT_COMPONENT_VIEW_BOTTOM_LINE_SELECTION_MARKER_CLASS}`).selectedIndex = 2;
+
+    
+    const setContentViewGridLinesButton = sut.getDomSubtree().querySelector(`.${sut.CONTENT_COMPONENT_VIEW_SET_LINES_BUTTON_MARKER_CLASS}`);
+    const clickEventStub = domDocStub.createEvent('MouseEvent');
+    clickEventStub.initEvent('click');
+    setContentViewGridLinesButton.dispatchEvent(clickEventStub);
+
+    const listNodeContainer = sut.getDomSubtree().querySelector(`.${sut.CONTENT_COMPONENT_VIEWS_WITH_GRID_LINES_LIST_CONTAINER_MARKER_CLASS}`);
+    const expectedListElement = listNodeContainer.querySelector(`[data-viewname=${viewNameStub}]`);
+    const observedListElementInnerHtml = expectedListElement.innerHTML;
+    
+    t.true(observedListElementInnerHtml.includes(viewNameStub));
+    t.true(observedListElementInnerHtml.includes(leftGridLineNameStub));
+    t.true(observedListElementInnerHtml.includes(rightGridLineNameStub));
+    t.true(observedListElementInnerHtml.includes(topGridLineNameStub));
+    t.true(observedListElementInnerHtml.includes(bottomGridLineNameStub));
+    t.end();
+});

@@ -66,9 +66,34 @@ test(`${testgroup} getCurrentOprView_Always_returnDefinedOprView`, function (t) 
 
     const observedCurrentOprView = sut.getCurrentOprView();
 
-    t.notEqual(observedCurrentOprView, undefined);   
+    t.notEqual(observedCurrentOprView, undefined);
     t.true(observedCurrentOprView instanceof OprView, 'should be OprView Type');
     t.end();
 });
 
 
+test(`${testgroup} getAddedContentComponentsList_ContentComponentAdded_returnsAppropriateMapContent`, function (t) {
+
+    const sut = new OprProject();
+    sut.addContentComponent({}, 'typeIdStub0', 'contentComponentStub0');
+    sut.addContentComponent({}, 'typeIdStub1', 'contentComponentStub1');
+
+    const observedContentComponentsList = sut.getAddedContentComponentsList();
+
+    function containsExpectedElement(expectedName, expectedTypeId) {
+        let containsExpectedElement = false;
+        for (let i = 0; observedContentComponentsList.length; i++) {
+            const elementUnderTest = observedContentComponentsList[i];
+            containsExpectedElement =
+                (elementUnderTest.contentComponentName === expectedName) &&
+                (elementUnderTest.contentComponentTypeId === expectedTypeId);
+            if (containsExpectedElement)
+                return true;
+        }
+        return false;
+    }
+
+    t.true(containsExpectedElement('contentComponentStub0', 'typeIdStub0'), 'element 0 not found');
+    t.true(containsExpectedElement('contentComponentStub1', 'typeIdStub1'), 'element 1 not found');
+    t.end();
+});

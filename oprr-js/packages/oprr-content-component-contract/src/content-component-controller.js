@@ -9,7 +9,7 @@ class ContentComponentController {
          *             
          * @param {string} viewTypeId the id of the view-type to be instantiated and managed, can be optional for components only supporting a single view type.
          * @param {Document} domDoc the root node of the DOM.
-         * @returns the viewId to address the created view instance via the component.
+         * @returns {string} the viewId to address the created view instance via the component.
          */
         this.addDomBasedView = function (domDoc, viewTypeId) {
             throw new Error('implement in derived class');

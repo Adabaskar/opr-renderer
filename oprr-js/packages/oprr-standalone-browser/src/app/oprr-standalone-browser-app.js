@@ -10,6 +10,8 @@ const ManageContentComponentUcService = require('../use-cases/manage-content-com
 const EditCurrentOprViewLayoutUcService = require('../use-cases/edit-current-opr-view-layout/edit-current-opr-view-layout-uc-service.js');
 const EditCurrentOprViewLayoutSubview = require('../use-cases/edit-current-opr-view-layout/edit-current-opr-view-layout-subview.js');
 
+const ManageContentViewsOfCurrentOprViewSubview = require('../use-cases/manage-content-views-of-current-opr-view/manage-content-views-of-current-opr-view-subview.js');
+const ManageContentViewsOfCurrentOprViewUcService = require('../use-cases/manage-content-views-of-current-opr-view/manage-content-views-of-current-opr-view-uc-service.js');
 
 class OprrStandaloneBrowserApp {
     /**
@@ -27,6 +29,7 @@ class OprrStandaloneBrowserApp {
 
         let _manageContentComponentSubview = undefined;
         let _editCurrentOprViewLayoutSubview = undefined;
+        let _manageContentViewsOfCurrentOprViewSubview = undefined;
 
         this.start = function () {
             _initUseCaseComponents();
@@ -41,6 +44,9 @@ class OprrStandaloneBrowserApp {
 
             const editCurrentOprViewLayoutUcService = new EditCurrentOprViewLayoutUcService(_currentOprProject);
             _editCurrentOprViewLayoutSubview = new EditCurrentOprViewLayoutSubview(_domDoc, editCurrentOprViewLayoutUcService);
+
+            const manageContentViewsOfCurrentOprViewUcService = new ManageContentViewsOfCurrentOprViewUcService(_currentOprProject);
+            _manageContentViewsOfCurrentOprViewSubview = new ManageContentViewsOfCurrentOprViewSubview(_domDoc, manageContentViewsOfCurrentOprViewUcService);
         }
 
         function _normalizeHtmlDocument() {
@@ -67,6 +73,7 @@ class OprrStandaloneBrowserApp {
             win.document.body.appendChild(mainMenu.getDomSubtree());
             mainMenu.setContentComponentMenuItemClickedListener(() => _openContentComponentManagement());
             mainMenu.setEditCurrentOprViewLayoutMenuItemClickedListener( () => { _ApplicationSubview.setContent(_editCurrentOprViewLayoutSubview.getDomSubtree()); _ApplicationSubview.open(); });
+            mainMenu.setManageContentViewsOfCurrentOprViewMenuItemtClickedListener( () => { _manageContentViewsOfCurrentOprViewSubview.forceRerender();  _ApplicationSubview.setContent(_manageContentViewsOfCurrentOprViewSubview.getDomSubtree()); _ApplicationSubview.open(); });
         };
 
     }

@@ -25,14 +25,19 @@ class EditCurrentOprViewLayoutSubview {
         this.ADD_HORIZONTAL_GRID_LINE_NAME_INPUT_MARKER_CLASS = 'js-AddHorizontalGridLineNameInput';
         this.ADD_HORIZONTAL_GRID_LINE_POSITION_INPUT_MARKER_CLASS = 'js-AddHorizontalGridLinePositionInput';
         this.HORIZONTAL_GRID_LINE_SET_BUTTON_MARKER_CLASS = 'js-AddHorizontalGridLineButton';
-        this.AVAILABLE_VERTICAL_LINES_LIST_MARKER_CLASS = 'js-AvailableVerticalGridLinesList';
-        this.AVAILABLE_HORIZONTAL_LINES_LIST_MARKER_CLASS = 'js-AvailableHorizontalGridLinesList';
+        this.AVAILABLE_VERTICAL_LINES_LIST_CONTAINER_MARKER_CLASS = 'js-AvailableVerticalGridLinesList';
+        this.AVAILABLE_HORIZONTAL_LINES_LIST_CONTAINER_MARKER_CLASS = 'js-AvailableHorizontalGridLinesList';
         this.CONTENT_COMPONENT_VIEW_SELECTION_MARKER_CLASS = 'js-ContentComponentViewSelection';
         this.CONTENT_COMPONENT_VIEW_LEFT_LINE_SELECTION_MARKER_CLASS = 'js-ContentComponentViewLeftLineSelection';
         this.CONTENT_COMPONENT_VIEW_RIGHT_LINE_SELECTION_MARKER_CLASS = 'js-ContentComponentViewRightLineSelection';
         this.CONTENT_COMPONENT_VIEW_TOP_LINE_SELECTION_MARKER_CLASS = 'js-ContentComponentViewTopLineSelection';
         this.CONTENT_COMPONENT_VIEW_BOTTOM_LINE_SELECTION_MARKER_CLASS = 'js-ContentComponentViewBottomLineSelection';
         this.CONTENT_COMPONENT_VIEW_SET_LINES_BUTTON_MARKER_CLASS = 'js-ContentComponentViewSetLinesButton';
+        this.CONTENT_COMPONENT_VIEWS_WITH_GRID_LINES_LIST_CONTAINER_MARKER_CLASS = 'js-ContentComponentViewWithGridLinesList';
+
+        this.forceRerender = function() {
+            _self._needsRerender = true;
+        }
 
         this.getDomSubtree = function () {
             if (_needsRerender)
@@ -95,33 +100,34 @@ class EditCurrentOprViewLayoutSubview {
             <hr/>
             <fieldset>
                 <legend>Available Vertical Lines</legend>
-                <div class="${_self.AVAILABLE_VERTICAL_LINES_LIST_MARKER_CLASS}">
+                <div class="${_self.AVAILABLE_VERTICAL_LINES_LIST_CONTAINER_MARKER_CLASS}">
                 </div>
             </fieldset>
             <fieldset>
                 <legend>Available Horizontal Lines</legend>
-                <div class="${_self.AVAILABLE_HORIZONTAL_LINES_LIST_MARKER_CLASS}">
+                <div class="${_self.AVAILABLE_HORIZONTAL_LINES_LIST_CONTAINER_MARKER_CLASS}">
                 </div>
             </fieldset>
             <fieldset>
                 <legend>Content Component Views in Layout</legend>
-                <div class="">
+                <div class="${_self.CONTENT_COMPONENT_VIEWS_WITH_GRID_LINES_LIST_CONTAINER_MARKER_CLASS}">
                 </div>
             </fieldset>
     
         </form>`
             _rootNode.innerHTML = rootElementInnerHtml;
-            _attachAvailableGridLinesListNodesToRootNode();
-            _renderContentComponentViewSelectionOptions();
+            _renderGridLinesListNodesToRootNode();
+            _renderContentViewsWithGridLinesToRootNode();
+            _renderContentViewSelectionOptions();
             _renderVerticalGridLineSelectionOptionsForContentComponentViewLayout();
             _renderHorizontalGridLineSelectionOptionsForContentComponentViewLayout();
             _needsRerender = false;
             _attachListenersToButtonNodes();
             _attachContentComponentViewSelectListener();
         }
-        function _attachAvailableGridLinesListNodesToRootNode() {
-            _availableVerticalGridLinesListDiv = _rootNode.querySelector(`.${_self.AVAILABLE_VERTICAL_LINES_LIST_MARKER_CLASS}`);
-            _availableHorizontalGridLinesListDiv = _rootNode.querySelector(`.${_self.AVAILABLE_HORIZONTAL_LINES_LIST_MARKER_CLASS}`);
+        function _renderGridLinesListNodesToRootNode() {
+            _availableVerticalGridLinesListDiv = _rootNode.querySelector(`.${_self.AVAILABLE_VERTICAL_LINES_LIST_CONTAINER_MARKER_CLASS}`);
+            _availableHorizontalGridLinesListDiv = _rootNode.querySelector(`.${_self.AVAILABLE_HORIZONTAL_LINES_LIST_CONTAINER_MARKER_CLASS}`);
             _renderAvailableVerticalLinesList();
             _renderAvailableHorizontalLinesList();
         }
@@ -144,9 +150,33 @@ class EditCurrentOprViewLayoutSubview {
             _availableHorizontalGridLinesListDiv.innerHTML = _renderLinesList(horizontalLinesList, 'top', 'bottom');
         }
 
-        function _renderContentComponentViewSelectionOptions() {
+        function _renderContentViewsWithGridLinesToRootNode() {
+            const contentViewsWithGridLinesList = _ucService.getContentViewsWithBoundariesList();
+            let listHtml = '<ul>';
+            for(let i=0; i<contentViewsWithGridLinesList.length; i++) {
+                listHtml += _renderContentViewWithGridLinesListItem(contentViewsWithGridLinesList[i]);
+                listHtml += '\n';
+            }
+            listHtml += '</ul>';
+            const contentViewWithGridLinesListContainerNode = _rootNode.querySelector(`.${_self.CONTENT_COMPONENT_VIEWS_WITH_GRID_LINES_LIST_CONTAINER_MARKER_CLASS}`);
+            contentViewWithGridLinesListContainerNode.innerHTML = listHtml;
+        }
+       
+        /**
+         * @param {Object} listElement
+         * @param {string} listElement.viewName the view name
+         * @param {GridLineNames} listElement.lineNames
+         */        
+        function _renderContentViewWithGridLinesListItem(listElement) {
+            const viewName = listElement.viewName;
+            const lineNames = listElement.lineNames;
+            const result = `<li data-viewname="${viewName}">${viewName}: ${lineNames.left} / ${lineNames.top} / ${lineNames.right}/ ${lineNames.bottom} </li>`;
+            return result;
+        }
+
+        function _renderContentViewSelectionOptions() {
             const contentComponentViewSelectionNode = _rootNode.querySelector(`.${_self.CONTENT_COMPONENT_VIEW_SELECTION_MARKER_CLASS} `);
-            const currentOprViewsContenComponentViews = _ucService.getContentComponentViewList();
+            const currentOprViewsContenComponentViews = _ucService.getContentViewsList();
             let selectionNodeInnerHtml = "";
             for (let i = 0; i < currentOprViewsContenComponentViews.length; i++) {
                 let value = currentOprViewsContenComponentViews[i].viewname;
@@ -242,7 +272,7 @@ class EditCurrentOprViewLayoutSubview {
                 top: _getSelectedOptionValue(_rootNode.querySelector(`.${_self.CONTENT_COMPONENT_VIEW_TOP_LINE_SELECTION_MARKER_CLASS}`)),
                 bottom: _getSelectedOptionValue(_rootNode.querySelector(`.${_self.CONTENT_COMPONENT_VIEW_BOTTOM_LINE_SELECTION_MARKER_CLASS}`)),
             }
-            _ucService.setContentComponentViewsLayoutGridLineNames(selectedViewName, selectedGridLineNames);
+            _ucService.setContentViewBoundaries(selectedViewName, selectedGridLineNames);
         }
 
         function _attachContentComponentViewSelectListener() {
@@ -263,7 +293,7 @@ class EditCurrentOprViewLayoutSubview {
 
             if (selectNode.selectedIndex != -1) {
                 const selectedOption = selectNode.options.item(selectNode.selectedIndex);
-                selectedContentViewGridLines = _ucService.getContentComponentViewsLayoutGridLineNames(selectedOption.value);
+                selectedContentViewGridLines = _ucService.getContentViewBoundary(selectedOption.value);
             }
 
             _selectOptionByValue(_getLeftGridLineSelectNode(), selectedContentViewGridLines.left);
