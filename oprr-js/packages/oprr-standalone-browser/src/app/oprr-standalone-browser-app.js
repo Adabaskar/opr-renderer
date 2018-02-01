@@ -45,7 +45,7 @@ class OprrStandaloneBrowserApp {
             const editCurrentOprViewLayoutUcService = new EditCurrentOprViewLayoutUcService(_currentOprProject);
             _editCurrentOprViewLayoutSubview = new EditCurrentOprViewLayoutSubview(_domDoc, editCurrentOprViewLayoutUcService);
 
-            const manageContentViewsOfCurrentOprViewUcService = new ManageContentViewsOfCurrentOprViewUcService(_currentOprProject);
+            const manageContentViewsOfCurrentOprViewUcService = new ManageContentViewsOfCurrentOprViewUcService(_currentOprProject, _contentComponentsRepository);
             _manageContentViewsOfCurrentOprViewSubview = new ManageContentViewsOfCurrentOprViewSubview(_domDoc, manageContentViewsOfCurrentOprViewUcService);
         }
 

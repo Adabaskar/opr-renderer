@@ -12,7 +12,7 @@ test(`${testgroup} getDomSubtree_ucServiceReturnsContentComponents_ContentCompon
 
     const domDocStub = new JSDOM('').window.document;
     const oprProjectStub = new OprProject();
-    const ucServiceStub = new ManageContentViewsOfCurrentOprViewUcService(oprProjectStub);
+    const ucServiceStub = new ManageContentViewsOfCurrentOprViewUcService(oprProjectStub, {});
     const contentComponentNamesListStub = ['contentComponentNameStub0', 'contentComponentNameStub1'];
     const getAvailableContentComponentsStub = sinon.stub(ucServiceStub, 'getAvailableContentComponents');
     getAvailableContentComponentsStub.returns(contentComponentNamesListStub);
@@ -30,7 +30,7 @@ test(`${testgroup} contentComponentSelectionChanged_Always_changesAvailableOptio
 
     const domDocStub = new JSDOM('').window.document;
     const oprProjectStub = new OprProject();
-    const ucServiceStub = new ManageContentViewsOfCurrentOprViewUcService(oprProjectStub);
+    const ucServiceStub = new ManageContentViewsOfCurrentOprViewUcService(oprProjectStub, {});
 
     /**
       * @typedef {Object} ContentViewSelectOption

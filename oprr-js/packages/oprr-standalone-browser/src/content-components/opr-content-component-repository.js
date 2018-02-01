@@ -23,7 +23,7 @@ class OprContentComponentRepository {
                 _contentComponentRegisterCache.set(staticRegister[i].metadata.contentComponentTypeId, staticRegister[i]);
         })();
 
-      
+
 
         /**
          * @returns a list containing only the name and the id of all available content components.
@@ -40,14 +40,30 @@ class OprContentComponentRepository {
             };
         }
 
-        this.getNewContentComponentInstance = function(contentComponentTypeId) {            
+        this.getNewContentComponentInstance = function (contentComponentTypeId) {
             const addressedContentComponent = _contentComponentRegisterCache.get(contentComponentTypeId);
             return addressedContentComponent.makeInstance();
         }
 
-        this.getNameOfContentComponent = function(contentComponentTypeId) {
+        this.getNameOfContentComponent = function (contentComponentTypeId) {
             const addressedContentComponent = _contentComponentRegisterCache.get(contentComponentTypeId);
             return addressedContentComponent.metadata.getDisplayName();
+        }
+
+        /**
+         * @typedef {Object} ContentViewMetadata
+         * @property {string} viewTypeId
+         * @property {string} defaultDisplayName
+         */
+
+        /**
+         * 
+         * @param {string} contentComponentTypeId 
+         * @returns {ContentViewMetadata[]} the list of content views supported by the addressed content component
+         */
+        this.getContentViewMetadata = function(contentComponentTypeId) {
+            const addressedContentComponent = _contentComponentRegisterCache.get(contentComponentTypeId);
+            return addressedContentComponent.metadata.contentViews;
         }
     }
 }
