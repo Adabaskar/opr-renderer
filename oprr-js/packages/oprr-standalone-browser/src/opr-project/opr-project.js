@@ -80,7 +80,7 @@ class OprProject {
          */
 
         /**
-         * @returns {AddedContentComponentsListElement}[]
+         * @returns {AddedContentComponentsListElement[]}
          */
         this.getAddedContentComponentsList = function () {
             let result = [];
