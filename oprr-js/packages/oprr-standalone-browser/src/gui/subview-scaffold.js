@@ -36,7 +36,13 @@ class SubviewScaffold {
             stl.left = 0;
             stl.right = 0;
             stl.display = 'none';
-
+            stl.backgroundColor = 'white';
+            stl.borderStyle = 'solid';
+            stl.borderWidth = '2px';
+            stl.borderColor = 'grey';
+            stl.margin = '5px';
+            stl.padding = '10px';
+            
             const returnButton = _makeReturnButton();
             _rootDiv.appendChild(returnButton);
             _contentDiv.classList.add(_CONTENT_AREA_MARKER_CLASS);

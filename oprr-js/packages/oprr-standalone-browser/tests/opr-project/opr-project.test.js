@@ -80,7 +80,7 @@ test(`${testgroup} getAddedContentComponentsList_ContentComponentAdded_returnsAp
 
     const observedContentComponentsList = sut.getAddedContentComponentsList();
 
-    function containsExpectedElement(expectedName, expectedTypeId) {
+    function observedListContainsExpectedElement(expectedName, expectedTypeId) {
         let containsExpectedElement = false;
         for (let i = 0; observedContentComponentsList.length; i++) {
             const elementUnderTest = observedContentComponentsList[i];
@@ -93,7 +93,7 @@ test(`${testgroup} getAddedContentComponentsList_ContentComponentAdded_returnsAp
         return false;
     }
 
-    t.true(containsExpectedElement('contentComponentStub0', 'typeIdStub0'), 'element 0 not found');
-    t.true(containsExpectedElement('contentComponentStub1', 'typeIdStub1'), 'element 1 not found');
+    t.true(observedListContainsExpectedElement('contentComponentStub0', 'typeIdStub0'), 'element 0 not found');
+    t.true(observedListContainsExpectedElement('contentComponentStub1', 'typeIdStub1'), 'element 1 not found');
     t.end();
 });

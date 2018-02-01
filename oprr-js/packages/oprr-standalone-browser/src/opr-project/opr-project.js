@@ -63,7 +63,7 @@ class OprProject {
 
         /**
          * 
-         * @param {*} contentComponentTypeId the content component id like provided by its respective meta data.
+         * @param {string} contentComponentTypeId the content component id like provided by its respective meta data.
          */
         this.getContentComponentTypeCount = function (contentComponentTypeId) {
             let typeCount = 0;
@@ -74,13 +74,13 @@ class OprProject {
         }
 
         /**
-         * @typedef {Object} AddedContentComponentsList
+         * @typedef {Object} AddedContentComponentsListElement
          * @property {string} contentComponentName
          * @property {string} contentComponentTypeId
          */
 
         /**
-         * @returns {AddedContentComponentsList}[]
+         * @returns {AddedContentComponentsListElement}[]
          */
         this.getAddedContentComponentsList = function () {
             let result = [];
@@ -94,6 +94,9 @@ class OprProject {
             return result;
         }
 
+        /**
+         * @returns {OprView}
+         */
         this.getCurrentOprView = function () {
             return _currentOprView;
         }

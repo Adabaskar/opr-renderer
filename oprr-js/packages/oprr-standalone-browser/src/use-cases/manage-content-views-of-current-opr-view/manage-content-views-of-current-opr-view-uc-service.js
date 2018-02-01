@@ -22,6 +22,21 @@ class ManageContentViewsOfCurrentOprViewUcService {
             });
             return result;
         }
+
+
+        /**
+         * @typedef {Object} ContentViewSelectOption
+         * @property {string} typeId
+         * @property {string} displayName
+         */
+
+        /**
+         * @param {string} contentComponentName the name of the content component instance in the currrent opr project
+         * @returns {ContentViewSelectOption[]}
+         */
+        this.getAvailableContentViewOptions = function (contentComponentName) {
+            return [];
+        }
     }
 }
 module.exports = ManageContentViewsOfCurrentOprViewUcService;

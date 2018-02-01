@@ -51,16 +51,46 @@ class ManageContentViewsOfCurrentOprViewSubview {
             </div>`;
             _rootNode.innerHTML = rootElementInnerHtml;
             _renderContentComponentSelectOptions();
+            _attachListenerToContentComponentSelectElement();
         }
         function _renderContentComponentSelectOptions() {
             const contentComponentNamesList = _ucService.getAvailableContentComponents();
             let selectInnerHtml = '';
+            selectInnerHtml += '<option value="undefined" selected="true" disabled="disabled">--</option>\n';
             for (let i = 0; i < contentComponentNamesList.length; i++) {
                 const contentComponentName = contentComponentNamesList[i];
                 selectInnerHtml += `<option value="${contentComponentName}">${contentComponentName}</option>`
                 selectInnerHtml += '\n';
             }
-            _rootNode.querySelector(`.${_self.NEW_CONTENT_VIEW_CONTENT_COMPONTENT_SELECT_MARKER_CLASS}`).innerHTML = selectInnerHtml;
+            const contentComponentSelectElement = _getContentComponentSelectElement();
+            contentComponentSelectElement.innerHTML = selectInnerHtml;
+        }
+        /**
+         * @returns {HTMLSelectElement}
+         */
+        function _getContentComponentSelectElement() {
+            return _rootNode.querySelector(`.${_self.NEW_CONTENT_VIEW_CONTENT_COMPONTENT_SELECT_MARKER_CLASS}`)
+        }
+
+        function _attachListenerToContentComponentSelectElement() {          
+            const contentComponentSelectElement = _getContentComponentSelectElement();
+            contentComponentSelectElement.addEventListener('change', () => _renderContentViewTypeSelectOptions());
+        }
+        function _renderContentViewTypeSelectOptions() {            
+            const selectedContentComponent = _getSelectedContentComponent();
+            const contentViewSelectOptionList = _ucService.getAvailableContentViewOptions(selectedContentComponent);
+            let optionsString = '';
+            for(let i=0; i<contentViewSelectOptionList.length; i++) {
+                const optionElement = contentViewSelectOptionList[i];
+                optionsString += `<option value="${optionElement.typeId}">${optionElement.displayName}</option>`;
+            }
+            const contentViewSelectElement = _rootNode.querySelector(`.${_self.NEW_CONTENT_VIEW_TYPE_SELECT_MARKER_CLASS}`);
+            contentViewSelectElement.innerHTML = optionsString;
+        }
+        function _getSelectedContentComponent() {
+            const contentComponentSelectElement = _getContentComponentSelectElement();
+            const selectedElementIndex = contentComponentSelectElement.options.selectedIndex;
+            return contentComponentSelectElement.options.item(selectedElementIndex).value;
         }
     }
 }
