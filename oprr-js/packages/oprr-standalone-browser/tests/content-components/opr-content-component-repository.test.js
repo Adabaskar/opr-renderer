@@ -10,7 +10,7 @@ function makeStubContentComponentModule(id) {
     return {
         metadata: {
             contentComponentTypeId: `${id}`,
-            viewIds: [''],
+            contentViews: [{viewTypeId: '', defaultDisplayName: ''}],
             getDisplayName: function () { return `displayName${id}`; }
         },
         makeInstance: function () { return {} }

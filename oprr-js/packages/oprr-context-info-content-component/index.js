@@ -3,7 +3,7 @@ const ContextInfoContentComponentController = require('./src/component-controlle
 module.exports = {    
     metadata : {
         contentComponentTypeId : 'OprrContextInfoContentComponent',
-        viewIds : ['AsMainHeader'],
+        contentViews : [ {viewTypeId: 'contextInfoAsHeader', defaultDisplayName: 'Main Header View'}],
         /**
          * Function because i18n might need to pass params or more complex lookup might be required.
          */
