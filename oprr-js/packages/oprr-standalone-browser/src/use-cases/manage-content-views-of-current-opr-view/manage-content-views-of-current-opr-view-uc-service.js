@@ -27,7 +27,6 @@ class ManageContentViewsOfCurrentOprViewUcService {
             return result;
         }
 
-
         /**
          * @typedef {Object} ContentViewSelectOption
          * @property {string} typeId
@@ -56,6 +55,16 @@ class ManageContentViewsOfCurrentOprViewUcService {
             } else {
                 return [];
             }
+        }
+        
+        /**
+         * 
+         * @param {string} contentViewName 
+         * @param {string} contentComponentName 
+         * @param {string} contentViewTypeId 
+         */
+        this.addContentView = function(contentViewName, contentComponentName, contentViewTypeId) {
+            
         }
     }
 }
