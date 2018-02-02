@@ -116,10 +116,10 @@ test(`${testgroup} ghetContentViewsList_Always_callsCurrentViewsMethod`, functio
 
     const oprProjectStub = new OprProject();
     const currenOprView = oprProjectStub.getCurrentOprView();
-    const getContentViewsListSpy = sinon.spy(currenOprView, 'getContentViewsList');
+    const getContentViewsListSpy = sinon.spy(currenOprView, 'getContentViewNamesList');
     const sut = new EditCurrentOprViewLayoutUcService(oprProjectStub);
     const viewNameStub = 'viewNameStub';
-    sut.getContentViewsList();
+    sut.getContentViewNamesList();
 
     t.true(getContentViewsListSpy.called);
     t.end();

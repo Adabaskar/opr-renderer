@@ -3,17 +3,17 @@ const OprContentComponentRepository = require('../../src/content-components/opr-
 const contentComponentContractValidationTestFactory = require('oprr-content-component-contract').contentComponentMetadatContractTapeTestFactory;
 const sinon = require('sinon');
 
-const testgroup = 'OprContentComponentRepository:'
+const testgrouplabel = 'OprContentComponentRepository:'
 
 function makeStubContentComponentModule(id) {
 
     return {
         metadata: {
             contentComponentTypeId: `${id}`,
-            contentViews: [{viewTypeId: '', defaultDisplayName: ''}],
+            contentViews: [{ viewTypeId: '', defaultDisplayName: '' }],
             getDisplayName: function () { return `displayName${id}`; }
         },
-        makeInstance: function () { return {} }
+        makeInstance: function () { return { setDomDoc: function (domDoc) { } } }
 
     }
 
@@ -45,12 +45,12 @@ test('getContentComponentNonVerboseList_RegistryReturnsNonEmptyList_usesIdAndDis
     t.end();
 });
 
-test(`${testgroup} getNewContentComponentInstance_KnownContentComponent_callsModulesExportetMakeInstanceMethod`, function (t) {
+test(`${testgrouplabel} getNewContentComponentInstance_KnownContentComponent_callsModulesExportetMakeInstanceMethod`, function (t) {
 
     const ccIdStub = 'ccIdStub';
     const registerStub = [];
     const stubCCModule = makeStubContentComponentModule(ccIdStub);
-    stubCCModule.makeInstance = sinon.spy();
+   sinon.spy(stubCCModule, 'makeInstance');
     registerStub.push(stubCCModule);
     const registryStub = {};
     registryStub.getRegister = () => { return registerStub; }
@@ -58,15 +58,15 @@ test(`${testgroup} getNewContentComponentInstance_KnownContentComponent_callsMod
 
     sut.getNewContentComponentInstance(ccIdStub);
 
-    t.true(  stubCCModule.makeInstance.called);
+    t.true(stubCCModule.makeInstance.called);
     t.end();
 });
 
-test(`${testgroup} getNameOfContentComponent_KnownContentComponent_returnsDisplaynameFromMetadata`, function (t) {
+test(`${testgrouplabel} getNameOfContentComponent_KnownContentComponent_returnsDisplaynameFromMetadata`, function (t) {
 
     const ccIdStub = 'ccIdStub';
     const registerStub = [];
-    const stubCCModule = makeStubContentComponentModule(ccIdStub);  
+    const stubCCModule = makeStubContentComponentModule(ccIdStub);
     registerStub.push(stubCCModule);
     const registryStub = {};
     registryStub.getRegister = () => { return registerStub; }
@@ -75,6 +75,28 @@ test(`${testgroup} getNameOfContentComponent_KnownContentComponent_returnsDispla
     const observedName = sut.getNameOfContentComponent(ccIdStub);
 
     t.equals(observedName, `displayName${ccIdStub}`);
-    
+
+    t.end();
+});
+
+test(`${testgrouplabel} getNewContentComponentInstance_DomViewsEnabled_callsSetDomDocOnNewInstance`, function (t) {
+
+    const ccIdStub = 'ccIdStub';
+    const registerStub = [];
+    const stubCCModule = makeStubContentComponentModule(ccIdStub);
+    const makeInstanceStub = sinon.stub(stubCCModule, 'makeInstance');
+    const setDomDocSpy = sinon.spy();
+    const domDocStub = {};
+    makeInstanceStub.returns({setDomDoc : setDomDocSpy});
+    registerStub.push(stubCCModule);
+    const registryStub = {};
+    registryStub.getRegister = () => { return registerStub; }
+    const sut = new OprContentComponentRepository(registryStub);
+    sut.enableDomBasedViewsOnNewContentComponentInstances(domDocStub);
+
+    sut.getNewContentComponentInstance(ccIdStub);
+
+    const expectedMethodCall = setDomDocSpy.getCall(0);
+    t.equal(expectedMethodCall.args[0], domDocStub)
     t.end();
 });

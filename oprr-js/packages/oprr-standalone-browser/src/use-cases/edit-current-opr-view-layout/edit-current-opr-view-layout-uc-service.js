@@ -52,8 +52,8 @@ class EditCurrentOprViewLayoutUcService {
             return oprProject.getCurrentOprView().getLayoutGrid().getHorizontalGridLineList();
         }
 
-        this.getContentViewsList = function () {
-            return oprProject.getCurrentOprView().getContentViewsList();
+        this.getContentViewNamesList = function () {
+            return oprProject.getCurrentOprView().getContentViewNamesList();
         }
         /**
         * @typedef {Object} GridLineNames

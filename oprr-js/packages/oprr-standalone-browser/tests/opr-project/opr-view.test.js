@@ -22,7 +22,7 @@ test(`${testgroup} addContentView_ViewNameNotTaken_isPartOfViewList`, function (
 
     sut.addContentView(viewNameStub, viewIdStub);
 
-    t.true(sut.getContentViewsList().includes(viewNameStub));
+    t.true(sut.getContentViewNamesList().includes(viewNameStub));
     t.end();
 });
 

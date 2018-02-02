@@ -107,8 +107,15 @@ class OprProject {
          * @param {string} contentViewTypeId 
          * @returns {string} viewId the id of the view within the content component
          */
-        this.addContentComponentView = function (contentComponentName, contentViewTypeId) {
-            return undefined;
+        this.addContentComponentView = function (contentComponentInstanceName, contentViewTypeId) {
+            if (!_contentComponents.has(contentComponentInstanceName))
+                throw new Error(`${contentComponentInstanceName} is an unknown Content Component Instance`);
+
+            /** @type {ContentComponentInstanceEnvelope} */
+            const addressedContentComponentInstance = _contentComponents.get(contentComponentInstanceName);
+            const assignedViewId = addressedContentComponentInstance.instance.addDomBasedView(contentViewTypeId);
+
+            return assignedViewId;
         }
     }
 }

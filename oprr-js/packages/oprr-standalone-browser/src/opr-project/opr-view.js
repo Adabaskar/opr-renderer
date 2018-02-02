@@ -11,8 +11,17 @@ class OprView {
     constructor() {
 
         const _layoutGrid = new NonUniformGrid();
-        const _contentViewIds = new Map();
-        const _viewBoundaries = new Map();
+        /** @type {Object<string,string>} */
+        const _viewNameToViewIdMap = new Map();
+        /**
+         * @typedef {Object} GridLineNames
+         * @property {string} left
+         * @property {string} right
+         * @property {string} top
+         * @property {string} bottom
+         */
+        /** @type {Object<string, GridLineNames>} */
+        const _viewNameToGridLineNamesMap = new Map();
         const _self = this;
 
         /**
@@ -20,24 +29,17 @@ class OprView {
          * @returns {NonUniformGrid}
          */
         this.getLayoutGrid = function () {
-            const result = _layoutGrid;                        
+            const result = _layoutGrid;
             return result;
         }
 
-        /**
-        * @typedef {Object} GridLineNames
-        * @property {string} left
-        * @property {string} right
-        * @property {string} top
-        * @property {string} bottom
-        */
 
         /**
          * @param {string} viewName
          * @param {GridLineNames} line
          */
         this.setContentViewBoundary = function (viewName, lineNames) {
-            _viewBoundaries.set(viewName, clone(lineNames));
+            _viewNameToGridLineNamesMap.set(viewName, clone(lineNames));
         }
 
         /**
@@ -45,8 +47,8 @@ class OprView {
          * @returns {GridLineNames}     
          */
         this.getContentViewBoundaryNames = function (viewName) {
-            if (_viewBoundaries.has(viewName)) {
-                return clone(_viewBoundaries.get(viewName));
+            if (_viewNameToGridLineNamesMap.has(viewName)) {
+                return clone(_viewNameToGridLineNamesMap.get(viewName));
             } else {
                 return _makeUndefinedLineNames();
             }
@@ -70,25 +72,25 @@ class OprView {
          */
         this.getContentViewsWithBoundaryList = function () {
             let result = [];
-            _viewBoundaries.forEach((value, key) => result.push(_makeViewNameWithGridLineNamesObject(key, value)));
+            _viewNameToGridLineNamesMap.forEach((value, key) => result.push(_makeViewNameWithGridLineNamesObject(key, value)));
             return result;
         }
         function _makeViewNameWithGridLineNamesObject(viewName, lineNames) {
             return clone({
-                viewName : viewName, 
-                lineNames : lineNames
+                viewName: viewName,
+                lineNames: lineNames
             });
         }
 
         /**
          * @returns {string}[] list of view names
          */
-        this.getContentViewsList = function () {
-            return Array.from(_contentViewIds.keys());
+        this.getContentViewNamesList = function () {            
+            return Array.from(_viewNameToViewIdMap.keys());
         }
 
         this.isContentViewNameTaken = function (viewName) {
-            return _contentViewIds.has(viewName);
+            return _viewNameToViewIdMap.has(viewName);
         }
 
         /**
@@ -96,8 +98,8 @@ class OprView {
          * @param {string} contentComponentViewId the id, that is returned by a content component when a new content view is added.
          * @param {string} viewName the id, the user has given to the view to address it when editing and designing the opr view.         
          */
-        this.addContentView = function (viewName, contentComponentViewId) {
-            _contentViewIds.set(viewName, contentComponentViewId);
+        this.addContentView = function (viewName, contentComponentViewId) {           
+            _viewNameToViewIdMap.set(viewName, contentComponentViewId);
         }
 
 

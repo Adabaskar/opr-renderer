@@ -21,7 +21,8 @@ test('getViewsDomSubtree with known view returns HTMLElement', function (t) {
     const domDocStub = jsdomMock.window.document;
 
     const sut = new ContextInfoContentComponentController();
-    const viewId = sut.addDomBasedView(domDocStub);
+    sut.setDomDoc(domDocStub);
+    const viewId = sut.addDomBasedView();
 
     const subtree = sut.getViewsDomSubtree(viewId);
 
@@ -34,7 +35,8 @@ test('removeDomBasedView_previouslyActivated_noLongerAvailable', function (t) {
     const domDocStub = jsdomMock.window.document;
 
     const sut = new ContextInfoContentComponentController();
-    const viewId = sut.addDomBasedView(domDocStub);
+    sut.setDomDoc(domDocStub);    
+    const viewId = sut.addDomBasedView();
     sut.removeDomBasedView(viewId);
 
     t.throws(() => sut.getViewsDomSubtree(viewId));

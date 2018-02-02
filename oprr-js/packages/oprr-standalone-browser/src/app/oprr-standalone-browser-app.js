@@ -26,7 +26,8 @@ class OprrStandaloneBrowserApp {
         let _ApplicationSubview = new SubviewScaffold(_domDoc);
         let _currentOprProject = new OprProject();
         const _contentComponentsRepository = new ContentComponentsRepository();
-
+        _contentComponentsRepository.enableDomBasedViewsOnNewContentComponentInstances(_domDoc);
+        
         let _manageContentComponentSubview = undefined;
         let _editCurrentOprViewLayoutSubview = undefined;
         let _manageContentViewsOfCurrentOprViewSubview = undefined;
@@ -72,7 +73,7 @@ class OprrStandaloneBrowserApp {
             const mainMenu = new MainMenu(_domDoc);
             win.document.body.appendChild(mainMenu.getDomSubtree());
             mainMenu.setContentComponentMenuItemClickedListener(() => _openContentComponentManagement());
-            mainMenu.setEditCurrentOprViewLayoutMenuItemClickedListener( () => { _ApplicationSubview.setContent(_editCurrentOprViewLayoutSubview.getDomSubtree()); _ApplicationSubview.open(); });
+            mainMenu.setEditCurrentOprViewLayoutMenuItemClickedListener( () => { _editCurrentOprViewLayoutSubview.forceRerender(); _ApplicationSubview.setContent(_editCurrentOprViewLayoutSubview.getDomSubtree()); _ApplicationSubview.open(); });
             mainMenu.setManageContentViewsOfCurrentOprViewMenuItemtClickedListener( () => { _manageContentViewsOfCurrentOprViewSubview.forceRerender();  _ApplicationSubview.setContent(_manageContentViewsOfCurrentOprViewSubview.getDomSubtree()); _ApplicationSubview.open(); });
         };
 

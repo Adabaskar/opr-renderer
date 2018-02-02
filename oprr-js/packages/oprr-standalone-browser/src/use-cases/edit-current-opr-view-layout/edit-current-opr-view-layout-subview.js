@@ -117,7 +117,7 @@ class EditCurrentOprViewLayoutSubview {
         </form>`
             _rootNode.innerHTML = rootElementInnerHtml;
             _renderGridLinesListNodesToRootNode();
-            _renderContentViewsWithGridLinesToRootNode();
+            _renderContentViewsWithGridLinesList();
             _renderContentViewSelectionOptions();
             _renderVerticalGridLineSelectionOptionsForContentComponentViewLayout();
             _renderHorizontalGridLineSelectionOptionsForContentComponentViewLayout();
@@ -150,7 +150,7 @@ class EditCurrentOprViewLayoutSubview {
             _availableHorizontalGridLinesListDiv.innerHTML = _renderLinesList(horizontalLinesList, 'top', 'bottom');
         }
 
-        function _renderContentViewsWithGridLinesToRootNode() {
+        function _renderContentViewsWithGridLinesList() {
             const contentViewsWithGridLinesList = _ucService.getContentViewsWithBoundariesList();
             let listHtml = '<ul>';
             for(let i=0; i<contentViewsWithGridLinesList.length; i++) {
@@ -176,10 +176,10 @@ class EditCurrentOprViewLayoutSubview {
 
         function _renderContentViewSelectionOptions() {
             const contentComponentViewSelectionNode = _rootNode.querySelector(`.${_self.CONTENT_COMPONENT_VIEW_SELECTION_MARKER_CLASS} `);
-            const currentOprViewsContenComponentViews = _ucService.getContentViewsList();
+            const currentOprViewsContenComponentViewNames = _ucService.getContentViewNamesList();            
             let selectionNodeInnerHtml = "";
-            for (let i = 0; i < currentOprViewsContenComponentViews.length; i++) {
-                let value = currentOprViewsContenComponentViews[i].viewname;
+            for (let i = 0; i < currentOprViewsContenComponentViewNames.length; i++) {
+                let value = currentOprViewsContenComponentViewNames[i];
                 let label = value;
                 selectionNodeInnerHtml += _renderOptionElementString(value, label);
                 selectionNodeInnerHtml += '\n';

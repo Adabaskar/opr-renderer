@@ -2,8 +2,9 @@ const test = require('tape');
 const OprProject = require('../../src/opr-project/opr-project.js');
 const IdTakenError = require('../../src/common/id-taken-error.js');
 const OprView = require('../../src/opr-project/opr-view.js');
+const sinon = require('sinon');
 
-const testgroup = 'OprProject: '
+const testgrouplabel = 'OprProject: '
 
 test('addContentComponent_unusedId_canBeRetrievedById', function (t) {
 
@@ -48,7 +49,7 @@ test('getContentComponentCount_notUsedId_returnsZero', function (t) {
     t.end();
 });
 
-test(`${testgroup} getContentComponentCount_alreadyUsedId_returnsOne`, function (t) {
+test(`${testgrouplabel} getContentComponentCount_alreadyUsedId_returnsOne`, function (t) {
     const sut = new OprProject();
 
     const contentComponentStub = {};
@@ -60,7 +61,7 @@ test(`${testgroup} getContentComponentCount_alreadyUsedId_returnsOne`, function 
     t.end();
 });
 
-test(`${testgroup} getCurrentOprView_Always_returnDefinedOprView`, function (t) {
+test(`${testgrouplabel} getCurrentOprView_Always_returnDefinedOprView`, function (t) {
 
     const sut = new OprProject();
 
@@ -72,7 +73,7 @@ test(`${testgroup} getCurrentOprView_Always_returnDefinedOprView`, function (t) 
 });
 
 
-test(`${testgroup} getAddedContentComponentsList_ContentComponentAdded_returnsAppropriateMapContent`, function (t) {
+test(`${testgrouplabel} getAddedContentComponentsList_ContentComponentAdded_returnsAppropriateMapContent`, function (t) {
 
     const sut = new OprProject();
     sut.addContentComponent({}, 'typeIdStub0', 'contentComponentStub0');
@@ -95,5 +96,36 @@ test(`${testgroup} getAddedContentComponentsList_ContentComponentAdded_returnsAp
 
     t.true(observedListContainsExpectedElement('contentComponentStub0', 'typeIdStub0'), 'element 0 not found');
     t.true(observedListContainsExpectedElement('contentComponentStub1', 'typeIdStub1'), 'element 1 not found');
+    t.end();
+});
+
+test(`${testgrouplabel} addContentComponentView_UnknownContentComponentName_throwsError`, function (t) {
+
+    const sut = new OprProject();
+
+    t.throws(() => sut.addContentComponentView('unknownContentComponentInstanceName', 'someViewTypeId'));
+
+    t.end();
+});
+
+test(`${testgrouplabel} addContentComponentView_TechnicallyValidInput_returnsResultFromContentComponentMethodCall`, function (t) {
+ 
+    const sut = new OprProject();
+    const addDomBasedViewStub = sinon.stub();
+    const assignedViewIdStub = 'assignedViewIdStub';
+    addDomBasedViewStub.returns(assignedViewIdStub);
+    const contentComponentInstanceStub = {
+        addDomBasedView : addDomBasedViewStub
+    }
+    const contentComponentInstanceNameStub = 'contentComponentNameStub';
+    sut.addContentComponent(contentComponentInstanceStub, 'someContentComponentTypeId', contentComponentInstanceNameStub);
+    const contentViewTypeIdStub = 'contentViewTypeIdStub';
+    const observedViewId = sut.addContentComponentView(contentComponentInstanceNameStub, contentViewTypeIdStub);
+
+    const expectedMethodCall = addDomBasedViewStub.getCall(0);
+
+    t.equal(expectedMethodCall.args[0], contentViewTypeIdStub);
+    t.equal(observedViewId, assignedViewIdStub);
+    
     t.end();
 });

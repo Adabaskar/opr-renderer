@@ -104,7 +104,7 @@ test(`${testgrouplabel} addContentView_TechnicallyValidInput_callsOprProjectMeth
 
     const sut = new ManageContentViewsOfCurrentOprViewUcService(oprProjectStub, contentComponentRepoStub);
 
-    const addContentComponentViewSpy = sinon.spy(oprProjectStub, 'addContentComponentView');
+    const addContentComponentViewSpy = sinon.stub(oprProjectStub, 'addContentComponentView');
     const contentComponentNameStub = 'contentComponentNameStub';
     const contentViewTypeIdStub = 'contentViewTypeIdStub';
     sut.addContentView('someViewName', contentComponentNameStub, contentViewTypeIdStub);

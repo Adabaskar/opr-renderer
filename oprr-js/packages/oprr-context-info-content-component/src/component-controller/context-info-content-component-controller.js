@@ -6,21 +6,28 @@ class ContextInfoContentComponentController  {
     
     constructor() {    
 
+        let _domDoc = undefined;
         let _viewIdCounter = 0;
         let _views = new Map();
         const _componentState = new ComponentState();
-
+                
         /**
          * @type {ContextInfoDomBasedCompactEditor}
          */         
         let _domBasedCompactEditor = undefined;
+
+        this.setDomDoc = function(domDoc) {
+            _domDoc = domDoc;
+        }
 
         /**
            * Activates the view, so that it is refreshed, and observed by the component.         
            * @param {Document} domDoc the root node of the DOM.
            */
         this.addDomBasedView = function (domDoc) {
-            _views.set(_viewIdCounter, new ContextInfoAsMainHeaderView(domDoc, _componentState));
+            if(_domDoc == undefined ||_domDoc ==null)
+                throw new Error('Cannot add Dom Based View. Set Dom Doc beforehand!');
+            _views.set(_viewIdCounter, new ContextInfoAsMainHeaderView(_domDoc, _componentState));
             return _viewIdCounter++;
         }
 

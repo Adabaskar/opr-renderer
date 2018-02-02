@@ -88,6 +88,7 @@ test(`${testgrouplabel} addContentViewButtonClicked_ValidInput_PassedToUcService
 
     const domDocStub = new JSDOM('').window.document;
     const oprProjectStub = new OprProject();
+    sinon.stub(oprProjectStub, 'addContentComponentView'); //disable error that is thrown because there is no real content component instance
     const ucServiceStub = new ManageContentViewsOfCurrentOprViewUcService(oprProjectStub, {});
     const contentComponentNameStub = 'ContentComponentNameStub';
     const contentComponentOptionsStub = [contentComponentNameStub];

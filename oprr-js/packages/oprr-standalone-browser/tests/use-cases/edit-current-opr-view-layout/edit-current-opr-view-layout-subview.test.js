@@ -117,8 +117,8 @@ test(`${testgroup} getDomSubtree_UcServiceReturnsListOfAddedContentComponentView
     const oprProjectStub = new OprProject();
     const ucServiceStub = new EditCurrentOprViewLayoutUcService(oprProjectStub);
     const viewnameStub = 'viewnameStub';
-    const contentComponentViewsListStub = [{ viewname: viewnameStub }];
-    const getContentComponentViewsStubMethod = sinon.stub(ucServiceStub, 'getContentViewsList');
+    const contentComponentViewsListStub = [viewnameStub];
+    const getContentComponentViewsStubMethod = sinon.stub(ucServiceStub, 'getContentViewNamesList');
     getContentComponentViewsStubMethod.returns(contentComponentViewsListStub);
 
     const sut = new EditCurrentOprViewLayoutSubview(domDocStub, ucServiceStub);
@@ -135,8 +135,8 @@ test(`${testgroup} changeSelectedContentComponentView_Always_queriesUcServiceFor
     const domDocStub = new JSDOM('').window.document;
     const oprProjectStub = new OprProject();
     const ucServiceStub = new EditCurrentOprViewLayoutUcService(oprProjectStub);
-    const contentComponentViewsListStub = [{ viewname: 'viewNameStub0' }, { viewname: 'viewNameStub1' }];
-    const getContentComponentViewsStubMethod = sinon.stub(ucServiceStub, 'getContentViewsList');
+    const contentComponentViewsListStub = [ 'viewNameStub0', 'viewNameStub1'];
+    const getContentComponentViewsStubMethod = sinon.stub(ucServiceStub, 'getContentViewNamesList');
     getContentComponentViewsStubMethod.returns(contentComponentViewsListStub);
     const sut = new EditCurrentOprViewLayoutSubview(domDocStub, ucServiceStub);
     const getContentViewsBoundarySpy = sinon.spy(ucServiceStub, 'getContentViewBoundary');
@@ -147,7 +147,7 @@ test(`${testgroup} changeSelectedContentComponentView_Always_queriesUcServiceFor
     selectNode.selectedIndex = 1;
     selectNode.dispatchEvent(changeEventStub);
 
-    t.true(getContentViewsBoundarySpy.calledWith(contentComponentViewsListStub[1].viewname));
+    t.true(getContentViewsBoundarySpy.calledWith(contentComponentViewsListStub[1]));
     t.end();
 });
 
@@ -158,7 +158,7 @@ test(`${testgroup} changeSelectedContentComponentView_LinkedGridLinesAreAvailabl
     const ucServiceStub = new EditCurrentOprViewLayoutUcService(oprProjectStub);
     //stub content component views assoziated with the current opr view
     const contentComponentViewsListStub = [{ viewname: 'viewNameStub0' }, { viewname: 'viewNameStub1' }];
-    const getContentComponentViewsStubMethod = sinon.stub(ucServiceStub, 'getContentViewsList');
+    const getContentComponentViewsStubMethod = sinon.stub(ucServiceStub, 'getContentViewNamesList');
     getContentComponentViewsStubMethod.returns(contentComponentViewsListStub);
     // stub vertical and grid line list returned from ucService
     const verticalGridLineStub0 = 'verticalGridLineStub0';
@@ -214,7 +214,7 @@ test(`${testgroup} changeSelectedContentComponentView_LinkedGridLinesAreUndefine
     const ucServiceStub = new EditCurrentOprViewLayoutUcService(oprProjectStub);
     //stub content component views assoziated with the current opr view
     const contentComponentViewsListStub = [{ viewname: 'viewNameStub0' }, { viewname: 'viewNameStub1' }];
-    const getContentComponentViewsStubMethod = sinon.stub(ucServiceStub, 'getContentViewsList');
+    const getContentComponentViewsStubMethod = sinon.stub(ucServiceStub, 'getContentViewNamesList');
     getContentComponentViewsStubMethod.returns(contentComponentViewsListStub);
     // stub vertical and grid line list returned from ucService
     const verticalGridLineStub0 = 'verticalGridLineStub0';
@@ -270,8 +270,8 @@ test(`${testgroup} setContentViewGridLinesClicked_AllGridLinesSelected_callsUCSe
     const ucServiceStub = new EditCurrentOprViewLayoutUcService(oprProjectStub);
     const setContentComponentViewsLayoutGridLineNamesSpy = sinon.spy(ucServiceStub, 'setContentViewBoundaries');  
     const viewNameStub = 'viewNameStub';
-    const contentComponentViewsListStub = [{ viewname: viewNameStub }];
-    const getContentComponentViewsStubMethod = sinon.stub(ucServiceStub, 'getContentViewsList');
+    const contentComponentViewsListStub = [viewNameStub];
+    const getContentComponentViewsStubMethod = sinon.stub(ucServiceStub, 'getContentViewNamesList');
     getContentComponentViewsStubMethod.returns(contentComponentViewsListStub);   
     const leftGridLineNameStub = 'leftGridLineNameStub';
     const rightGridLineNameStub = 'rightGridLineNameStub';
