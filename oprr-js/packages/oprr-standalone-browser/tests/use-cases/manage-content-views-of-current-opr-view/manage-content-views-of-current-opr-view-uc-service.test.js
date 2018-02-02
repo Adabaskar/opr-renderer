@@ -1,14 +1,12 @@
-import { equal } from 'assert';
-
 const test = require('tape');
 const sinon = require('sinon');
 const OprProject = require('../../../src/opr-project/opr-project.js');
 const ManageContentViewsOfCurrentOprViewUcService = require('../../../src/use-cases/manage-content-views-of-current-opr-view/manage-content-views-of-current-opr-view-uc-service.js');
 const OprContentComponentRepository = require('../../../src/content-components/opr-content-component-repository.js');
 
-const testgroup = 'ManageContentViewsOfCurrentOprViewUcService:';
+const testgrouplabel = 'ManageContentViewsOfCurrentOprViewUcService:';
 
-test(`${testgroup} getAvailableContentComponents_Always_returnsAllContentComponentNamesFromOprProject`, function (t) {
+test(`${testgrouplabel} getAvailableContentComponents_Always_returnsAllContentComponentNamesFromOprProject`, function (t) {
 
     const oprProjectStub = new OprProject();
     const getAddedContentComponentsListStub = sinon.stub(oprProjectStub, 'getAddedContentComponentsList');
@@ -36,9 +34,7 @@ test(`${testgroup} getAvailableContentComponents_Always_returnsAllContentCompone
     t.end();
 });
 
-test(`${testgroup} getAvailableContentViewOptions_Always_asksContentComponentRepositoryWithProperId`, function (t) {
-
-
+test(`${testgrouplabel} getAvailableContentViewOptions_Always_asksContentComponentRepositoryWithProperId`, function (t) {
     const oprProjectStub = new OprProject();
     const contentComponentRepoStub = new OprContentComponentRepository();
     const getContentViewMetdataStub = sinon.stub(contentComponentRepoStub, 'getContentViewMetadata');
@@ -63,9 +59,7 @@ test(`${testgroup} getAvailableContentViewOptions_Always_asksContentComponentRep
     t.end();
 });
 
-test(`${testgroup} getAvailableContentViewOptions_Always_properlyMapsMetadata`, function (t) {
-
-
+test(`${testgrouplabel} getAvailableContentViewOptions_Always_properlyMapsMetadata`, function (t) {
     const oprProjectStub = new OprProject();
     const contentComponentRepoStub = new OprContentComponentRepository();
     const getContentViewMetdataStub = sinon.stub(contentComponentRepoStub, 'getContentViewMetadata');
@@ -88,5 +82,55 @@ test(`${testgroup} getAvailableContentViewOptions_Always_properlyMapsMetadata`, 
     t.equals(observedContentViewList[0].typeId, contentViewMetadataStub[0].viewTypeId);
     t.equals(observedContentViewList[0].displayName, contentViewMetadataStub[0].defaultDisplayName);
 
+    t.end();
+});
+
+test(`${testgrouplabel} addContentView_EmptyName_throwsException`, function (t) {
+
+    const oprProjectStub = new OprProject();
+    const contentComponentRepoStub = new OprContentComponentRepository();
+
+    const sut = new ManageContentViewsOfCurrentOprViewUcService(oprProjectStub, contentComponentRepoStub);
+
+    t.throws(() => sut.addContentView('', 'someContentComponentName', 'someViewTypeId'));
+
+    t.end();
+});
+
+test(`${testgrouplabel} addContentView_TechnicallyValidInput_callsOprProjectMethod`, function (t) {
+
+    const oprProjectStub = new OprProject();
+    const contentComponentRepoStub = new OprContentComponentRepository();
+
+    const sut = new ManageContentViewsOfCurrentOprViewUcService(oprProjectStub, contentComponentRepoStub);
+
+    const addContentComponentViewSpy = sinon.spy(oprProjectStub, 'addContentComponentView');
+    const contentComponentNameStub = 'contentComponentNameStub';
+    const contentViewTypeIdStub = 'contentViewTypeIdStub';
+    sut.addContentView('someViewName', contentComponentNameStub, contentViewTypeIdStub);
+
+    const observedCall = addContentComponentViewSpy.getCall(0);
+    t.equal(observedCall.args[0], contentComponentNameStub);
+    t.equal(observedCall.args[1], contentViewTypeIdStub);
+    t.end();
+});
+
+test(`${testgrouplabel} addContentView_TechnicallyValidInput_callsCurrentOprViewMethod`, function (t) {
+
+    const oprProjectStub = new OprProject();
+    const currentOprView = oprProjectStub.getCurrentOprView();
+    const contentComponentRepoStub = new OprContentComponentRepository();
+    const sut = new ManageContentViewsOfCurrentOprViewUcService(oprProjectStub, contentComponentRepoStub);
+    const viewNameStub = 'viewNameStub';
+    const viewIdReturnedByOprProject = 'viewIdReturnedByOprProject';
+    const addContentComponentViewStub = sinon.stub(oprProjectStub, 'addContentComponentView');
+    addContentComponentViewStub.returns(viewIdReturnedByOprProject);
+    const addContentViewSpy = sinon.spy(currentOprView, 'addContentView');
+
+    sut.addContentView(viewNameStub, 'someContentComponentName', 'someContentViewTypeId');
+
+    const expectedCall = addContentViewSpy.getCall(0);
+    t.equal(expectedCall.args[0], viewNameStub);
+    t.equal(expectedCall.args[1], viewIdReturnedByOprProject);
     t.end();
 });

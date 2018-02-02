@@ -6,9 +6,9 @@ const ManageContentViewsOfCurrentOprViewSubview = require('../../../src/use-case
 const OprProject = require('../../../src/opr-project/opr-project.js');
 const ManageContentViewsOfCurrentOprViewUcService = require('../../../src/use-cases/manage-content-views-of-current-opr-view/manage-content-views-of-current-opr-view-uc-service.js');
 
-const testgroup = 'ManageContentViewsOfCurrentOprViewSubview:';
+const testgrouplabel = 'ManageContentViewsOfCurrentOprViewSubview:';
 
-test(`${testgroup} getDomSubtree_ucServiceReturnsContentComponents_ContentComponentsAreSelectOptions`, function (t) {
+test(`${testgrouplabel} getDomSubtree_ucServiceReturnsContentComponents_ContentComponentsAreSelectOptions`, function (t) {
 
     const domDocStub = new JSDOM('').window.document;
     const oprProjectStub = new OprProject();
@@ -51,7 +51,7 @@ function _viewTypeSelectOptionFound(selectElement, selectOption) {
     return found;
 }
 
-test(`${testgroup} contentComponentSelectionChanged_Always_changesAvailableOptionsForContentViewType`, function (t) {
+test(`${testgrouplabel} contentComponentSelectionChanged_Always_changesAvailableOptionsForContentViewType`, function (t) {
 
     const domDocStub = new JSDOM('').window.document;
     const oprProjectStub = new OprProject();
@@ -84,7 +84,7 @@ test(`${testgroup} contentComponentSelectionChanged_Always_changesAvailableOptio
     t.end();
 });
 
-test(`${testgroup} addContentViewButtonClicked_ValidInput_PassedToUcServiceMethod`, function (t) {
+test(`${testgrouplabel} addContentViewButtonClicked_ValidInput_PassedToUcServiceMethod`, function (t) {
 
     const domDocStub = new JSDOM('').window.document;
     const oprProjectStub = new OprProject();

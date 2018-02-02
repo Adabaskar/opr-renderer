@@ -100,6 +100,16 @@ class OprProject {
         this.getCurrentOprView = function () {
             return _currentOprView;
         }
+
+        /**
+         * 
+         * @param {string} contentComponentName 
+         * @param {string} contentViewTypeId 
+         * @returns {string} viewId the id of the view within the content component
+         */
+        this.addContentComponentView = function (contentComponentName, contentViewTypeId) {
+            return undefined;
+        }
     }
 }
 module.exports = OprProject;

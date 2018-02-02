@@ -64,7 +64,14 @@ class ManageContentViewsOfCurrentOprViewUcService {
          * @param {string} contentViewTypeId 
          */
         this.addContentView = function(contentViewName, contentComponentName, contentViewTypeId) {
+            validateRequiredArg(contentViewName, 'Content View Name required');
+            validateRequiredArg(contentComponentName, 'Content Component required');
+            validateRequiredArg(contentViewTypeId, 'Content View Type Id required');
+            if(contentViewName.trim().length == 0)
+                throw new Error('Content View Name is empty');
             
+            const viewId = _oprProject.addContentComponentView(contentComponentName, contentViewTypeId);
+            _oprProject.getCurrentOprView().addContentView(contentViewName, viewId);
         }
     }
 }
