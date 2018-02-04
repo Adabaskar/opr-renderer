@@ -1,5 +1,6 @@
 const NonUniformGrid = require('./non-uniform-grid.js');
 const clone = require('oprr-utilities').clone;
+const validateRequiredArg = require('oprr-utilities').validateRequiredArg;
 
 /**
  * Models a particual one page report view onto the one page report project.
@@ -94,13 +95,29 @@ class OprView {
         }
 
         /**
+         * @typedef {Object} ContentViewCoordinates
+         * @property {string} contentComponentInstanceId
+         * @property {string} contentViewId
+         */
+
+        /**
          * 
          * @param {string} contentComponentViewId the id, that is returned by a content component when a new content view is added.
+         * @param {string} contentComponentInstanceId the id, of the content component instance in the opr project the contentComponentViewId is relative to.
          * @param {string} viewName the id, the user has given to the view to address it when editing and designing the opr view.         
          */
-        this.addContentView = function (viewName, contentComponentViewId) {           
-            _viewNameToViewIdMap.set(viewName, contentComponentViewId);
+        this.addContentView = function (viewName, contentComponentInstanceId, contentViewId) {           
+            validateRequiredArg(viewName, 'view name is required');
+            validateRequiredArg(contentComponentInstanceId, 'content component instance is required');
+            validateRequiredArg(contentViewId, 'content component view id is required');
+            /** @type {ContentViewCoordinates} */
+            const contentViewCoordinates = {
+                contentComponentInstanceId : contentComponentInstanceId,  
+                contentViewId : contentViewId
+            };
+            _viewNameToViewIdMap.set(viewName, contentViewCoordinates);
         }
+
 
 
 

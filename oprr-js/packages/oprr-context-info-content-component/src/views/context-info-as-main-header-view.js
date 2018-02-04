@@ -7,6 +7,11 @@ const ContextInfoContentComponentState = require('../component-state/context-inf
  * as the report's main header.
  */
 class ContextInfoAsMainHeaderView {
+
+    static getViewTypeId() {
+        return 'contextInfoAsHeader';
+    }
+
     /**
      * 
      * @param {Document} domDoc 
@@ -16,6 +21,10 @@ class ContextInfoAsMainHeaderView {
         validateRequiredArgs(domDoc, 'DOM Document required');
         validateRequiredArgs(componentState, 'Reference to Component State Required');
         
+        this.getViewTypeId = function() {
+            return ContextInfoAsMainHeaderView.getViewTypeId();
+        }
+
         const _componentState = componentState;
         let _rootNode = domDoc.createElement('div');
       

@@ -16,13 +16,22 @@ class ManageContentViewsOfCurrentOprViewUcService {
         const _contentComponentRepo = contentComponentRepo;
 
         /**
-         * @returns {string}[] names of content components in the current opr project
+         * @typedef {Object} AvailableContentComponentMetadata
+         * @property {string} contentComponentInstanceId
+         * @property {string} contentComponentInstanceName
          */
-        this.getAvailableContentComponents = function () {
-            const addedContentComponentsList = _oprProject.getAddedContentComponentsList();
+        /**
+         * @returns {AvailableContentComponentMetadata[]}
+         */
+        this.getAvailableContentComponentInstancesList = function () {
+            const addedContentComponentsList = _oprProject.getAddedContentComponentInstancesList();
             let result = [];
             addedContentComponentsList.forEach(element => {
-                result.push(element.contentComponentName);
+                result.push({
+                    contentComponentInstanceId: element.contentComponentInstanceId,
+                    contentComponentInstanceName: element.contentComponentInstanceName
+                }
+                );
             });
             return result;
         }
@@ -38,40 +47,54 @@ class ManageContentViewsOfCurrentOprViewUcService {
          * @returns {ContentViewSelectOption[]}
          */
         this.getAvailableContentViewOptions = function (contentComponentName) {
-            const addedContentComponentsList = _oprProject.getAddedContentComponentsList();
+            const addedContentComponentsList = _oprProject.getAddedContentComponentInstancesList();
             let found = false;
-            let i=0;
+            let i = 0;
             let lastInspectedElementsTypeId = null;
-            while (!found && i<addedContentComponentsList.length) {
+            while (!found && i < addedContentComponentsList.length) {
                 const inspectedContentComponent = addedContentComponentsList[i++];
                 found = inspectedContentComponent.contentComponentName === contentComponentName;
                 lastInspectedElementsTypeId = inspectedContentComponent.contentComponentTypeId;
             }
-            if(found) {
+            if (found) {
                 const contentViewMetadataList = _contentComponentRepo.getContentViewMetadata(lastInspectedElementsTypeId);
                 let result = []
-                contentViewMetadataList.forEach(metadata => result.push({typeId: metadata.viewTypeId, displayName: metadata.defaultDisplayName }));
+                contentViewMetadataList.forEach(metadata => result.push({ typeId: metadata.viewTypeId, displayName: metadata.defaultDisplayName }));
                 return result;
             } else {
                 return [];
             }
         }
-        
+
         /**
          * 
          * @param {string} contentViewName 
          * @param {string} contentComponentName 
          * @param {string} contentViewTypeId 
          */
-        this.addContentView = function(contentViewName, contentComponentName, contentViewTypeId) {
+        this.addContentView = function (contentViewName, contentComponentInstanceId, contentViewTypeId) {
             validateRequiredArg(contentViewName, 'Content View Name required');
-            validateRequiredArg(contentComponentName, 'Content Component required');
+            validateRequiredArg(contentComponentInstanceId, 'Content Component required');
             validateRequiredArg(contentViewTypeId, 'Content View Type Id required');
-            if(contentViewName.trim().length == 0)
+            if (contentViewName.trim().length == 0)
                 throw new Error('Content View Name is empty');
-            
-            const viewId = _oprProject.addContentComponentView(contentComponentName, contentViewTypeId);
-            _oprProject.getCurrentOprView().addContentView(contentViewName, viewId);
+
+            const viewId = _oprProject.addContentComponentView(contentComponentInstanceId, contentViewTypeId);
+            _oprProject.getCurrentOprView().addContentView(contentViewName, contentComponentInstanceId, viewId);
+        }
+        /**
+         * @typedef {Object} AlreadyAddedContentViewElement
+         * @property {string} viewId
+         * @property {string} viewName
+         * @property {string} contentComponentInstanceName
+         * @property {string} contentViewTypeDisplayName
+         */
+
+        /**
+         * @returns {AlreadyAddedContentViewElement[]}
+         */
+        this.getContentViewsAlreadyAdded = function () {
+            return [];
         }
     }
 }

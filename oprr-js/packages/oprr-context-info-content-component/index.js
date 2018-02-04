@@ -1,9 +1,10 @@
 const ContextInfoContentComponentController = require('./src/component-controller/context-info-content-component-controller.js');
+const MainHeaderView = require('./src/views/context-info-as-main-header-view.js');
 
 module.exports = {    
     metadata : {
         contentComponentTypeId : 'OprrContextInfoContentComponent',
-        contentViews : [ {viewTypeId: 'contextInfoAsHeader', defaultDisplayName: 'Main Header View'}],
+        contentViews : [ {viewTypeId: MainHeaderView.getViewTypeId(), defaultDisplayName: 'Main Header View'}],
         /**
          * Function because i18n might need to pass params or more complex lookup might be required.
          */

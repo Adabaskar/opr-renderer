@@ -23,6 +23,14 @@ class ContentComponentController {
         }
 
         /**
+         * 
+         * @param {string} viewId 
+         * @returns {string} the typeid of the view
+         */
+        this.getDomBasedViewTypeId = function(viewId) {
+            throw new Error('implement in derived class');
+        }
+        /**
          * Opposite of activateDomBasedView. Requires the viewId that was returned by
          * the activateDomBasedView-mdethod
          * @param {string} viewId the id of the view to be deactivated, previously returned by the activeDomBasedView method.

@@ -79,14 +79,15 @@ test(`${testgrouplabel} getAddedContentComponentsList_ContentComponentAdded_retu
     sut.addContentComponent({}, 'typeIdStub0', 'contentComponentStub0');
     sut.addContentComponent({}, 'typeIdStub1', 'contentComponentStub1');
 
-    const observedContentComponentsList = sut.getAddedContentComponentsList();
+    const observedContentComponentsList = sut.getAddedContentComponentInstancesList();
 
-    function observedListContainsExpectedElement(expectedName, expectedTypeId) {
+    function observedListContainsExpectedElement(expectedInstanceId, expectedTypeId) {
         let containsExpectedElement = false;
-        for (let i = 0; observedContentComponentsList.length; i++) {
+        for (let i = 0; i<observedContentComponentsList.length; i++) {
             const elementUnderTest = observedContentComponentsList[i];
             containsExpectedElement =
-                (elementUnderTest.contentComponentName === expectedName) &&
+                (elementUnderTest.contentComponentInstanceId === expectedInstanceId) &&
+                (elementUnderTest.contentComponentInstanceName === expectedInstanceId) &&
                 (elementUnderTest.contentComponentTypeId === expectedTypeId);
             if (containsExpectedElement)
                 return true;

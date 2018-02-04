@@ -18,9 +18,10 @@ test(`${testgroup} addContentView_ViewNameNotTaken_isPartOfViewList`, function (
 
     const sut = new OprView();
     const viewNameStub = 'viewNameStub';
+    const contentComponentInstanceIdStub = 'contentComponentInstanceIdStub';
     const viewIdStub = 'viewIdStub';
 
-    sut.addContentView(viewNameStub, viewIdStub);
+    sut.addContentView(viewNameStub, contentComponentInstanceIdStub, viewIdStub);
 
     t.true(sut.getContentViewNamesList().includes(viewNameStub));
     t.end();
@@ -30,8 +31,9 @@ test(`${testgroup} isContentViewNameTaken_ViewNameTaken_returnTrue`, function (t
 
     const sut = new OprView();
     const viewNameStub = 'viewNameStub';
+    const contentComponentInstanceIdStub = 'contentComponentInstanceIdStub';
     const viewIdStub = 'viewIdStub';
-    sut.addContentView(viewNameStub, viewIdStub);
+    sut.addContentView(viewNameStub, contentComponentInstanceIdStub, viewIdStub);
 
     t.true(sut.isContentViewNameTaken(viewNameStub));
 

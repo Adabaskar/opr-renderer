@@ -7,8 +7,15 @@ const OprView = require('./opr-view.js');
  */
 class OprProject {
     constructor() {
+        /**
+                * @typedef {Object} ContentComponentInstanceEnvelope
+                * @property {string} typeId
+                * @property {string} instanceName the name given to the instance
+                * @property {Object} instance the content component instance
+                */
 
-        const _contentComponents = new Map();
+        /** @type {Object.<string, ContentComponentInstanceEnvelope} */
+        const _contentComponentInstanceIdToInstanceEnvelopeMap = new Map();
 
         const _currentOprView = new OprView();
 
@@ -16,49 +23,45 @@ class OprProject {
          * 
          * @param {Object} contentComponentInstance the instance of the contentComponent to be added to the project.
          * @param {string} contentComponentTypeId the content component id like provided by its respective meta data.
-         * @param {string} name unique name under which the Content Component will be identified by the system and the user, can be specified by the user.
+         * @param {string} contentComponentInstanceName unique name under which the Content Component will be identified by the system and the user, can be specified by the user.
+         * @returns {string} the content component id used for this instance within this opr project
          */
-        this.addContentComponent = function (contentComponentInstance, contentComponentTypeId, name) {
+        this.addContentComponent = function (contentComponentInstance, contentComponentTypeId, contentComponentInstanceName) {
             validateRequiredArg(contentComponentInstance, 'content component instance required');
             validateRequiredArg(contentComponentTypeId, 'content component type id required');
-            validateRequiredArg(name, 'name required');
+            validateRequiredArg(contentComponentInstanceName, 'name required');
+            const contentComponentInstanceId = contentComponentInstanceName;//use name as id
 
-            if (_contentComponents.has(name))
-                throw new IdTakenError(`${name} already in use`);
-            _contentComponents.set(name, _makeContentComponentInstanceEnvelope(contentComponentInstance, contentComponentTypeId));
+            if (_contentComponentInstanceIdToInstanceEnvelopeMap.has(contentComponentInstanceId))
+                throw new IdTakenError(`${contentComponentInstanceId} already in use`);
+            _contentComponentInstanceIdToInstanceEnvelopeMap.set(contentComponentInstanceId, _makeContentComponentInstanceEnvelope(contentComponentInstance, contentComponentInstanceName, contentComponentTypeId));
 
-            //  _logAllAddedComponentsToConsole();
+            return contentComponentInstanceId;
         }
-        function _logAllAddedComponentsToConsole() {
-            _contentComponents.forEach((value, name) => { console.log(`Project has ContenComponentInstance of type ${value.typeId} named ${name}`); });
-        }
-
-        /**
-         * @typedef {Object} ContentComponentInstanceEnvelope
-         * @property {string} typeId
-         * @property {string} instance
-         */
 
         /**
          * 
-         * @param {string} contentComponentInstance 
+         * @param {Object} contentComponentInstance 
+         * @param {string} contentComponentInstanceName 
          * @param {string} contentComponentTypeId 
+         * @returns {ContentComponentInstanceEnvelope}
          */
-        function _makeContentComponentInstanceEnvelope(contentComponentInstance, contentComponentTypeId) {
+        function _makeContentComponentInstanceEnvelope(contentComponentInstance, contentComponentInstanceName, contentComponentTypeId) {
             return {
                 typeId: contentComponentTypeId,
+                instanceName: contentComponentInstanceName,
                 instance: contentComponentInstance
             };
         }
 
         /**
          * 
-         * @param {string} name the instance name, provided when the component instance was added (not the conten component type id).
+         * @param {string} contentComponentInstanceId the instance id, provided when the component instance was added (not the conten component type id).
          * @returns the instance of the content component
          */
-        this.getContentComponent = function (name) {
-            if (_contentComponents.has(name))
-                return _contentComponents.get(name).instance;
+        this.getContentComponent = function (contentComponentInstanceId) {
+            if (_contentComponentInstanceIdToInstanceEnvelopeMap.has(contentComponentInstanceId))
+                return _contentComponentInstanceIdToInstanceEnvelopeMap.get(contentComponentInstanceId).instance;
         }
 
         /**
@@ -68,26 +71,28 @@ class OprProject {
         this.getContentComponentTypeCount = function (contentComponentTypeId) {
             let typeCount = 0;
 
-            _contentComponents.forEach((value) => { if (contentComponentTypeId === value.typeId) typeCount++; });
+            _contentComponentInstanceIdToInstanceEnvelopeMap.forEach((value) => { if (contentComponentTypeId === value.typeId) typeCount++; });
 
             return typeCount;
         }
 
         /**
-         * @typedef {Object} AddedContentComponentsListElement
-         * @property {string} contentComponentName
+         * @typedef {Object} AddedContentComponentInstancesListElement
+         * @property {string} contentComponentInstanceId
+         * @property {string} contentComponentInstanceName
          * @property {string} contentComponentTypeId
          */
 
         /**
-         * @returns {AddedContentComponentsListElement[]}
+         * @returns {AddedContentComponentInstancesListElement[]}
          */
-        this.getAddedContentComponentsList = function () {
+        this.getAddedContentComponentInstancesList = function () {
             let result = [];
-            _contentComponents.forEach(
-                (envelope, contentComponentName) =>
+            _contentComponentInstanceIdToInstanceEnvelopeMap.forEach(
+                (envelope, contentComponentInstanceId) =>
                     result.push({
-                        contentComponentName: contentComponentName,
+                        contentComponentInstanceId: contentComponentInstanceId,
+                        contentComponentInstanceName: envelope.instanceName,
                         contentComponentTypeId: envelope.typeId
                     })
             );
@@ -103,19 +108,25 @@ class OprProject {
 
         /**
          * 
-         * @param {string} contentComponentName 
+         * @param {string} contentComponentInstanceId 
          * @param {string} contentViewTypeId 
          * @returns {string} viewId the id of the view within the content component
          */
-        this.addContentComponentView = function (contentComponentInstanceName, contentViewTypeId) {
-            if (!_contentComponents.has(contentComponentInstanceName))
-                throw new Error(`${contentComponentInstanceName} is an unknown Content Component Instance`);
+        this.addContentComponentView = function (contentComponentInstanceId, contentViewTypeId) {
+            if (!_contentComponentInstanceIdToInstanceEnvelopeMap.has(contentComponentInstanceId))
+                throw new Error(`${contentComponentInstanceId} is an unknown Content Component Instance`);
 
             /** @type {ContentComponentInstanceEnvelope} */
-            const addressedContentComponentInstance = _contentComponents.get(contentComponentInstanceName);
+            const addressedContentComponentInstance = _contentComponentInstanceIdToInstanceEnvelopeMap.get(contentComponentInstanceId);
             const assignedViewId = addressedContentComponentInstance.instance.addDomBasedView(contentViewTypeId);
 
             return assignedViewId;
+        }
+
+        this.getContentViewTypeId = function (contentComponentInstanceId, contentViewId) {
+            if (!_contentComponentInstanceIdToInstanceEnvelopeMap.has(contentComponentInstanceId))
+                throw new Error(`${contentComponentInstanceId} is an unknown Content Component Instance`);
+            return _contentComponentInstanceIdToInstanceEnvelopeMap.get(contentComponentInstanceId).getDomBasedViewTypeId(contentViewId);
         }
     }
 }

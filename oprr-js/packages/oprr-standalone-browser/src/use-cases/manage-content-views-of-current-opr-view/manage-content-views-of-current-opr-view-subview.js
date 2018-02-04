@@ -51,16 +51,18 @@ class ManageContentViewsOfCurrentOprViewSubview {
             </div>`;
             _rootNode.innerHTML = rootElementInnerHtml;
             _renderContentComponentSelectOptions();
+            _renderContentViewsAlreadyAddedList();
             _attachListenerToContentComponentSelectElement();
             _attachListenerToAddContentViewButton();
         }
         function _renderContentComponentSelectOptions() {
-            const contentComponentNamesList = _ucService.getAvailableContentComponents();
+            const contentComponentNamesList = _ucService.getAvailableContentComponentInstancesList();
             let selectInnerHtml = '';
             selectInnerHtml += '<option value="undefined" selected="true" disabled="disabled">--</option>\n';
             for (let i = 0; i < contentComponentNamesList.length; i++) {
-                const contentComponentName = contentComponentNamesList[i];
-                selectInnerHtml += `<option value="${contentComponentName}">${contentComponentName}</option>`
+                const contentComponentInstanceName = contentComponentNamesList[i].contentComponentInstanceName;
+                const contentComponentInstanceId = contentComponentNamesList[i].contentComponentInstanceId;
+                selectInnerHtml += `<option value="${contentComponentInstanceId}">${contentComponentInstanceName}</option>`
                 selectInnerHtml += '\n';
             }
             const contentComponentSelectElement = _getContentComponentSelectElement();
@@ -84,7 +86,7 @@ class ManageContentViewsOfCurrentOprViewSubview {
             contentComponentSelectElement.addEventListener('change', () => _renderContentViewTypeSelectOptions());
         }
         function _renderContentViewTypeSelectOptions() {            
-            const selectedContentComponent = _getSelectedContentComponentName();
+            const selectedContentComponent = _getSelectedContentComponentInstanceId();
             const contentViewSelectOptionList = _ucService.getAvailableContentViewOptions(selectedContentComponent);
             let optionsString = '';
             for(let i=0; i<contentViewSelectOptionList.length; i++) {
@@ -94,7 +96,7 @@ class ManageContentViewsOfCurrentOprViewSubview {
             const contentViewSelectElement = _getViewTypeSelectElement();
             contentViewSelectElement.innerHTML = optionsString;
         }
-        function _getSelectedContentComponentName() {
+        function _getSelectedContentComponentInstanceId() {
             const contentComponentSelectElement = _getContentComponentSelectElement();
             const selectedElementIndex = contentComponentSelectElement.options.selectedIndex;
             return contentComponentSelectElement.options.item(selectedElementIndex).value;
@@ -106,9 +108,9 @@ class ManageContentViewsOfCurrentOprViewSubview {
         }
         function _addContentView() {
             const enteredName = _getEnteredViewName();
-            const selectedContentComponentName = _getSelectedContentComponentName();
+            const selectedContentComponentInstanceId = _getSelectedContentComponentInstanceId();
             const selectedViewType = _getSelectedViewType();
-            _ucService.addContentView(enteredName, selectedContentComponentName, selectedViewType);
+            _ucService.addContentView(enteredName, selectedContentComponentInstanceId, selectedViewType);
         }
         function _getEnteredViewName() {
             const inputElement = _getViewNameInputElement();
@@ -117,6 +119,10 @@ class ManageContentViewsOfCurrentOprViewSubview {
         function _getSelectedViewType() {
             const viewTypeSelectElement = _getViewTypeSelectElement();
             return viewTypeSelectElement.options.item(viewTypeSelectElement.selectedIndex).value;
+        }
+
+        function _renderContentViewsAlreadyAddedList() {
+            
         }
     }
 }

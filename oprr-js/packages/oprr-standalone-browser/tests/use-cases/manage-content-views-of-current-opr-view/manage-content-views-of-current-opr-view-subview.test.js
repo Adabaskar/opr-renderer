@@ -8,21 +8,44 @@ const ManageContentViewsOfCurrentOprViewUcService = require('../../../src/use-ca
 
 const testgrouplabel = 'ManageContentViewsOfCurrentOprViewSubview:';
 
+function _selectOptionFound(selectElement, value, text) {
+    let found = false;
+    for (let i = 0; i < selectElement.options.length; i++) {
+        /**
+         * @type {HTMLOptionElement}
+         */
+        let optionElement = selectElement.item(i);
+        found = optionElement.text.trim() === text && optionElement.value.trim() === value;
+        if (found)
+            return found;
+    }
+    return found;
+}
+
 test(`${testgrouplabel} getDomSubtree_ucServiceReturnsContentComponents_ContentComponentsAreSelectOptions`, function (t) {
 
     const domDocStub = new JSDOM('').window.document;
     const oprProjectStub = new OprProject();
     const ucServiceStub = new ManageContentViewsOfCurrentOprViewUcService(oprProjectStub, {});
-    const contentComponentNamesListStub = ['contentComponentNameStub0', 'contentComponentNameStub1'];
-    const getAvailableContentComponentsStub = sinon.stub(ucServiceStub, 'getAvailableContentComponents');
+    ucServiceStub.getAvailableContentComponentInstancesList
+    const contentComponentNamesListStub = [{
+        contentComponentInstanceId: 'instanceIdStub0',
+        contentComponentInstanceName: 'contentComponentNameStub0'
+    },
+    {
+        contentComponentInstanceId: 'instanceIdStub1',
+        contentComponentInstanceName: 'contentComponentNameStub1'
+    }
+    ];
+    const getAvailableContentComponentsStub = sinon.stub(ucServiceStub, 'getAvailableContentComponentInstancesList');
     getAvailableContentComponentsStub.returns(contentComponentNamesListStub);
 
     const sut = new ManageContentViewsOfCurrentOprViewSubview(domDocStub, ucServiceStub);
 
-    const contentComponentSelectInnerHtml = sut.getDomSubtree().querySelector(`.${sut.NEW_CONTENT_VIEW_CONTENT_COMPONTENT_SELECT_MARKER_CLASS}`).innerHTML;
+    const contentComponentSelectElement = sut.getDomSubtree().querySelector(`.${sut.NEW_CONTENT_VIEW_CONTENT_COMPONTENT_SELECT_MARKER_CLASS}`);
 
-    t.true(contentComponentSelectInnerHtml.includes(contentComponentNamesListStub[0]));
-    t.true(contentComponentSelectInnerHtml.includes(contentComponentNamesListStub[1]));
+    t.true(_selectOptionFound(contentComponentSelectElement, contentComponentNamesListStub[0].contentComponentInstanceId, contentComponentNamesListStub[0].contentComponentInstanceName));
+    t.true(_selectOptionFound(contentComponentSelectElement, contentComponentNamesListStub[1].contentComponentInstanceId, contentComponentNamesListStub[1].contentComponentInstanceName));
     t.end();
 });
 
@@ -88,14 +111,20 @@ test(`${testgrouplabel} addContentViewButtonClicked_ValidInput_PassedToUcService
 
     const domDocStub = new JSDOM('').window.document;
     const oprProjectStub = new OprProject();
-    sinon.stub(oprProjectStub, 'addContentComponentView'); //disable error that is thrown because there is no real content component instance
+    const addContentComponentViewStub = sinon.stub(oprProjectStub, 'addContentComponentView'); //disable error that is thrown because there is no real content component instance
+    addContentComponentViewStub.returns('viewIdStub');
+
     const ucServiceStub = new ManageContentViewsOfCurrentOprViewUcService(oprProjectStub, {});
-    const contentComponentNameStub = 'ContentComponentNameStub';
-    const contentComponentOptionsStub = [contentComponentNameStub];
-     /** @type {ContentViewSelectOption}[] */
+    const contentComponentInstanceIdStub = 'contentComponentInstanceIdStub';
+    const contentComponentOptionsStub = [
+        { contentComponentInstanceId : contentComponentInstanceIdStub,
+          contentComponentInstanceName : 'someContentComponentInstanceName'  
+         }
+    ];
+    /** @type {ContentViewSelectOption}[] */
     const contentViewMetadataStub = { typeId: 'viewTypeIdStub', displayName: 'displayNameStub' };
     const contentViewOptionsStub = [contentViewMetadataStub];
-    const getContentComponentOptionsStub = sinon.stub(ucServiceStub, 'getAvailableContentComponents');
+    const getContentComponentOptionsStub = sinon.stub(ucServiceStub, 'getAvailableContentComponentInstancesList');
     getContentComponentOptionsStub.returns(contentComponentOptionsStub);
     const getAvailableContentViewOptionsStub = sinon.stub(ucServiceStub, 'getAvailableContentViewOptions');
     getAvailableContentViewOptionsStub.returns(contentViewOptionsStub);
@@ -124,9 +153,9 @@ test(`${testgrouplabel} addContentViewButtonClicked_ValidInput_PassedToUcService
     /** @type {HTMLButtonElement} */
     const addButtonElement = ucUiRootElement.querySelector(`.${sut.NEW_CONTENT_VIEW_ADD_BUTTON_MARKER_CLASS}`);
     addButtonElement.click();
-        
-    t.equal(addContentViewSpy.getCall(0).args[0], enteredContentViewNameStub, `should pass ${enteredContentViewNameStub}` ) ;
-    t.equal(addContentViewSpy.getCall(0).args[1], contentComponentNameStub, `should pass ${contentComponentNameStub}`);
+
+    t.equal(addContentViewSpy.getCall(0).args[0], enteredContentViewNameStub, `should pass ${enteredContentViewNameStub}`);
+    t.equal(addContentViewSpy.getCall(0).args[1], contentComponentInstanceIdStub, `should pass ${contentComponentInstanceIdStub}`);
     t.equal(addContentViewSpy.getCall(0).args[2], contentViewMetadataStub.typeId, `should bass ${contentViewMetadataStub.typeId}`);
 
     t.end();

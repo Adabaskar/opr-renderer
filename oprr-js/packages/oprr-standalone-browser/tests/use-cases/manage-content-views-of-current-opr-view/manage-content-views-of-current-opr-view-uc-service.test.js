@@ -9,27 +9,50 @@ const testgrouplabel = 'ManageContentViewsOfCurrentOprViewUcService:';
 test(`${testgrouplabel} getAvailableContentComponents_Always_returnsAllContentComponentNamesFromOprProject`, function (t) {
 
     const oprProjectStub = new OprProject();
-    const getAddedContentComponentsListStub = sinon.stub(oprProjectStub, 'getAddedContentComponentsList');
+    const getAddedContentComponentsListStub = sinon.stub(oprProjectStub, 'getAddedContentComponentInstancesList');
     const contentComponentNameStub0 = 'contentComponentNameStub0';
     const contentComponentNameStub1 = 'contentComponentNameStub1';
     const addedContentComponentsListStub = [
         {
-            contentComponentName: contentComponentNameStub0,
+            contentComponentInstanceName: contentComponentNameStub0,
+            contentComponentInstanceId: 'id0',
             contentComponentTypeId: 'type0'
         },
         {
-            contentComponentName: contentComponentNameStub1,
+            contentComponentInstanceName: contentComponentNameStub1,
+            contentComponentInstanceId: 'id1',
             contentComponentTypeId: 'type1'
         },
     ];
     getAddedContentComponentsListStub.returns(addedContentComponentsListStub);
     const sut = new ManageContentViewsOfCurrentOprViewUcService(oprProjectStub, {});
 
-    const observedContentComponentsList = sut.getAvailableContentComponents();
-    const expectedContentComponentsListElements = [contentComponentNameStub0, contentComponentNameStub1];
+    const observedContentComponentsList = sut.getAvailableContentComponentInstancesList();
+    function makeExpectedListElement(contentComponentListStubElement) {        
+        return {
+            contentComponentInstanceId: contentComponentListStubElement.contentComponentInstanceId,
+            contentComponentInstanceName: contentComponentListStubElement.contentComponentInstanceName
+        }
+    }
+    const expectedContentComponentsList = [
+        makeExpectedListElement(addedContentComponentsListStub[0]),
+        makeExpectedListElement(addedContentComponentsListStub[1])];
 
-    for (let i = 0; i < expectedContentComponentsListElements.length; i++) {
-        t.true(observedContentComponentsList.includes(expectedContentComponentsListElements[i]), `missing ${expectedContentComponentsListElements[i]}`);
+    function expectedContentComponentInstanceMetadataObserved(observedList, expectedContentComponentInstanceId, expectedContentComponentInstanceName) {
+        let observed = false;
+        for (let i = 0; i < observedList.length; i++) {
+
+            const observedMetadata = observedList[i]
+            const observed = (observedMetadata.contentComponentInstanceId === expectedContentComponentInstanceId &&
+                observedMetadata.contentComponentInstanceName === expectedContentComponentInstanceName);
+            if (observed)
+                return true;
+        }
+        return false;
+    }
+
+    for (let i = 0; i < expectedContentComponentsList.length; i++) {
+        t.true(expectedContentComponentInstanceMetadataObserved(observedContentComponentsList, expectedContentComponentsList[i].contentComponentInstanceId, expectedContentComponentsList[i].contentComponentInstanceName), `missing ${expectedContentComponentsList[i].contentComponentInstanceId}`);
     }
     t.end();
 });
@@ -40,7 +63,7 @@ test(`${testgrouplabel} getAvailableContentViewOptions_Always_asksContentCompone
     const getContentViewMetdataStub = sinon.stub(contentComponentRepoStub, 'getContentViewMetadata');
     const contentViewMetadataStub = [{ viewTypeId: 'typeStub', defaultDisplayName: 'defaultDisplayNameStub' }];
     getContentViewMetdataStub.returns(contentViewMetadataStub);
-    const getAddedContentComponentsListStub = sinon.stub(oprProjectStub, 'getAddedContentComponentsList');
+    const getAddedContentComponentsListStub = sinon.stub(oprProjectStub, 'getAddedContentComponentInstancesList');
     const contentComponentNameStub0 = 'contentComponentNameStub0';
     const contentComponentIdStub0 = 'typeId0';
     const addedContentComponentsListStub = [
@@ -65,7 +88,7 @@ test(`${testgrouplabel} getAvailableContentViewOptions_Always_properlyMapsMetada
     const getContentViewMetdataStub = sinon.stub(contentComponentRepoStub, 'getContentViewMetadata');
     const contentViewMetadataStub = [{ viewTypeId: 'typeStub', defaultDisplayName: 'defaultDisplayNameStub' }];
     getContentViewMetdataStub.returns(contentViewMetadataStub);
-    const getAddedContentComponentsListStub = sinon.stub(oprProjectStub, 'getAddedContentComponentsList');
+    const getAddedContentComponentsListStub = sinon.stub(oprProjectStub, 'getAddedContentComponentInstancesList');
     const contentComponentNameStub0 = 'contentComponentNameStub0';
     const contentComponentIdStub0 = 'typeId0';
     const addedContentComponentsListStub = [
@@ -105,12 +128,13 @@ test(`${testgrouplabel} addContentView_TechnicallyValidInput_callsOprProjectMeth
     const sut = new ManageContentViewsOfCurrentOprViewUcService(oprProjectStub, contentComponentRepoStub);
 
     const addContentComponentViewSpy = sinon.stub(oprProjectStub, 'addContentComponentView');
-    const contentComponentNameStub = 'contentComponentNameStub';
+    addContentComponentViewSpy.returns('viewIdStub');
+    const contentComponentInstanceIdStub = 'contentComponentInstanceIdStub';
     const contentViewTypeIdStub = 'contentViewTypeIdStub';
-    sut.addContentView('someViewName', contentComponentNameStub, contentViewTypeIdStub);
+    sut.addContentView('someViewName', contentComponentInstanceIdStub, contentViewTypeIdStub);
 
     const observedCall = addContentComponentViewSpy.getCall(0);
-    t.equal(observedCall.args[0], contentComponentNameStub);
+    t.equal(observedCall.args[0], contentComponentInstanceIdStub);
     t.equal(observedCall.args[1], contentViewTypeIdStub);
     t.end();
 });
@@ -126,11 +150,12 @@ test(`${testgrouplabel} addContentView_TechnicallyValidInput_callsCurrentOprView
     const addContentComponentViewStub = sinon.stub(oprProjectStub, 'addContentComponentView');
     addContentComponentViewStub.returns(viewIdReturnedByOprProject);
     const addContentViewSpy = sinon.spy(currentOprView, 'addContentView');
-
-    sut.addContentView(viewNameStub, 'someContentComponentName', 'someContentViewTypeId');
+    const contentComponentInstanceIdStub = 'contentComponentInstanceIdStub';
+    sut.addContentView(viewNameStub, contentComponentInstanceIdStub, 'someContentViewTypeId');
 
     const expectedCall = addContentViewSpy.getCall(0);
     t.equal(expectedCall.args[0], viewNameStub);
-    t.equal(expectedCall.args[1], viewIdReturnedByOprProject);
+    t.equal(expectedCall.args[1], contentComponentInstanceIdStub);
+    t.equal(expectedCall.args[2], viewIdReturnedByOprProject);
     t.end();
 });
