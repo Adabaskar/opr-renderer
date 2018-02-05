@@ -19,7 +19,7 @@ class ManageContentViewsOfCurrentOprViewSubview {
         this.NEW_CONTENT_VIEW_CONTENT_COMPONTENT_SELECT_MARKER_CLASS = 'js-NewContentViewContentComponentSelection';
         this.NEW_CONTENT_VIEW_TYPE_SELECT_MARKER_CLASS = 'js-NewContentViewTypeSelection';
         this.NEW_CONTENT_VIEW_ADD_BUTTON_MARKER_CLASS = 'js-NewContentViewAddButton';
-        this.CONTENT_VIEWS_ALREADY_ADDED_LIST_MARKER_CLASS = 'js-ContentViewsAlreadyAddedListContainer';
+        this.ADDED_CONTENT_VIEWS_LIST_MARKER_CLASS = 'js-ContentViewsAlreadyAddedListContainer';
 
         this.forceRerender = function () {
             _self._needsRerender = true;
@@ -43,15 +43,15 @@ class ManageContentViewsOfCurrentOprViewSubview {
                     <select class="${_self.NEW_CONTENT_VIEW_TYPE_SELECT_MARKER_CLASS}"></select>
                     <button class="${_self.NEW_CONTENT_VIEW_ADD_BUTTON_MARKER_CLASS}" }" type="button">add</button>
                 </fieldset>
-            </form>
-            </hr>
-            <div>
-                <ul class="${_self.CONTENT_VIEWS_ALREADY_ADDED_LIST_MARKER_CLASS}">
-                </ul>
-            </div>`;
+                </form>
+                </hr>
+                <div>
+                    <ul class="${_self.ADDED_CONTENT_VIEWS_LIST_MARKER_CLASS}">
+                    </ul>
+                </div>`;
             _rootNode.innerHTML = rootElementInnerHtml;
             _renderContentComponentSelectOptions();
-            _renderContentViewsAlreadyAddedList();
+            _renderAddedContentViewsList();
             _attachListenerToContentComponentSelectElement();
             _attachListenerToAddContentViewButton();
         }
@@ -81,15 +81,15 @@ class ManageContentViewsOfCurrentOprViewSubview {
             return _rootNode.querySelector(`.${_self.NEW_CONTENT_VIEW_NAME_INPUT_MARKER_CLASS}`);
         }
 
-        function _attachListenerToContentComponentSelectElement() {          
+        function _attachListenerToContentComponentSelectElement() {
             const contentComponentSelectElement = _getContentComponentSelectElement();
             contentComponentSelectElement.addEventListener('change', () => _renderContentViewTypeSelectOptions());
         }
-        function _renderContentViewTypeSelectOptions() {            
+        function _renderContentViewTypeSelectOptions() {
             const selectedContentComponent = _getSelectedContentComponentInstanceId();
             const contentViewSelectOptionList = _ucService.getAvailableContentViewOptions(selectedContentComponent);
             let optionsString = '';
-            for(let i=0; i<contentViewSelectOptionList.length; i++) {
+            for (let i = 0; i < contentViewSelectOptionList.length; i++) {
                 const optionElement = contentViewSelectOptionList[i];
                 optionsString += `<option value="${optionElement.typeId}">${optionElement.displayName}</option>`;
             }
@@ -111,6 +111,7 @@ class ManageContentViewsOfCurrentOprViewSubview {
             const selectedContentComponentInstanceId = _getSelectedContentComponentInstanceId();
             const selectedViewType = _getSelectedViewType();
             _ucService.addContentView(enteredName, selectedContentComponentInstanceId, selectedViewType);
+            _renderAddedContentViewsList();
         }
         function _getEnteredViewName() {
             const inputElement = _getViewNameInputElement();
@@ -121,8 +122,24 @@ class ManageContentViewsOfCurrentOprViewSubview {
             return viewTypeSelectElement.options.item(viewTypeSelectElement.selectedIndex).value;
         }
 
-        function _renderContentViewsAlreadyAddedList() {
-            
+        function _renderAddedContentViewsList() {
+            const addedViewsList = _ucService.getAddedContentViewsList();
+            const listElement = _getAddedContentViewsListElement();
+            let listInnerHtml = ''
+            for(let i=0; i< addedViewsList.length; i++) {
+                const viewData = addedViewsList[i];
+                listInnerHtml += `<li data-viewid="${viewData.contentViewId}" data-ccinstid="${viewData.contentComponentInstanceId}">`;
+                listInnerHtml += `${viewData.contentViewName} / ${viewData.contentViewTypeDisplayName} /`
+                listInnerHtml += `${viewData.contentComponentInstanceName} / ${viewData.contentComponentTypeDisplayName}`
+                listInnerHtml += `</li>`
+            }
+            listElement.innerHTML = listInnerHtml;
+        }
+        /**
+         * @returns {HTMLUListElement}
+         */
+        function _getAddedContentViewsListElement() {
+            return _rootNode.querySelector(`.${_self.ADDED_CONTENT_VIEWS_LIST_MARKER_CLASS}`);
         }
     }
 }

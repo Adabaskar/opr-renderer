@@ -117,11 +117,12 @@ test(`${testgrouplabel} addContentViewButtonClicked_ValidInput_PassedToUcService
     const ucServiceStub = new ManageContentViewsOfCurrentOprViewUcService(oprProjectStub, {});
     const contentComponentInstanceIdStub = 'contentComponentInstanceIdStub';
     const contentComponentOptionsStub = [
-        { contentComponentInstanceId : contentComponentInstanceIdStub,
-          contentComponentInstanceName : 'someContentComponentInstanceName'  
-         }
+        {
+            contentComponentInstanceId: contentComponentInstanceIdStub,
+            contentComponentInstanceName: 'someContentComponentInstanceName'
+        }
     ];
-    /** @type {ContentViewSelectOption}[] */
+    /** @type {ContentViewSelectOption}*/
     const contentViewMetadataStub = { typeId: 'viewTypeIdStub', displayName: 'displayNameStub' };
     const contentViewOptionsStub = [contentViewMetadataStub];
     const getContentComponentOptionsStub = sinon.stub(ucServiceStub, 'getAvailableContentComponentInstancesList');
@@ -146,6 +147,8 @@ test(`${testgrouplabel} addContentViewButtonClicked_ValidInput_PassedToUcService
     changeEventStub.initEvent('change');
     contentComponentSelectElement.dispatchEvent(changeEventStub);
     const selectedViewType = viewTypeSelectElement.options.item(viewTypeSelectElement.selectedIndex);
+
+
     t.equal(selectedViewType.value, contentViewMetadataStub.typeId);
     t.equal(selectedViewType.text, contentViewMetadataStub.displayName);
 
@@ -157,6 +160,50 @@ test(`${testgrouplabel} addContentViewButtonClicked_ValidInput_PassedToUcService
     t.equal(addContentViewSpy.getCall(0).args[0], enteredContentViewNameStub, `should pass ${enteredContentViewNameStub}`);
     t.equal(addContentViewSpy.getCall(0).args[1], contentComponentInstanceIdStub, `should pass ${contentComponentInstanceIdStub}`);
     t.equal(addContentViewSpy.getCall(0).args[2], contentViewMetadataStub.typeId, `should bass ${contentViewMetadataStub.typeId}`);
+
+    t.end();
+});
+
+/**
+       * @typedef {Object} AddedContentViewListeElement
+       * @property {string} contentViewId
+       * @property {string} contentViewName        
+       * @property {string} contentViewTypeDisplayName
+       * @property {string} contentComponentInstanceName
+       * @property {string} contentComponentTypeDisplayName
+       */
+
+test(`${testgrouplabel} getDomRootNode_ViewsAdded_ConentViewListShowsAddedView`, function (t) {
+
+    const domDocStub = new JSDOM('').window.document;
+    const oprProjectStub = new OprProject();
+    const ucServiceStub = new ManageContentViewsOfCurrentOprViewUcService(oprProjectStub, {});
+    const getAddedContentViewsListStub = sinon.stub(ucServiceStub, 'getAddedContentViewsList');
+    /** @type {AddedContentViewListeElement} */
+    const addedContentViewListeElementStub = {
+        contentViewId: 'contentViewId',
+        contentViewName: 'contentViewName',
+        contentViewTypeDisplayName: 'contentViewDisplayName',
+        contentComponentInstanceId: 'contentComponentInstanceId',
+        contentComponentInstanceName: 'contentComponentInstanceName',
+        contentComponentTypeDisplayName: 'contentComponentTypeDisplayName'
+    };
+    /** @type {AddedContentViewListeElement[]} */
+    const addedContentViewListStub = [addedContentViewListeElementStub];
+    getAddedContentViewsListStub.returns(addedContentViewListStub);
+
+
+    const sut = new ManageContentViewsOfCurrentOprViewSubview(domDocStub, ucServiceStub);
+    const observedAddedContentViewsList = sut.getDomSubtree().querySelector(`.${sut.ADDED_CONTENT_VIEWS_LIST_MARKER_CLASS}`);
+    const observedListElement = observedAddedContentViewsList.firstChild;
+    const observedInnterHtml = observedListElement.innerHTML
+    t.true(observedInnterHtml.includes(addedContentViewListeElementStub.contentViewName));
+    t.true(observedInnterHtml.includes(addedContentViewListeElementStub.contentViewTypeDisplayName));
+    t.true(observedInnterHtml.includes(addedContentViewListeElementStub.contentComponentInstanceName));
+    t.true(observedInnterHtml.includes(addedContentViewListeElementStub.contentComponentTypeDisplayName));
+    t.equal(observedListElement.getAttribute('data-ccinstid'), addedContentViewListeElementStub.contentComponentInstanceId);
+    t.equal(observedListElement.getAttribute('data-viewid'), addedContentViewListeElementStub.contentViewId);
+
 
     t.end();
 });

@@ -46,14 +46,14 @@ class ManageContentViewsOfCurrentOprViewUcService {
          * @param {string} contentComponentName the name of the content component instance in the currrent opr project
          * @returns {ContentViewSelectOption[]}
          */
-        this.getAvailableContentViewOptions = function (contentComponentName) {
+        this.getAvailableContentViewOptions = function (contentComponentInstanceId) {
             const addedContentComponentsList = _oprProject.getAddedContentComponentInstancesList();
             let found = false;
             let i = 0;
             let lastInspectedElementsTypeId = null;
             while (!found && i < addedContentComponentsList.length) {
                 const inspectedContentComponent = addedContentComponentsList[i++];
-                found = inspectedContentComponent.contentComponentName === contentComponentName;
+                found = inspectedContentComponent.contentComponentInstanceId === contentComponentInstanceId;
                 lastInspectedElementsTypeId = inspectedContentComponent.contentComponentTypeId;
             }
             if (found) {
@@ -83,17 +83,19 @@ class ManageContentViewsOfCurrentOprViewUcService {
             _oprProject.getCurrentOprView().addContentView(contentViewName, contentComponentInstanceId, viewId);
         }
         /**
-         * @typedef {Object} AlreadyAddedContentViewElement
-         * @property {string} viewId
-         * @property {string} viewName
-         * @property {string} contentComponentInstanceName
-         * @property {string} contentViewTypeDisplayName
-         */
+        * @typedef {Object} AddedContentViewListeElement
+        * @property {string} contentViewId
+        * @property {string} contentViewName        
+        * @property {string} contentViewTypeDisplayName
+        * @property {string} contentComponentInstanceId
+        * @property {string} contentComponentInstanceName
+        * @property {string} contentComponentTypeDisplayName
+        */
 
         /**
-         * @returns {AlreadyAddedContentViewElement[]}
+         * @returns {AddedContentViewListeElement[]}
          */
-        this.getContentViewsAlreadyAdded = function () {
+        this.getAddedContentViewsList = function () {
             return [];
         }
     }

@@ -77,14 +77,14 @@ class OprProject {
         }
 
         /**
-         * @typedef {Object} AddedContentComponentInstancesListElement
+         * @typedef {Object} ContentComponentInstanceMetadata
          * @property {string} contentComponentInstanceId
          * @property {string} contentComponentInstanceName
          * @property {string} contentComponentTypeId
          */
 
         /**
-         * @returns {AddedContentComponentInstancesListElement[]}
+         * @returns {ContentComponentInstanceMetadata[]}
          */
         this.getAddedContentComponentInstancesList = function () {
             let result = [];
@@ -128,6 +128,23 @@ class OprProject {
                 throw new Error(`${contentComponentInstanceId} is an unknown Content Component Instance`);
             return _contentComponentInstanceIdToInstanceEnvelopeMap.get(contentComponentInstanceId).getDomBasedViewTypeId(contentViewId);
         }
+
+        /**
+         * @typedef {Object} ContentViewMetadata
+         * @property {string} contentViewId
+         * @property {string} contentViewName
+         * @property {string} contentViewTypeId
+         * @property {string} contentViewDisplayName
+         * @property {ContentComponentInstanceMetadata} contentComponentInstanceMetadata            
+         */
+
+        /**
+         * @returns {ContentViewMetadata[]}
+         */
+        this.getContentViewMetadataInCurrentOprView = function () {
+            return [];
+        }
+
     }
 }
 module.exports = OprProject;

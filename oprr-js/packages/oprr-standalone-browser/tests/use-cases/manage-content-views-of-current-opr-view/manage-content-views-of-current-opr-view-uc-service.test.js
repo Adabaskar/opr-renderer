@@ -68,7 +68,8 @@ test(`${testgrouplabel} getAvailableContentViewOptions_Always_asksContentCompone
     const contentComponentIdStub0 = 'typeId0';
     const addedContentComponentsListStub = [
         {
-            contentComponentName: contentComponentNameStub0,
+            contentComponentInstanceId: contentComponentNameStub0,
+            contentComponentInstanceName: contentComponentNameStub0,
             contentComponentTypeId: contentComponentIdStub0
         }
     ];
@@ -93,7 +94,8 @@ test(`${testgrouplabel} getAvailableContentViewOptions_Always_properlyMapsMetada
     const contentComponentIdStub0 = 'typeId0';
     const addedContentComponentsListStub = [
         {
-            contentComponentName: contentComponentNameStub0,
+            contentComponentInstanceId: contentComponentNameStub0,
+            contentComponentInstanceName: contentComponentNameStub0,
             contentComponentTypeId: contentComponentIdStub0
         }
     ];
