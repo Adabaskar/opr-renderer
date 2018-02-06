@@ -83,7 +83,7 @@ test(`${testgrouplabel} getAddedContentComponentsList_ContentComponentAdded_retu
 
     function observedListContainsExpectedElement(expectedInstanceId, expectedTypeId) {
         let containsExpectedElement = false;
-        for (let i = 0; i<observedContentComponentsList.length; i++) {
+        for (let i = 0; i < observedContentComponentsList.length; i++) {
             const elementUnderTest = observedContentComponentsList[i];
             containsExpectedElement =
                 (elementUnderTest.contentComponentInstanceId === expectedInstanceId) &&
@@ -110,13 +110,13 @@ test(`${testgrouplabel} addContentComponentView_UnknownContentComponentName_thro
 });
 
 test(`${testgrouplabel} addContentComponentView_TechnicallyValidInput_returnsResultFromContentComponentMethodCall`, function (t) {
- 
+
     const sut = new OprProject();
     const addDomBasedViewStub = sinon.stub();
     const assignedViewIdStub = 'assignedViewIdStub';
     addDomBasedViewStub.returns(assignedViewIdStub);
     const contentComponentInstanceStub = {
-        addDomBasedView : addDomBasedViewStub
+        addDomBasedView: addDomBasedViewStub
     }
     const contentComponentInstanceNameStub = 'contentComponentNameStub';
     sut.addContentComponent(contentComponentInstanceStub, 'someContentComponentTypeId', contentComponentInstanceNameStub);
@@ -127,6 +127,7 @@ test(`${testgrouplabel} addContentComponentView_TechnicallyValidInput_returnsRes
 
     t.equal(expectedMethodCall.args[0], contentViewTypeIdStub);
     t.equal(observedViewId, assignedViewIdStub);
-    
+
     t.end();
 });
+

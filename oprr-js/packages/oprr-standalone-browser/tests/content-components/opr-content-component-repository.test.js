@@ -72,7 +72,7 @@ test(`${testgrouplabel} getNameOfContentComponent_KnownContentComponent_returnsD
     registryStub.getRegister = () => { return registerStub; }
     const sut = new OprContentComponentRepository(registryStub);
 
-    const observedName = sut.getNameOfContentComponent(ccIdStub);
+    const observedName = sut.getDisplayNameOfContentComponent(ccIdStub);
 
     t.equals(observedName, `displayName${ccIdStub}`);
 

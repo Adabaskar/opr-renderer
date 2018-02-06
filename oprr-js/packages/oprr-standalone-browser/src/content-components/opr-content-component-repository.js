@@ -11,6 +11,7 @@ class OprContentComponentRepository {
      * @param {OprContentComponentRegistry} registry optional, for testing purposes
      */
     constructor(registry) {
+        const _self = this;
         let _registry = registry
         if (_registry === undefined)
             _registry = new OprContentComponentRegistry();
@@ -29,7 +30,7 @@ class OprContentComponentRepository {
         }
 
         /**
-         * @returns a list containing only the name and the id of all available content components.
+         * @returns a list containing only the display name and the id of all available content components.
          */
         this.getContentComponentNonVerboseList = function () {
             const resultList = [];
@@ -51,7 +52,7 @@ class OprContentComponentRepository {
             return contenComponentInstance;
         }
 
-        this.getNameOfContentComponent = function (contentComponentTypeId) {
+        this.getDisplayNameOfContentComponent = function (contentComponentTypeId) {
             const addressedContentComponent = _contentComponentRegisterCache.get(contentComponentTypeId);
             return addressedContentComponent.metadata.getDisplayName();
         }
@@ -70,6 +71,15 @@ class OprContentComponentRepository {
         this.getContentViewMetadata = function (contentComponentTypeId) {
             const addressedContentComponent = _contentComponentRegisterCache.get(contentComponentTypeId);
             return addressedContentComponent.metadata.contentViews;
+        }
+
+        this.getContentViewDefaultDisplayName = function(contentComponentTypeId, viewTypeId) {
+            const viewMetdataList = _self.getContentViewMetadata(contentComponentTypeId);
+            for(let i=0; i<viewMetdataList.length; i++) {
+                if(viewMetdataList[i].viewTypeId === viewTypeId)
+                    return viewMetdataList[i].defaultDisplayName;
+            }
+            return null;
         }
     }
 }

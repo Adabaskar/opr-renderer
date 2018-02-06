@@ -28,7 +28,7 @@ test(`${testgrouplabel} getAvailableContentComponents_Always_returnsAllContentCo
     const sut = new ManageContentViewsOfCurrentOprViewUcService(oprProjectStub, {});
 
     const observedContentComponentsList = sut.getAvailableContentComponentInstancesList();
-    function makeExpectedListElement(contentComponentListStubElement) {        
+    function makeExpectedListElement(contentComponentListStubElement) {
         return {
             contentComponentInstanceId: contentComponentListStubElement.contentComponentInstanceId,
             contentComponentInstanceName: contentComponentListStubElement.contentComponentInstanceName
@@ -159,5 +159,64 @@ test(`${testgrouplabel} addContentView_TechnicallyValidInput_callsCurrentOprView
     t.equal(expectedCall.args[0], viewNameStub);
     t.equal(expectedCall.args[1], contentComponentInstanceIdStub);
     t.equal(expectedCall.args[2], viewIdReturnedByOprProject);
+    t.end();
+});
+
+  /**
+         * @typedef {Object} ContentComponentInstanceMetadata
+         * @property {string} contentComponentInstanceId
+         * @property {string} contentComponentInstanceName
+         * @property {string} contentComponentTypeId
+         */
+ /**
+         * @typedef {Object} ContentViewMetadata
+         * @property {string} contentViewId
+         * @property {string} contentViewName
+         * @property {string} contentViewTypeId         
+         * @property {ContentComponentInstanceMetadata} contentComponentInstanceMetadata            
+         */
+
+test(`${testgrouplabel} getAddedContentViewsList_Always_properlyMapsResponsesFromOprProjectAndRepo`, function (t) {
+
+    const oprProjectStub = new OprProject();    
+    const getContentViewMetadataInCurrentOprViewStub = sinon.stub(oprProjectStub, 'getContentViewMetadataInCurrentOprView');
+    const ccInstMetadataStub = {
+        contentComponentInstanceId : 'ccInstId',
+        contentComponentInstanceName : 'ccInstName',
+        contentComponentTypeId : 'ccTypeId'
+    };
+    const contentViewMetadataStub = {
+        contentViewId : 'viewId',
+        contentViewName : 'viewName',
+        contentViewTypeId : 'viewTypeId',
+        contentComponentInstanceMetadata : ccInstMetadataStub
+    }
+    const contentViewMetadataListInCurrOprViewStub = [contentViewMetadataStub];
+    getContentViewMetadataInCurrentOprViewStub.returns(contentViewMetadataListInCurrOprViewStub);
+
+    const contentComponentRepoStub = new OprContentComponentRepository();
+    const contentComponentDisplayNameStub = 'contentComponentDisplayNameStub';
+    const contentViewDefaultDisplayNameStub = 'contentViewDefaultDisplayNameStub';
+    const getDisplayNameOfContentComponentStub = sinon.stub(contentComponentRepoStub, 'getDisplayNameOfContentComponent');
+    getDisplayNameOfContentComponentStub.returns(contentComponentDisplayNameStub);
+    const getContentViewDefaultDisplayNameStub = sinon.stub(contentComponentRepoStub, 'getContentViewDefaultDisplayName');
+    getContentViewDefaultDisplayNameStub.returns(contentViewDefaultDisplayNameStub);
+
+    const sut = new ManageContentViewsOfCurrentOprViewUcService(oprProjectStub, contentComponentRepoStub);
+
+
+    const result = sut.getAddedContentViewsList();
+    t.equal(result.length, 1);    
+    t.equal(result[0].contentViewId, contentViewMetadataStub.contentViewId);
+    t.equal(result[0].contentViewName, contentViewMetadataStub.contentViewName);
+    t.equal(result[0].contentViewTypeDisplayName, contentViewDefaultDisplayNameStub);
+    t.equal(result[0].contentComponentInstanceId, ccInstMetadataStub.contentComponentInstanceId);
+    t.equal(result[0].contentComponentInstanceName, ccInstMetadataStub.contentComponentInstanceName);
+    t.equal(result[0].contentComponentTypeDisplayName, contentComponentDisplayNameStub);
+    t.equal(getDisplayNameOfContentComponentStub.getCall(0).args[0], contentViewMetadataStub.contentComponentInstanceMetadata.contentComponentTypeId);
+    t.equal(getContentViewDefaultDisplayNameStub.getCall(0).args[0], contentViewMetadataStub.contentComponentInstanceMetadata.contentComponentTypeId);
+    t.equal(getContentViewDefaultDisplayNameStub.getCall(0).args[1], contentViewMetadataStub.contentViewTypeId);
+
+    
     t.end();
 });

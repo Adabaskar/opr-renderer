@@ -90,9 +90,27 @@ test(`${testgroup} setContentViewBoundary_ValidInput_getContentViewsWithBoundari
 
     let found = false;
     for (let i = 0; i < observedContentViewsWithBoundaryList.length && !found; i++) {
-        found = observedContentViewsWithBoundaryList[i].viewName === viewNameStub;        
+        found = observedContentViewsWithBoundaryList[i].viewName === viewNameStub;
     }
     t.true(found);
 
+    t.end();
+});
+
+
+test(`${testgroup} getContentViewMetadataList_Always_retrievesAddedView`, function (t) {
+
+    const sut = new OprView();
+    const viewNameStub = 'viewNameStub';
+    const contentComponentInstanceIdStub = 'contentComponentInstanceIdStub';
+    const viewIdStub = 'viewIdStub';
+
+    sut.addContentView(viewNameStub, contentComponentInstanceIdStub, viewIdStub);
+    const observedList = sut.getContentViewMetadataList();
+    t.equal(observedList.length, 1);
+    const observedElement = observedList[0];
+    t.equal(observedElement.ccInstId, contentComponentInstanceIdStub);
+    t.equal(observedElement.ccInstContentViewId, viewIdStub);
+    t.equal(observedElement.oprViewContentViewName, viewNameStub);
     t.end();
 });

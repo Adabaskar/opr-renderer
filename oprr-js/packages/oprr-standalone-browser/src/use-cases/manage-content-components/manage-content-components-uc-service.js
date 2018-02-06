@@ -29,7 +29,7 @@ class ManageContentComponentUcService {
         this.addContentComponent = function (contentComponentTypeId) {
             const contentComponentInstance = oprContentComponentRepository.getNewContentComponentInstance(contentComponentTypeId);
 
-            let name = oprContentComponentRepository.getNameOfContentComponent(contentComponentTypeId);
+            let name = oprContentComponentRepository.getDisplayNameOfContentComponent(contentComponentTypeId);
             const alreadyAddedContentComponentsOfThatTypeCount = oprProject.getContentComponentTypeCount(contentComponentTypeId);
             if (alreadyAddedContentComponentsOfThatTypeCount > 0)
                 name = name + ' ' + alreadyAddedContentComponentsOfThatTypeCount;

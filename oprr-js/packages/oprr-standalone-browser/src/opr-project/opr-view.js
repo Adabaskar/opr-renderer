@@ -12,8 +12,18 @@ class OprView {
     constructor() {
 
         const _layoutGrid = new NonUniformGrid();
-        /** @type {Object<string,string>} */
-        const _viewNameToViewIdMap = new Map();
+        /**
+      * @typedef {Object} ContentViewCoordinates
+      * @property {string} contentComponentInstanceId
+      * @property {string} contentViewId
+      */
+        /**
+         * We stick with the (user specified) name, when a system id shall be introduced it must
+         * be generated in class, since one must not oversee that the viewId which is part of the ViewCoordinates, is an id reltive to
+         * the corresponding content component instance and cannot be reused as an system id here.
+         */
+        /** @type {Object.<string,ContentViewCoordinates>} */
+        const _viewNameToViewCoordinatesMap = new Map();
         /**
          * @typedef {Object} GridLineNames
          * @property {string} left
@@ -77,28 +87,29 @@ class OprView {
             return result;
         }
         function _makeViewNameWithGridLineNamesObject(viewName, lineNames) {
-            return clone({
+            return {
                 viewName: viewName,
                 lineNames: lineNames
-            });
+            };
         }
 
+        /**
+         * @typedef {Object} ViewNamesListElement
+         * @property {string} viewId
+         * @property {string} viewName
+         */
         /**
          * @returns {string}[] list of view names
          */
-        this.getContentViewNamesList = function () {            
-            return Array.from(_viewNameToViewIdMap.keys());
+        this.getContentViewNamesList = function () {
+            return Array.from(_viewNameToViewCoordinatesMap.keys());
         }
 
         this.isContentViewNameTaken = function (viewName) {
-            return _viewNameToViewIdMap.has(viewName);
+            return _viewNameToViewCoordinatesMap.has(viewName);
         }
 
-        /**
-         * @typedef {Object} ContentViewCoordinates
-         * @property {string} contentComponentInstanceId
-         * @property {string} contentViewId
-         */
+
 
         /**
          * 
@@ -106,19 +117,39 @@ class OprView {
          * @param {string} contentComponentInstanceId the id, of the content component instance in the opr project the contentComponentViewId is relative to.
          * @param {string} viewName the id, the user has given to the view to address it when editing and designing the opr view.         
          */
-        this.addContentView = function (viewName, contentComponentInstanceId, contentViewId) {           
+        this.addContentView = function (viewName, contentComponentInstanceId, contentViewId) {
             validateRequiredArg(viewName, 'view name is required');
             validateRequiredArg(contentComponentInstanceId, 'content component instance is required');
             validateRequiredArg(contentViewId, 'content component view id is required');
             /** @type {ContentViewCoordinates} */
             const contentViewCoordinates = {
-                contentComponentInstanceId : contentComponentInstanceId,  
-                contentViewId : contentViewId
+                contentComponentInstanceId: contentComponentInstanceId,
+                contentViewId: contentViewId
             };
-            _viewNameToViewIdMap.set(viewName, contentViewCoordinates);
+            _viewNameToViewCoordinatesMap.set(viewName, contentViewCoordinates);
         }
 
-
+        /**
+         * @typedef {Object} OprViewContentViewMetadata
+         * @property {string} oprViewContentViewName
+         * @property {string} ccInstId
+         * @property {string} ccInstContentViewId
+         */
+        /**
+         * @returns {OprViewContentViewMetadata[]}
+         */
+        this.getContentViewMetadataList = function () {
+            let resultList = [];
+            _viewNameToViewCoordinatesMap.forEach((coord, name) => resultList.push(
+                {
+                    oprViewContentViewName: name,
+                    ccInstId: coord.contentComponentInstanceId,
+                    ccInstContentViewId: coord.contentViewId
+                }
+            )
+            );
+            return resultList;
+        }
 
 
     }

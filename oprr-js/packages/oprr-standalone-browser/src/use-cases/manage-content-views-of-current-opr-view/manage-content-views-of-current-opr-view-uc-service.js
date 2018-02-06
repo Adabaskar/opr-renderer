@@ -84,19 +84,36 @@ class ManageContentViewsOfCurrentOprViewUcService {
         }
         /**
         * @typedef {Object} AddedContentViewListeElement
-        * @property {string} contentViewId
-        * @property {string} contentViewName        
-        * @property {string} contentViewTypeDisplayName
-        * @property {string} contentComponentInstanceId
-        * @property {string} contentComponentInstanceName
-        * @property {string} contentComponentTypeDisplayName
+        * @property {string} contentViewId from current opr view via opr project, created by content component instance
+        * @property {string} contentViewName from current opr view via opr project, specified by user
+        * @property {string} contentViewTypeDisplayName from repo using view type id with content component type id
+        * @property {string} contentComponentInstanceId from op project, assigned during instance addition
+        * @property {string} contentComponentInstanceName from opr project, specifiable by user
+        * @property {string} contentComponentTypeDisplayName from repo useing content component type id
         */
 
         /**
          * @returns {AddedContentViewListeElement[]}
          */
         this.getAddedContentViewsList = function () {
-            return [];
+            const contentViewsInCurrentOprViewList = _oprProject.getContentViewMetadataInCurrentOprView();
+            const resultList = [];
+            for(let i=0; i<contentViewsInCurrentOprViewList.length; i++) {
+                const viewMetadata = contentViewsInCurrentOprViewList[i];
+                const ccTypeId = viewMetadata.contentComponentInstanceMetadata.contentComponentTypeId;
+                const viewTypeId = viewMetadata.contentViewTypeId;
+                const resultElement = {
+                    contentViewId : viewMetadata.contentViewId,
+                    contentViewName : viewMetadata.contentViewName,
+                    contentViewTypeDisplayName : _contentComponentRepo.getContentViewDefaultDisplayName(ccTypeId, viewTypeId),
+                    contentComponentInstanceId : viewMetadata.contentComponentInstanceMetadata.contentComponentInstanceId,
+                    contentComponentInstanceName : viewMetadata.contentComponentInstanceMetadata.contentComponentInstanceName,
+                    contentComponentTypeDisplayName : _contentComponentRepo.getDisplayNameOfContentComponent(ccTypeId)
+                };
+                resultList.push(resultElement);
+            }
+
+            return resultList;
         }
     }
 }

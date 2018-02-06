@@ -44,9 +44,10 @@ class ManageContentViewsOfCurrentOprViewSubview {
                     <button class="${_self.NEW_CONTENT_VIEW_ADD_BUTTON_MARKER_CLASS}" }" type="button">add</button>
                 </fieldset>
                 </form>
-                </hr>
+                <hr/>
                 <div>
                     <ul class="${_self.ADDED_CONTENT_VIEWS_LIST_MARKER_CLASS}">
+                        <li>dummy</li>
                     </ul>
                 </div>`;
             _rootNode.innerHTML = rootElementInnerHtml;
@@ -129,11 +130,12 @@ class ManageContentViewsOfCurrentOprViewSubview {
             for(let i=0; i< addedViewsList.length; i++) {
                 const viewData = addedViewsList[i];
                 listInnerHtml += `<li data-viewid="${viewData.contentViewId}" data-ccinstid="${viewData.contentComponentInstanceId}">`;
-                listInnerHtml += `${viewData.contentViewName} / ${viewData.contentViewTypeDisplayName} /`
+                listInnerHtml += `${viewData.contentViewName} : ${viewData.contentViewTypeDisplayName} /`
                 listInnerHtml += `${viewData.contentComponentInstanceName} / ${viewData.contentComponentTypeDisplayName}`
                 listInnerHtml += `</li>`
             }
             listElement.innerHTML = listInnerHtml;
+
         }
         /**
          * @returns {HTMLUListElement}

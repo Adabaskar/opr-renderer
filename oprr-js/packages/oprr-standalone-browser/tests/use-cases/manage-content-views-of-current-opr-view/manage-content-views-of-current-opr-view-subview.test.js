@@ -130,6 +130,7 @@ test(`${testgrouplabel} addContentViewButtonClicked_ValidInput_PassedToUcService
     const getAvailableContentViewOptionsStub = sinon.stub(ucServiceStub, 'getAvailableContentViewOptions');
     getAvailableContentViewOptionsStub.returns(contentViewOptionsStub);
     const enteredContentViewNameStub = 'enteredContentViewNameStub';
+    sinon.stub(ucServiceStub, 'getAddedContentViewsList').returns([]);//no real content view added, disable errors
 
     const sut = new ManageContentViewsOfCurrentOprViewSubview(domDocStub, ucServiceStub);
 
