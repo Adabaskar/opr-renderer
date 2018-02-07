@@ -80,7 +80,7 @@ class ManageContentViewsOfCurrentOprViewUcService {
                 throw new Error('Content View Name is empty');
 
             const viewId = _oprProject.addContentComponentView(contentComponentInstanceId, contentViewTypeId);
-            _oprProject.getCurrentOprView().addContentView(contentViewName, contentComponentInstanceId, viewId);
+            _oprProject.addContentViewToCurrentOprViewConfig(contentViewName, contentComponentInstanceId, viewId);
         }
         /**
         * @typedef {Object} AddedContentViewListeElement

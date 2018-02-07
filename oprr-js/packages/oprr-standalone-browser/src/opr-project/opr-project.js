@@ -1,12 +1,13 @@
 const IdTakenError = require('../../src/common/id-taken-error.js');
 const validateRequiredArg = require('oprr-utilities').validateRequiredArg;
-const OprView = require('./opr-view.js');
+const OprViewConfiguration = require('./opr-view-configuration.js');
 
 /**
  * Represents the current OPR Project
  */
 class OprProject {
     constructor() {
+        const _self = this;
         /**
                 * @typedef {Object} ContentComponentInstanceEnvelope
                 * @property {string} typeId
@@ -17,7 +18,7 @@ class OprProject {
         /** @type {Object<string, ContentComponentInstanceEnvelope} */
         const _contentComponentInstanceIdToInstanceEnvelopeMap = new Map();
 
-        const _currentOprView = new OprView();
+        const _currentOprViewConfig = new OprViewConfiguration();
 
         /**
          * 
@@ -102,13 +103,6 @@ class OprProject {
         }
 
         /**
-         * @returns {OprView}
-         */
-        this.getCurrentOprView = function () {
-            return _currentOprView;
-        }
-
-        /**
          * 
          * @param {string} contentComponentInstanceId 
          * @param {string} contentViewTypeId 
@@ -144,7 +138,7 @@ class OprProject {
          */
         this.getContentViewMetadataInCurrentOprView = function () {
 
-            const oprViewContentViewMetadataList = _currentOprView.getContentViewMetadataList()
+            const oprViewContentViewMetadataList = _currentOprViewConfig.getContentViewMetadataList()
             let resultList = [];
             for (let i = 0; i < oprViewContentViewMetadataList.length; i++) {
                 const metadata = oprViewContentViewMetadataList[i];
@@ -152,13 +146,13 @@ class OprProject {
                 const contentComponentInstanceEnvelope = _contentComponentInstanceIdToInstanceEnvelopeMap.get(metadata.ccInstId);
                 resultList.push(
                     {
-                        contentViewId : metadata.ccInstContentViewId,
-                        contentViewName : metadata.oprViewContentViewName,
-                        contentViewTypeId : contentComponentInstanceEnvelope.instance.getDomBasedViewTypeId(metadata.ccInstContentViewId),
-                        contentComponentInstanceMetadata : {
-                            contentComponentInstanceId :  metadata.ccInstId,
-                            contentComponentInstanceName : contentComponentInstanceEnvelope.instanceName,
-                            contentComponentTypeId : contentComponentInstanceEnvelope.typeId
+                        contentViewId: metadata.ccInstContentViewId,
+                        contentViewName: metadata.oprViewContentViewName,
+                        contentViewTypeId: contentComponentInstanceEnvelope.instance.getDomBasedViewTypeId(metadata.ccInstContentViewId),
+                        contentComponentInstanceMetadata: {
+                            contentComponentInstanceId: metadata.ccInstId,
+                            contentComponentInstanceName: contentComponentInstanceEnvelope.instanceName,
+                            contentComponentTypeId: contentComponentInstanceEnvelope.typeId
                         }
                     }
                 )
@@ -166,6 +160,64 @@ class OprProject {
             return resultList;
         }
 
+        this.getCurrentOprViewConfigVerticalGridLineList = function () {
+            return _currentOprViewConfig.getLayoutGrid().getVerticalGridLineList();
+        }
+
+        this.getCurrentOprViewConfigHorizontalGridLineList = function () {
+            return _currentOprViewConfig.getLayoutGrid().getHorizontalGridLineList();
+        }
+
+        this.getCurrentOprViewConfigContentViewsWithBoundaryList = function () {
+            return _currentOprViewConfig.getContentViewsWithBoundaryList();
+        }
+
+        this.getCurrentOprViewConfigurationContentViewNamesList = function () {
+            return _currentOprViewConfig.getContentViewNamesList();
+        }
+
+        this.setCurrentOprViewConfigurationVerticalGridLineFromLeft = function (lineName, offset) {
+            _currentOprViewConfig.getLayoutGrid().setVerticalGridLineFromLeft(lineName, offset);
+        }
+        this.setCurrentOprViewConfigurationHorizontalGridLineFromTop = function (lineName, offset) {
+            _currentOprViewConfig.getLayoutGrid().setHorizontalGridLineFromTop(lineName, offset);
+        }
+
+        this.getCurrentOprViewConfigContentViewBoundary = function (viewName) {
+            return _currentOprViewConfig.getContentViewBoundaryNames(viewName);
+        }
+        /**
+          * @typedef {Object} GridLineNames
+          * @property {string} left
+          * @property {string} right
+          * @property {string} top
+          * @property {string} bottom
+          */
+        /**
+         * 
+         * @param {string} viewName 
+         * @param {GridLineNames} lineNames 
+         */
+        this.setCurrentOprViewConfigContentViewBoundary = function (viewName, lineNames) {
+            _currentOprViewConfig.setContentViewBoundary(viewName, lineNames);
+        }
+
+        this.getCurrentOprViewConfigVerticalGridLineLeftOffset = function(gridLineName) {
+            return _currentOprViewConfig.getLayoutGrid().getVerticalGridLineLeftOffset(gridLineName);
+        }
+
+        this.getCurrentOprViewConfigHorizontalGridLineTopOffset = function(gridLineName) {
+            return _currentOprViewConfig.getLayoutGrid().getHorizontalGridLineTopOffset(gridLineName);
+        }
+  /**
+         * 
+         * @param {string} contentViewName 
+         * @param {string} contentComponentName 
+         * @param {string} contentViewId 
+         */
+        this.addContentViewToCurrentOprViewConfig = function(contentViewName, contentComponentInstanceId, contentViewId) {
+            _currentOprViewConfig.addContentView(contentViewName, contentComponentInstanceId, contentViewId)
+        }
     }
 }
 module.exports = OprProject;

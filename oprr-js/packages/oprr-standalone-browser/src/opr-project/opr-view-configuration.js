@@ -8,7 +8,7 @@ const validateRequiredArg = require('oprr-utilities').validateRequiredArg;
  * project's content components is shown at which position on a piece of "paper".
  * 
  */
-class OprView {
+class OprViewConfiguration {
     constructor() {
 
         const _layoutGrid = new NonUniformGrid();
@@ -154,4 +154,4 @@ class OprView {
 
     }
 }
-module.exports = OprView;
+module.exports = OprViewConfiguration;

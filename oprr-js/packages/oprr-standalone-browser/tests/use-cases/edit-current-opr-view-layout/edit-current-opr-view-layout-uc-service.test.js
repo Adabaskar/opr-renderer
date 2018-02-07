@@ -14,9 +14,8 @@ test(`${testgroup} setVerticalGridLine_RelativeToLeftUnusedName_retrievableViaCu
     const sut = new EditCurrentOprViewLayoutUcService(oprProject);
 
     sut.setVerticalGridLine(gridLineNameStub, offsetStub, reltiveToLeft);
-
-    const currentLayout = oprProject.getCurrentOprView().getLayoutGrid();
-    const observedGridLine = currentLayout.getVerticalGridLineLeftOffset(gridLineNameStub);
+    
+    const observedGridLine = oprProject.getCurrentOprViewConfigVerticalGridLineLeftOffset(gridLineNameStub);
 
     t.equals(observedGridLine, offsetStub);
     t.end();
@@ -32,8 +31,7 @@ test(`${testgroup} setHorizontalGridLine_RelativeToTopUnusedName_retrievableViaC
 
     sut.setHorizontalGridLine(gridLineNameStube, offsetStub, reltiveToTop);
 
-    const currentLayout = oprProject.getCurrentOprView().getLayoutGrid();
-    const observedGridLineTopOffset = currentLayout.getHorizontalGridLineTopOffset(gridLineNameStube);    
+    const observedGridLineTopOffset = oprProject.getCurrentOprViewConfigHorizontalGridLineTopOffset(gridLineNameStube); 
 
     t.equals(observedGridLineTopOffset, offsetStub);
     t.end();
@@ -42,10 +40,10 @@ test(`${testgroup} setHorizontalGridLine_RelativeToTopUnusedName_retrievableViaC
 test(`${testgroup} getVerticalGridLineList_Always_returnsListFromCurrentViewLayout`, function (t) {
 
     const oprProjectStub = new OprProject();
-    oprProjectStub.getCurrentOprView().getLayoutGrid().setVerticalGridLineFromLeft('lineNameStub', 20.546);
+    oprProjectStub.setCurrentOprViewConfigurationVerticalGridLineFromLeft('lineNameStub', 20.546);
     const sut = new EditCurrentOprViewLayoutUcService(oprProjectStub);
 
-    const expectedList = oprProjectStub.getCurrentOprView().getLayoutGrid().getVerticalGridLineList();
+    const expectedList = oprProjectStub.getCurrentOprViewConfigVerticalGridLineList();
     const observedList = sut.getVerticalGridLineList();
     t.deepEquals(observedList, expectedList);
     t.end();
@@ -56,8 +54,8 @@ test(`${testgroup} getHorizontalGridLineList_Always_returnsListFromCurrentViewLa
     const oprProjectStub = new OprProject();
     const sut = new EditCurrentOprViewLayoutUcService(oprProjectStub);
 
-    oprProjectStub.getCurrentOprView().getLayoutGrid().setHorizontalGridLineFromTop('lineNameStub', 20.546);
-    const expectedList = oprProjectStub.getCurrentOprView().getLayoutGrid().getHorizontalGridLineList();
+    oprProjectStub.setCurrentOprViewConfigurationHorizontalGridLineFromTop('lineNameStub', 20.546);
+    const expectedList = oprProjectStub.getCurrentOprViewConfigHorizontalGridLineList();
     const observedList = sut.getHorizontalGridLineList();
 
     t.true(observedList.length > 0);
@@ -67,9 +65,8 @@ test(`${testgroup} getHorizontalGridLineList_Always_returnsListFromCurrentViewLa
 
 test(`${testgroup} setContentViewBoundaries_Always_callsSetContentViewBoundaries`, function (t) {
 
-    const oprProjectStub = new OprProject();
-    const currenOprView = oprProjectStub.getCurrentOprView();
-    const setContentViewGridLineNamesSpy = sinon.spy(currenOprView, 'setContentViewBoundary');
+    const oprProjectStub = new OprProject();    
+    const setContentViewGridLineNamesSpy = sinon.spy(oprProjectStub, 'setCurrentOprViewConfigContentViewBoundary');
     const sut = new EditCurrentOprViewLayoutUcService(oprProjectStub);
     const viewNameStub = 'viewNameStub';
     const lineNamesStub = {
@@ -87,9 +84,8 @@ test(`${testgroup} setContentViewBoundaries_Always_callsSetContentViewBoundaries
 
 test(`${testgroup} getContentViewsWithBoundariesList_Always_CallsCurrentOprViewMethod`, function (t) {
 
-    const oprProjectStub = new OprProject();
-    const currenOprView = oprProjectStub.getCurrentOprView();
-    const getContentViewWithBoundariesListSpy = sinon.spy(currenOprView, 'getContentViewsWithBoundaryList');
+    const oprProjectStub = new OprProject();    
+    const getContentViewWithBoundariesListSpy = sinon.spy(oprProjectStub, 'getCurrentOprViewConfigContentViewsWithBoundaryList');
     const sut = new EditCurrentOprViewLayoutUcService(oprProjectStub);
 
     sut.getContentViewsWithBoundariesList();
@@ -100,9 +96,8 @@ test(`${testgroup} getContentViewsWithBoundariesList_Always_CallsCurrentOprViewM
 
 test(`${testgroup} getContentViewsBoundary_Always_callsCurrentViewsMethod`, function (t) {
 
-    const oprProjectStub = new OprProject();
-    const currenOprView = oprProjectStub.getCurrentOprView();
-    const getContentViewBoundarySpy = sinon.spy(currenOprView, 'getContentViewBoundaryNames');
+    const oprProjectStub = new OprProject(); 
+    const getContentViewBoundarySpy = sinon.spy(oprProjectStub, 'getCurrentOprViewConfigContentViewBoundary');
     const sut = new EditCurrentOprViewLayoutUcService(oprProjectStub);
     const viewNameStub = 'viewNameStub';
     sut.getContentViewBoundary(viewNameStub);
@@ -112,11 +107,10 @@ test(`${testgroup} getContentViewsBoundary_Always_callsCurrentViewsMethod`, func
 });
 
 
-test(`${testgroup} ghetContentViewsList_Always_callsCurrentViewsMethod`, function (t) {
+test(`${testgroup} getContentViewsList_Always_callsCurrentViewsMethod`, function (t) {
 
     const oprProjectStub = new OprProject();
-    const currenOprView = oprProjectStub.getCurrentOprView();
-    const getContentViewsListSpy = sinon.spy(currenOprView, 'getContentViewNamesList');
+    const getContentViewsListSpy = sinon.spy(oprProjectStub, 'getCurrentOprViewConfigurationContentViewNamesList');
     const sut = new EditCurrentOprViewLayoutUcService(oprProjectStub);
     const viewNameStub = 'viewNameStub';
     sut.getContentViewNamesList();

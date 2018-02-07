@@ -32,11 +32,14 @@ class OprrStandaloneBrowserApp {
         let _editCurrentOprViewLayoutSubview = undefined;
         let _manageContentViewsOfCurrentOprViewSubview = undefined;
 
+        let _oprContainer = undefined;
+
         this.start = function () {
             _initUseCaseComponents();
             _normalizeHtmlDocument();
             _initMainMenu();
             _initFullscreenSubviewFacility();
+            _initOprView();
         }
 
         function _initUseCaseComponents() {
@@ -76,6 +79,10 @@ class OprrStandaloneBrowserApp {
             mainMenu.setEditCurrentOprViewLayoutMenuItemClickedListener( () => { _editCurrentOprViewLayoutSubview.forceRerender(); _ApplicationSubview.setContent(_editCurrentOprViewLayoutSubview.getDomSubtree()); _ApplicationSubview.open(); });
             mainMenu.setManageContentViewsOfCurrentOprViewMenuItemtClickedListener( () => { _manageContentViewsOfCurrentOprViewSubview.forceRerender();  _ApplicationSubview.setContent(_manageContentViewsOfCurrentOprViewSubview.getDomSubtree()); _ApplicationSubview.open(); });
         };
+
+        function _initOprView() {
+            _domDoc.createElement('div');
+        }
 
     }
 }

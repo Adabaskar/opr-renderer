@@ -11,7 +11,7 @@ function makeStubContentComponentModule(id) {
         metadata: {
             contentComponentTypeId: `${id}`,
             contentViews: [{ viewTypeId: '', defaultDisplayName: '' }],
-            getDisplayName: function () { return `displayName${id}`; }
+            defaultDisplayName: `displayName${id}`
         },
         makeInstance: function () { return { setDomDoc: function (domDoc) { } } }
 
@@ -19,7 +19,7 @@ function makeStubContentComponentModule(id) {
 
 };
 
-test('metadataStub adhers to metadata contract', function (t) {
+test(`${testgrouplabel} metadataStub adhers to metadata contract`, function (t) {
 
     const stubMetadata = makeStubContentComponentModule('someId').metadata;
     const stubMetadataValidationTest = contentComponentContractValidationTestFactory(stubMetadata);
@@ -27,7 +27,7 @@ test('metadataStub adhers to metadata contract', function (t) {
 
 });
 
-test('getContentComponentNonVerboseList_RegistryReturnsNonEmptyList_usesIdAndDisplayNameFromMetdata', function (t) {
+test(`${testgrouplabel} getContentComponentNonVerboseList_RegistryReturnsNonEmptyList_usesIdAndDisplayNameFromMetdata`, function (t) {
 
     const ccIdStub = 'ccIdStub';
     const registerStub = [];

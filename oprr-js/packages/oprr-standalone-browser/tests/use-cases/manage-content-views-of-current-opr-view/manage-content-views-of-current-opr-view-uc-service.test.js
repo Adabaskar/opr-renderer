@@ -144,14 +144,14 @@ test(`${testgrouplabel} addContentView_TechnicallyValidInput_callsOprProjectMeth
 test(`${testgrouplabel} addContentView_TechnicallyValidInput_callsCurrentOprViewMethod`, function (t) {
 
     const oprProjectStub = new OprProject();
-    const currentOprView = oprProjectStub.getCurrentOprView();
+    
     const contentComponentRepoStub = new OprContentComponentRepository();
     const sut = new ManageContentViewsOfCurrentOprViewUcService(oprProjectStub, contentComponentRepoStub);
     const viewNameStub = 'viewNameStub';
     const viewIdReturnedByOprProject = 'viewIdReturnedByOprProject';
     const addContentComponentViewStub = sinon.stub(oprProjectStub, 'addContentComponentView');
     addContentComponentViewStub.returns(viewIdReturnedByOprProject);
-    const addContentViewSpy = sinon.spy(currentOprView, 'addContentView');
+    const addContentViewSpy = sinon.spy(oprProjectStub, 'addContentViewToCurrentOprViewConfig');
     const contentComponentInstanceIdStub = 'contentComponentInstanceIdStub';
     sut.addContentView(viewNameStub, contentComponentInstanceIdStub, 'someContentViewTypeId');
 

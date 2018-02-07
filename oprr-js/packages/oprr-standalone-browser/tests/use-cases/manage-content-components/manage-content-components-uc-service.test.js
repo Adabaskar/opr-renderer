@@ -23,9 +23,10 @@ test(`${testgroup} addContentComponent_Always_callsRepositoryWithId`, function (
 
     const oprProjectStub = new OprProject();
     const repoStub = new OprContentComponentsRepository();
-    repoStub.getNewContentComponentInstance = sinon.stub();
-    repoStub.getNewContentComponentInstance.returns({});
-    repoStub.getNameOfContentComponent = () => { return 'someName'; };
+    const getNewContentComponentInstanceStub = sinon.stub(repoStub, 'getNewContentComponentInstance');
+    getNewContentComponentInstanceStub.returns({});
+    const getDisplayNameOfContentComponentStub = sinon.stub(repoStub, 'getDisplayNameOfContentComponent');
+    getDisplayNameOfContentComponentStub.returns('someName');
     const sut = new ManageContentComponentsUcService(oprProjectStub, repoStub);
     const typedIdStub = 'typeIdStub';
     sut.addContentComponent(typedIdStub);
@@ -38,8 +39,10 @@ test(`${testgroup} addContentComponent_InstanceReturnedFromRepository_callsOprPr
 
     const oprProjectStub = new OprProject();
     const repoStub = new OprContentComponentsRepository();
-    repoStub.getNewContentComponentInstance = (someArg) => { return {}; };
-    repoStub.getNameOfContentComponent = () => { return 'someName'; };
+    const getNewContentComponentInstanceStub = sinon.stub(repoStub, 'getNewContentComponentInstance');
+    getNewContentComponentInstanceStub.returns({});
+    const getDisplayNameOfContentComponentStub = sinon.stub(repoStub, 'getDisplayNameOfContentComponent');
+    getDisplayNameOfContentComponentStub.returns('someName');
 
     const sut = new ManageContentComponentsUcService(oprProjectStub, repoStub);
     oprProjectStub.addContentComponent = sinon.spy();
@@ -55,10 +58,12 @@ test(`${testgroup} addContentComponent_FirstInstanceAdded_usesContentComponentNa
 
     const oprProjectStub = new OprProject();
     const repoStub = new OprContentComponentsRepository();
-    repoStub.getNewContentComponentInstance = (someArg) => { return {}; };
     const nameStub = 'contentComponentNameStub';
-    repoStub.getNameOfContentComponent = () => { return nameStub; };
-
+     const getNewContentComponentInstanceStub = sinon.stub(repoStub, 'getNewContentComponentInstance');
+    getNewContentComponentInstanceStub.returns({});
+    const getDisplayNameOfContentComponentStub = sinon.stub(repoStub, 'getDisplayNameOfContentComponent');
+    getDisplayNameOfContentComponentStub.returns(nameStub);
+ 
     const sut = new ManageContentComponentsUcService(oprProjectStub, repoStub);
     oprProjectStub.addContentComponent = sinon.spy();
     const contentComponentTypeIdStub = 'typeIdStub';
@@ -73,9 +78,12 @@ test(`${testgroup} addContentComponent_SecondInstanceAdded_usesContentComponentN
 
     const oprProjectStub = new OprProject();
     const repoStub = new OprContentComponentsRepository();
-    repoStub.getNewContentComponentInstance = (someArg) => { return {}; };
+    const getNewContentComponentInstanceStub = sinon.stub(repoStub, 'getNewContentComponentInstance');
+    getNewContentComponentInstanceStub.returns({});
     const nameStub = 'contentComponentNameStub';
-    repoStub.getNameOfContentComponent = () => { return nameStub; };
+    const getDisplayNameOfContentComponentStub = sinon.stub(repoStub, 'getDisplayNameOfContentComponent');
+    getDisplayNameOfContentComponentStub.returns(nameStub);
+
     const sut = new ManageContentComponentsUcService(oprProjectStub, repoStub);
     const addContentComponentSpy = sinon.spy(oprProjectStub, 'addContentComponent');
     const contentComponentTypeIdStub = 'typeIdStub';

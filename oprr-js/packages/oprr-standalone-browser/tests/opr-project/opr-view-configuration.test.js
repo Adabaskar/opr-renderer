@@ -1,22 +1,12 @@
 const test = require('tape');
-const OprView = require('../../src/opr-project/opr-view.js');
+const OprViewConfiguration = require('../../src/opr-project/opr-view-configuration.js');
 const NonUniformGrid = require('../../src/opr-project/non-uniform-grid.js');
 
-const testgroup = 'OprView:';
-
-test(`${testgroup} getLayout_Always_DefinedObject`, function (t) {
-
-    const sut = new OprView();
-    const observedLayout = sut.getLayoutGrid();
-
-    t.notEqual(observedLayout, undefined);
-    t.true(observedLayout instanceof NonUniformGrid, 'should be NonUniformGrid type');
-    t.end();
-});
+const testgroup = 'OprViewConfiguration:';
 
 test(`${testgroup} addContentView_ViewNameNotTaken_isPartOfViewList`, function (t) {
 
-    const sut = new OprView();
+    const sut = new OprViewConfiguration();
     const viewNameStub = 'viewNameStub';
     const contentComponentInstanceIdStub = 'contentComponentInstanceIdStub';
     const viewIdStub = 'viewIdStub';
@@ -29,7 +19,7 @@ test(`${testgroup} addContentView_ViewNameNotTaken_isPartOfViewList`, function (
 
 test(`${testgroup} isContentViewNameTaken_ViewNameTaken_returnTrue`, function (t) {
 
-    const sut = new OprView();
+    const sut = new OprViewConfiguration();
     const viewNameStub = 'viewNameStub';
     const contentComponentInstanceIdStub = 'contentComponentInstanceIdStub';
     const viewIdStub = 'viewIdStub';
@@ -42,7 +32,7 @@ test(`${testgroup} isContentViewNameTaken_ViewNameTaken_returnTrue`, function (t
 
 test(`${testgroup} isContentViewNameTaken_ViewNameNotTaken_returnFalse`, function (t) {
 
-    const sut = new OprView();
+    const sut = new OprViewConfiguration();
     const viewNameStub = 'viewNameStub';
 
     t.false(sut.isContentViewNameTaken(viewNameStub));
@@ -52,7 +42,7 @@ test(`${testgroup} isContentViewNameTaken_ViewNameNotTaken_returnFalse`, functio
 
 test(`${testgroup} setContentViewBoundary_ValidInput_returnedByGetContenViewBoundary`, function (t) {
 
-    const sut = new OprView();
+    const sut = new OprViewConfiguration();
     const viewNameStub = 'viewNameStub';
     const leftNameStub = 'leftNameStub';
     const rightNameStub = 'rightNameStub';
@@ -72,7 +62,7 @@ test(`${testgroup} setContentViewBoundary_ValidInput_returnedByGetContenViewBoun
 
 test(`${testgroup} setContentViewBoundary_ValidInput_getContentViewsWithBoundariesList`, function (t) {
 
-    const sut = new OprView();
+    const sut = new OprViewConfiguration();
     const viewNameStub = 'viewNameStub';
     const leftNameStub = 'leftNameStub';
     const rightNameStub = 'rightNameStub';
@@ -100,7 +90,7 @@ test(`${testgroup} setContentViewBoundary_ValidInput_getContentViewsWithBoundari
 
 test(`${testgroup} getContentViewMetadataList_Always_retrievesAddedView`, function (t) {
 
-    const sut = new OprView();
+    const sut = new OprViewConfiguration();
     const viewNameStub = 'viewNameStub';
     const contentComponentInstanceIdStub = 'contentComponentInstanceIdStub';
     const viewIdStub = 'viewIdStub';

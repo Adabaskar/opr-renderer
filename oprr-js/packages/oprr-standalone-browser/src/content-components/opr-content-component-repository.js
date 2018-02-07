@@ -24,7 +24,7 @@ class OprContentComponentRepository {
                 _contentComponentRegisterCache.set(staticRegister[i].metadata.contentComponentTypeId, staticRegister[i]);
         })();
 
-        let _domDoc = undefined;        
+        let _domDoc = undefined;
         this.enableDomBasedViewsOnNewContentComponentInstances = function (domDoc) {
             _domDoc = domDoc;
         }
@@ -40,21 +40,21 @@ class OprContentComponentRepository {
         function _makeNonVerboseListeElement(contentComponent) {
             return {
                 typeId: contentComponent.metadata.contentComponentTypeId,
-                name: contentComponent.metadata.getDisplayName()
+                name: contentComponent.metadata.defaultDisplayName
             };
         }
 
         this.getNewContentComponentInstance = function (contentComponentTypeId) {
             const addressedContentComponent = _contentComponentRegisterCache.get(contentComponentTypeId);
             const contenComponentInstance = addressedContentComponent.makeInstance();
-            if(_domDoc !== undefined)
+            if (_domDoc !== undefined)
                 contenComponentInstance.setDomDoc(_domDoc);
             return contenComponentInstance;
         }
 
         this.getDisplayNameOfContentComponent = function (contentComponentTypeId) {
             const addressedContentComponent = _contentComponentRegisterCache.get(contentComponentTypeId);
-            return addressedContentComponent.metadata.getDisplayName();
+            return addressedContentComponent.metadata.defaultDisplayName;
         }
 
         /**
@@ -73,10 +73,10 @@ class OprContentComponentRepository {
             return addressedContentComponent.metadata.contentViews;
         }
 
-        this.getContentViewDefaultDisplayName = function(contentComponentTypeId, viewTypeId) {
+        this.getContentViewDefaultDisplayName = function (contentComponentTypeId, viewTypeId) {
             const viewMetdataList = _self.getContentViewMetadata(contentComponentTypeId);
-            for(let i=0; i<viewMetdataList.length; i++) {
-                if(viewMetdataList[i].viewTypeId === viewTypeId)
+            for (let i = 0; i < viewMetdataList.length; i++) {
+                if (viewMetdataList[i].viewTypeId === viewTypeId)
                     return viewMetdataList[i].defaultDisplayName;
             }
             return null;

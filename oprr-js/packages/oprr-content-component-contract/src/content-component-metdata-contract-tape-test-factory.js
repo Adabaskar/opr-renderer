@@ -22,7 +22,7 @@ const contentComponentContractTapeTestFactory = function (metadataInstance) {
        
         assert.true(metadataInstance.hasOwnProperty('contentComponentTypeId'), 'has contentComponentTypeId');   
         assert.true(metadataInstance.hasOwnProperty('contentViews'), 'provides content views');           
-        assert.true(metadataInstance.hasOwnProperty('getDisplayName'), 'has getDisplayName');   
+        assert.true(metadataInstance.hasOwnProperty('defaultDisplayName'), 'has defaultDisplayName');   
 
         assert.true(metadataInstance.contentViews.length > 0, 'minimum of one content view');
         assert.true(metadataInstance.contentViews[0].hasOwnProperty('viewTypeId'), 'content view metadata has type id');

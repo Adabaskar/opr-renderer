@@ -1,7 +1,7 @@
 const validateRequiredArg = require('oprr-utilities').validateRequiredArg;
 const OprProject = require('../../opr-project/opr-project.js');
 const NonUniformGrid = require('../../opr-project/non-uniform-grid.js');
-const OprView = require('../../opr-project/opr-view.js');
+const OprViewConfiguration = require('../../opr-project/opr-view-configuration.js');
 
 /**
  * Provides methods to implement the Use Case for editing the layout of the current OPR View
@@ -30,7 +30,7 @@ class EditCurrentOprViewLayoutUcService {
             if (!relativeToLeft)
                 throw Error('Not Implemented Yet!');
 
-            oprProject.getCurrentOprView().getLayoutGrid().setVerticalGridLineFromLeft(lineName, offset);
+            oprProject.setCurrentOprViewConfigurationVerticalGridLineFromLeft(lineName, offset);           
         }
 
         this.setHorizontalGridLine = function (lineName, offset, relativeToTop) {
@@ -41,19 +41,19 @@ class EditCurrentOprViewLayoutUcService {
             if (!relativeToTop)
                 throw Error('Not Implemented Yet!');
             
-            oprProject.getCurrentOprView().getLayoutGrid().setHorizontalGridLineFromTop(lineName, offset);
+            oprProject.setCurrentOprViewConfigurationHorizontalGridLineFromTop(lineName, offset);
         }
 
         this.getVerticalGridLineList = function () {
-            return oprProject.getCurrentOprView().getLayoutGrid().getVerticalGridLineList();
+            return oprProject.getCurrentOprViewConfigVerticalGridLineList();
         }
 
         this.getHorizontalGridLineList = function () {
-            return oprProject.getCurrentOprView().getLayoutGrid().getHorizontalGridLineList();
+            return oprProject.getCurrentOprViewConfigHorizontalGridLineList();
         }
 
         this.getContentViewNamesList = function () {
-            return oprProject.getCurrentOprView().getContentViewNamesList();
+            return oprProject.getCurrentOprViewConfigurationContentViewNamesList();
         }
         /**
         * @typedef {Object} GridLineNames
@@ -67,7 +67,7 @@ class EditCurrentOprViewLayoutUcService {
          * @returns {GridLineNames}
          */
         this.getContentViewBoundary = function (viewName) {
-            return oprProject.getCurrentOprView().getContentViewBoundaryNames(viewName);
+            return oprProject.getCurrentOprViewConfigContentViewBoundary(viewName);
         }
 
         /**
@@ -79,7 +79,7 @@ class EditCurrentOprViewLayoutUcService {
          * @returns {ViewNameWithGridLineNames[]}
          */
         this.getContentViewsWithBoundariesList = function () {
-            return oprProject.getCurrentOprView().getContentViewsWithBoundaryList();
+            return oprProject.getCurrentOprViewConfigContentViewsWithBoundaryList();
         }
 
         /**
@@ -88,7 +88,7 @@ class EditCurrentOprViewLayoutUcService {
          * @param {GridLineNames} lineNames 
          */
         this.setContentViewBoundaries = function (viewName, lineNames) {
-            oprProject.getCurrentOprView().setContentViewBoundary(viewName, lineNames);
+            oprProject.setCurrentOprViewConfigContentViewBoundary(viewName, lineNames);
         }
     }
 }

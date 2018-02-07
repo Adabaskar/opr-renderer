@@ -5,15 +5,17 @@ const { JSDOM } = jsdom;
 const ManageContentComponentsSubview = require('../../../src/use-cases/manage-content-components/manage-content-components-subview.js');
 const ManageContentComponentsUcService = require('../../../src/use-cases/manage-content-components/manage-content-components-uc-service.js');
 
+const testgrouplabel = 'ManageContentComponentsSubview : ';
+
 function makeAddableContentComponentListEntryStub(disc) {
-    return { typeId: disc, name: `name${disc}` };
+    return { typeId: disc, name: `name${disc}`, defaultDisplayName: `displayName${disc}` };
 };
 
-test('getDomSubtree_UcServiceServesAddableContentComponents_AddableContentComponentsUiAreaContainsAllListEntries', function (t) {
+test(`${testgrouplabel} getDomSubtree_UcServiceServesAddableContentComponents_AddableContentComponentsUiAreaContainsAllListEntries`, function (t) {
 
     const domDocStub = new JSDOM('').window.document;
     const addableComponentsCount = 3;
- 
+
     const addableComponentsListStub = [];
     for (let i = 0; i < addableComponentsCount; i++)
         addableComponentsListStub.push(makeAddableContentComponentListEntryStub(i));
@@ -45,7 +47,7 @@ function makeUcServiceStub(addableComponentCount) {
     return ucServiceStub;
 }
 
-test('addContentComponentButtonClicked_Always_callsUcService', function (t) {
+test(`${testgrouplabel} addContentComponentButtonClicked_Always_callsUcService`, function (t) {
     const domDocStub = new JSDOM('').window.document;
     const ucServiceStub = makeUcServiceStub(1);
     ucServiceStub.addContentComponent = sinon.spy();
@@ -54,6 +56,6 @@ test('addContentComponentButtonClicked_Always_callsUcService', function (t) {
     clickEventStub.initEvent('click');
 
     sut.getDomSubtree().querySelector('.AddContentComponentToProjectButton').dispatchEvent(clickEventStub);
-    t.true(ucServiceStub.addContentComponent.calledWith('0'), 'UC service method called with id = 0'); 
+    t.true(ucServiceStub.addContentComponent.calledWith('0'), 'UC service method called with id = 0');
     t.end();
 });

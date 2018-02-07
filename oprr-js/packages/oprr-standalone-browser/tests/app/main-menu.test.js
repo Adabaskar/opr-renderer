@@ -4,7 +4,9 @@ const jsdom = require('jsdom');
 const {JSDOM} =  jsdom ;
 const sinon = require('sinon');
 
-test('setContentComponentMenuItemClickedListener_whenClicked_callsAssignedListener', function (t) {
+const testgrouplabel = 'MainMenu: ' 
+
+test(`${testgrouplabel} setContentComponentMenuItemClickedListener_whenClicked_callsAssignedListener`, function (t) {
 
     const domDocStub = (new JSDOM('')).window.document;
     const sut = new MainMenu(domDocStub);
