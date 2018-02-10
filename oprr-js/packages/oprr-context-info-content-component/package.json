@@ -30,6 +30,6 @@
     "oprr-content-component-contract": "^0.1.0-SNAPSHOT"
   },
   "dependencies": {
-    "oprr-utilities": "^0.1.0-SNAPSHOT"
+    "oprr-utilities": "^0.1.0-SNAPSHOT"    
   }
 }

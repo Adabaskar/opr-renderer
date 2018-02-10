@@ -1,0 +1,1 @@
+TypeScript allows to declare interfaces and to check to their adherance. This is the base npm-module/package where the TypeScript based Contract for Content Components is defined.

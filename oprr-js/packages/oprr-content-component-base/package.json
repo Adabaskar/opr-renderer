@@ -1,0 +1,14 @@
+{
+  "name": "oprr-content-component-base",
+  "version": "0.1.0-SNAPSHOT",
+  "description": "TypeScript allows to declare interfaces and to check to their adherance. This is the base npm-module/package where the TypeScript based Contract for Content Components is defined.",
+  "main": "js/index.js",
+  "types": "js/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}

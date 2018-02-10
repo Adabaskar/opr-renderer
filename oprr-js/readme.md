@@ -26,4 +26,17 @@ using `babel-loader` with local dependencies can fail, unless the babel presets 
 Prototype code and assets should not be part of the offical npm module. Add those to `.npmignore` of the respective module/package ([also see guide on the web](https://docs.npmjs.com/misc/developers#keeping-files-out-of-your-package)).
 
 
+# Thoughts and Decisions
+
+It is getting more and more tedious to work on this project because 
+1. refactoring is very hard, since dynamic typing and dynamic class extension cav have tests pass although they shouldn't, sinon helps a lot
+2. failing unit tests are sometimes hard to find, labeling of single tests helps but 
+2. concepts (especially reflected in the names of methods, properties and classes) are at some points misleading and not focused enough
+3. IDE is not supporting distant module type resolution (although VS Code does an impressive job)
+4. The architecture and design of classes and components and the seperation of concerns has been done badly (e.g. System Ids, Instance Management)
+
+After Version 0.1.0 has been finished, it shall be investigated if the usage of TypeScript and Angular/Ionic or Knockout can help for a quick improvement. Moreover moving to mocha and jasmin should be investigated or even jest.
+
+
+
 

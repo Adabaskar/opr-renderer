@@ -1,0 +1,16 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    margin : 0px;    
+}
+body {
+    
+}
+#topmenu {
+    background-color: aquamarine;
+    height: 10%;
+}
+#oprviewcontainer {
+    background-color: bisque;
+    height: 90%;
+}

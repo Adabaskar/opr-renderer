@@ -1,0 +1,27 @@
+{
+  "name": "oprr-opr-html-view",
+  "version": "0.1.0-SNAPSHOT",
+  "description": "Provides a way how content component views can be rendered using non uniformly distributed grid lines.",
+  "main": "js/index.js",
+  "types": "js/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "builddemos" : "tsc && webpack --config demo/demo.webpack-config.js"
+  },
+  "keywords": [],
+  "author": "Bogumil Bartczak",
+  "license": "MIT",
+  "dependencies": {
+    "oprr-content-component-base": "^0.1.0-SNAPSHOT"
+  },
+  "devDependencies": {
+    "webpack": "^3.8.1",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-runtime": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "typescript-map": "^0.0.5"
+  }
+}
