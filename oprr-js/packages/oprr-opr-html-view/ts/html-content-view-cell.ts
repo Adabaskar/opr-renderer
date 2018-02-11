@@ -9,9 +9,9 @@ export class HtmlContentViewCell {
     private _rootElement: HTMLDivElement;
 
     constructor(domDoc: Document, name: string, left: number, top: number, right: number, bottom: number) {
-        if (!this._checkLines(left, right))
+        if (!this._checkLines(left, 100-right))
             throw new Error('violated left < right ');
-        if (!this._checkLines(top, bottom))
+        if (!this._checkLines(top, 100-bottom))
             throw new Error('violated top < bottom ');
 
         this._left = left;
@@ -26,7 +26,7 @@ export class HtmlContentViewCell {
     }
     private _checkRange(offset: number) {
         if (offset < 0 || offset > 100) {
-            throw new Error(`Offset has to be between 0 and 100. Observed ${offset}`)
+            throw new Error(`Offset has to be between 0 and 100.`);
         }
     }
     private _checkLines(smaller: number, larger: number): boolean {

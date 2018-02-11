@@ -4,13 +4,18 @@ html, body {
     margin : 0px;    
 }
 body {
-    
+    display:  flex;
+    flex-direction: column;
 }
 #topmenu {
     background-color: aquamarine;
-    height: 10%;
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: auto;
 }
 #oprviewcontainer {
     background-color: bisque;
-    height: 90%;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
 }

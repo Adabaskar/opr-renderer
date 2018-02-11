@@ -6,7 +6,7 @@ import {TSMap} from 'typescript-map';
  * An Opr View is made up of content component views positioned somewhere on a 
  * area with fixed aspect ratio.
  */
-export class OprHtmlView {
+export class OprHtmlViewLayout {
 
     private _domDoc: Document;
     private _htmlRootElement: HTMLDivElement;

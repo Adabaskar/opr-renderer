@@ -1,4 +1,4 @@
-/* 
+    /* 
     Copyright (C) 2017 Bogumil Bartczak
 
     This file is part of opr-renderer.
