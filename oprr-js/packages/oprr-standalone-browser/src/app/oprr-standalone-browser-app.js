@@ -12,6 +12,8 @@ const EditCurrentOprViewLayoutSubview = require('../use-cases/edit-current-opr-v
 
 const ManageContentViewsOfCurrentOprViewSubview = require('../use-cases/manage-content-views-of-current-opr-view/manage-content-views-of-current-opr-view-subview.js');
 const ManageContentViewsOfCurrentOprViewUcService = require('../use-cases/manage-content-views-of-current-opr-view/manage-content-views-of-current-opr-view-uc-service.js');
+const OprHtmlViewSizer = require('oprr-opr-html-view').OprHtmlViewSizer;
+const OprHtmlViewLayout = require('oprr-opr-html-view').OprHtmlViewLayout;
 
 class OprrStandaloneBrowserApp {
     /**
@@ -21,13 +23,22 @@ class OprrStandaloneBrowserApp {
     constructor(win) {
         validateRequiredArg(win, 'Window Required');
         validateRequiredArg(win.document, 'Dom Document in Window Object Required');
+        const _self = this;
 
         let _domDoc = win.document;
+        let _mainMenuContainer = _domDoc.body.querySelector('#mainmenucontainer');
+        if (_mainMenuContainer == null || _mainMenuContainer == undefined)
+            throw new Error('main menu container ("#mainmenucontainer") not found!');
+        let _oprViewContainer = _domDoc.body.querySelector('#oprviewcontainer');
+        if (_oprViewContainer == null || _oprViewContainer == undefined)
+            throw new Error('opr view container ("#oprviewcontainer") not found!');
+        const _oprHtmlViewSizer = new OprHtmlViewSizer(_domDoc);
+        const _oprHtmlViewLayout = new OprHtmlViewLayout(_domDoc);
         let _ApplicationSubview = new SubviewScaffold(_domDoc);
         let _currentOprProject = new OprProject();
         const _contentComponentsRepository = new ContentComponentsRepository();
         _contentComponentsRepository.enableDomBasedViewsOnNewContentComponentInstances(_domDoc);
-        
+
         let _manageContentComponentSubview = undefined;
         let _editCurrentOprViewLayoutSubview = undefined;
         let _manageContentViewsOfCurrentOprViewSubview = undefined;
@@ -74,14 +85,15 @@ class OprrStandaloneBrowserApp {
 
         function _initMainMenu() {
             const mainMenu = new MainMenu(_domDoc);
-            win.document.body.appendChild(mainMenu.getDomSubtree());
+            _mainMenuContainer.appendChild(mainMenu.getDomSubtree());
             mainMenu.setContentComponentMenuItemClickedListener(() => _openContentComponentManagement());
-            mainMenu.setEditCurrentOprViewLayoutMenuItemClickedListener( () => { _editCurrentOprViewLayoutSubview.forceRerender(); _ApplicationSubview.setContent(_editCurrentOprViewLayoutSubview.getDomSubtree()); _ApplicationSubview.open(); });
-            mainMenu.setManageContentViewsOfCurrentOprViewMenuItemtClickedListener( () => { _manageContentViewsOfCurrentOprViewSubview.forceRerender();  _ApplicationSubview.setContent(_manageContentViewsOfCurrentOprViewSubview.getDomSubtree()); _ApplicationSubview.open(); });
+            mainMenu.setEditCurrentOprViewLayoutMenuItemClickedListener(() => { _editCurrentOprViewLayoutSubview.forceRerender(); _ApplicationSubview.setContent(_editCurrentOprViewLayoutSubview.getDomSubtree()); _ApplicationSubview.open(); });
+            mainMenu.setManageContentViewsOfCurrentOprViewMenuItemtClickedListener(() => { _manageContentViewsOfCurrentOprViewSubview.forceRerender(); _ApplicationSubview.setContent(_manageContentViewsOfCurrentOprViewSubview.getDomSubtree()); _ApplicationSubview.open(); });
         };
 
         function _initOprView() {
-            _domDoc.createElement('div');
+            _oprViewContainer.appendChild(_oprHtmlViewSizer.getHtmlRootElement());
+            _oprHtmlViewSizer.setLayout(_oprHtmlViewLayout);
         }
 
     }
