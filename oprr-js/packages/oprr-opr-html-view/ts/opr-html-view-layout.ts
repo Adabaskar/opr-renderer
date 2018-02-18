@@ -13,7 +13,6 @@ export class OprHtmlViewLayout {
     private _nextId : number = 0;    
     private _cells : TSMap<string, HtmlContentViewCell> = new TSMap();
 
-
     constructor(domDoc: Document) {
         this._domDoc = domDoc;
         this._htmlRootElement = this._setupRootElement(domDoc);

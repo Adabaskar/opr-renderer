@@ -13,7 +13,8 @@
   "author": "Bogumil Bartczak",
   "license": "MIT",
   "dependencies": {
-    "oprr-content-component-base": "^0.1.0-SNAPSHOT"
+    "oprr-content-component-base": "^0.1.0-SNAPSHOT",
+    "typescript-map": "^0.0.5"
   },
   "devDependencies": {
     "webpack": "^3.8.1",
@@ -21,7 +22,6 @@
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
     "babel-runtime": "^6.26.0",
-    "babel-polyfill": "^6.26.0",
-    "typescript-map": "^0.0.5"
+    "babel-polyfill": "^6.26.0"    
   }
 }

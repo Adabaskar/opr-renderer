@@ -1,0 +1,24 @@
+{
+  "name": "oprr-api-demo",
+  "version": "0.1.0-SNAPSHOT",
+  "description": "Shows how to define and render an opr using oprr's typescript api.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build" : "tsc && webpack"
+  },
+  "keywords": [],
+  "author": "Bogumil Bartczak",
+  "license": "MIT",
+  "dependencies": {
+    "oprr-opr-html-view" : "^0.1.0-SNAPHSOT"
+  },
+  "devDependencies": {
+    "webpack": "^3.8.1",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-runtime": "^6.26.0",
+    "babel-polyfill": "^6.26.0"   
+  }
+}
