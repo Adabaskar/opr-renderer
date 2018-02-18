@@ -6,7 +6,7 @@ The goal of this project is to provide tools for the creation, display and manag
 
 I don't know about the technical pros or cons of the online tool, but (for me personally) it is too expensive just to give it a try. Using Microsoft Excel is quite cumbersome, especially during intialisation of an OPPM sheet and when refactoring ( i.e. switching in or out things or increasing or decreasing columns and rows). 
 
-The tools created here should therefore be free of charge (MIT), allow easy creation of one page reporst and support their refactoring. 
+The tools created here should therefore be free of charge (MIT), allow easy creation of one page reports and support refactoring.
 
 # Roadmap
 
