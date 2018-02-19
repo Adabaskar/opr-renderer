@@ -1,0 +1,18 @@
+{
+  "name": "oprr-cc-context-info",
+  "version": "0.1.0-SNAPSHOT",
+  "description": "Content Component that captures the information about the context of a report.",
+  "main": "js/index.js",
+  "types": "js/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build" : "tsc"
+  },
+  "keywords": [],
+  "author": "Bogumil Bartczak",
+  "license": "MIT",
+  "dependencies": {
+    "oprr-content-component-base" : "^0.1.0-SNAPSHOT",
+    "typescript-map": "^0.0.5"
+  }
+}

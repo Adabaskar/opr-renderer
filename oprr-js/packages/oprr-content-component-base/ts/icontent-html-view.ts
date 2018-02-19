@@ -3,4 +3,5 @@
  */
 export interface IContentHtmlView {
     getHtmlRootElement() : HTMLElement;
+    getDefaultStyle() : HTMLStyleElement;
 }

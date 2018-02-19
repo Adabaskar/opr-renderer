@@ -1,4 +1,5 @@
 import { OprHtmlViewLayout, OprHtmlViewSizer } from 'oprr-opr-html-view';
+import {OprrCcContextInfoBlockViewHtmlWrapper} from 'oprr-cc-context-info';
 
 (function plainopr() {
 
@@ -16,5 +17,17 @@ import { OprHtmlViewLayout, OprHtmlViewSizer } from 'oprr-opr-html-view';
     if (oprContainer != null)
         oprContainer.appendChild(oprSizer.getHtmlRootElement());
 
+    
+
+    const contextInfo = new OprrCcContextInfoBlockViewHtmlWrapper(document);
+
+    const mainHeaderId = oprLayout.addCell('mainHeader', 20, 0, 20, 80);
+    oprLayout.assignContentViewToCell(contextInfo, mainHeaderId);
+
+    const headElement = document.querySelector('head');
+    if(headElement != null)
+        headElement.appendChild(contextInfo.getDefaultStyle());
+
     oprSizer.adjustSizeToParentPreserveTargetAspectRatio();
+
 })();

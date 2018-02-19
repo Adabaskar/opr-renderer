@@ -1,0 +1,10 @@
+.OprrCcContextInfoBlockView .firstRow {
+    display : flex; 
+    justify-content:flex-center; 
+    margin-bottom : 0.2%;
+}
+
+.OprrCcContextInfoBlockView .firstRow .topic {
+    margin: auto;
+    background: red;
+}

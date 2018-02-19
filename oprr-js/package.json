@@ -4,6 +4,7 @@
 	},
 	"dependencies": {		
 		"oprr-opr-html-view": "^0.1.0-SNAPSHOT",
-		"oprr-content-component-base": "^0.1.0-SNAPSHOT"
+		"oprr-content-component-base": "^0.1.0-SNAPSHOT",
+		"oprr-cc-context-info": "^0.1.0-SNAPSHOT"
 	}
 }

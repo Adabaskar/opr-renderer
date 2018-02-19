@@ -2,6 +2,9 @@ import { IContentHtmlView } from 'oprr-content-component-base';
 
 export class ContentViewStub implements IContentHtmlView {
 
+    getDefaultStyle(): HTMLStyleElement {
+        throw new Error("Method not implemented.");
+    }
     private _rootElement: HTMLDivElement;
     
     constructor(domDoc: Document, backgroundColor: string) {        
